@@ -7037,7 +7037,7 @@ PHP_FUNCTION(pdf_translate)
    Takes an GD image and returns an image for placement in a PDF document */
 PHP_FUNCTION(pdf_open_memory_image)
 {
-	zval **p, **x;
+	zval **p, **image;
 	int i, j, color;
 	int pdf_image;
 	gdImagePtr im;
