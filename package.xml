@@ -46,7 +46,7 @@ Enhancements:
       <file role="src" name="pdf.dsp"/>
       <file role="src" name="pdf.c"/>
       <file role="src" name="php_pdf.h"/>
-      <file role="src" name="pdf4.h"/>
+      <file role="src" name="pdf4.c"/>
       <file role="src" name="php_pdf4.h"/>
     </filelist>
   </release>
