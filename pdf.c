@@ -4111,7 +4111,7 @@ PHP_FUNCTION(pdf_get_buffer)
 		retbuf = PDF_get_buffer(pdf, &size);
 	} pdf_catch;
 
-	RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
+	RETURN_STRINGL(retbuf ? (char *)retbuf : "", size, 1);
 }
 
 /* }}} */
