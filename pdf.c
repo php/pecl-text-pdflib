@@ -231,7 +231,7 @@ zend_module_entry pdf_module_entry = {
 	NULL, 
 	NULL, 
 	PHP_MINFO(pdf), 
-    NO_VERSION_YET,
+    "1.0",
 	STANDARD_MODULE_PROPERTIES 
 };
 /* }}} */

@@ -99,6 +99,8 @@ if test "$PHP_PDFLIB" != "no"; then
       ;;
   esac
 
+  PHP_ADD_LIBRARY(m,, PDF_SHARED_LIBADD)
+
   case $PHP_PDFLIB in
     yes)
       AC_CHECK_LIB(pdf, PDF_show_boxed, [
