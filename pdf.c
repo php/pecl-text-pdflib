@@ -6048,7 +6048,7 @@ PHP_FUNCTION(pdf_setcolor)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_setcolor(pdf, fstype, colorspace, c1, c3, c3,  c4);
+		PDF_setcolor(pdf, fstype, colorspace, c1, c2, c3,  c4);
 	} pdf_catch;
 
 	RETURN_TRUE;
