@@ -25,7 +25,7 @@ and for commercial licensing.</description>
   </maintainers>
   <release>
     <version>2.0.3</version>
-    <date>2004-11-14</date>
+    <date>2004-11-24</date>
     <license>PHP</license>
     <state>beta</state>
     <notes>Bugfixes:

@@ -7278,7 +7278,7 @@ PHP_FUNCTION(pdf_open_memory_image)
 
 #else /* PDFLIB_MAJORVERSION < 5 */
 /* use the old wrapper for PDFlib 4 and earlier */
-#include "pdf4.h"
+#include "pdf4.c"
 
 #endif /* PDFlib >= 5.0.0 */
 
