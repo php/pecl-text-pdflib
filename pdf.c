@@ -849,7 +849,7 @@ PHP_METHOD(PDFlibException, get_errnum)
 PHP_FUNCTION(pdf_activate_item)
 {
 	PDF *pdf;
-	int id;
+	long id;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -882,7 +882,7 @@ PHP_FUNCTION(pdf_activate_item)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_activate_item(pdf, id);
+		PDF_activate_item(pdf, (int)id);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -894,12 +894,12 @@ PHP_FUNCTION(pdf_activate_item)
  * Deprecated, use  PDF_create_bookmark(). */
 PHP_FUNCTION(pdf_add_bookmark)
 {
-	int retval = 0;
+	long retval = 0;
 	PDF *pdf;
 	char *text;
 	int tlen;
-	int parent;
-	int open;
+	long parent;
+	long open;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -934,7 +934,7 @@ PHP_FUNCTION(pdf_add_bookmark)
 
 	pdf_try {
 		/* will never return 0 */
-		retval = PDF_add_bookmark2(pdf, text, tlen, parent, open);
+		retval = PDF_add_bookmark2(pdf, text, tlen, (int)parent, open);
 	} pdf_catch;
 
 	RETURN_LONG(retval);
@@ -1009,7 +1009,7 @@ PHP_FUNCTION(pdf_add_locallink)
 {
 	PDF *pdf;
 	double llx, lly, urx, ury;
-	int page;
+	long page;
 	char *optlist;
 	int olen;
 
@@ -1045,7 +1045,7 @@ PHP_FUNCTION(pdf_add_locallink)
 
 
 	pdf_try {
-		PDF_add_locallink(pdf, llx, lly, urx, ury, page, optlist);
+		PDF_add_locallink(pdf, llx, lly, urx, ury, (int)page, optlist);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -1108,7 +1108,8 @@ PHP_FUNCTION(pdf_add_note)
 	PDF *pdf;
 	double llx, lly, urx, ury;
 	char *contents, *title, *icon;
-	int open, clen, tlen, ilen;
+	long open;
+	int clen, tlen, ilen;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -1144,7 +1145,7 @@ PHP_FUNCTION(pdf_add_note)
 
 	pdf_try {
 		PDF_add_note2(pdf, llx, lly, urx, ury, contents, clen, title,
-						 tlen, icon, open);
+						 tlen, icon, (int)open);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -1158,7 +1159,8 @@ PHP_FUNCTION(pdf_add_pdflink)
 	PDF *pdf;
 	double llx, lly, urx, ury;
 	char *filename, *optlist;
-	int page, flen, olen;
+	long page;
+	int flen, olen;
 	const char * vfilename;
 
 	#if PHP_MAJOR_VERSION >= 5
@@ -1206,7 +1208,7 @@ PHP_FUNCTION(pdf_add_pdflink)
 #endif /* PDFLIB_CHECK_OPEN_BASEDIR */
 
 	pdf_try {
-		PDF_add_pdflink(pdf, llx, lly, urx, ury, vfilename, page, optlist);
+		PDF_add_pdflink(pdf, llx, lly, urx, ury, vfilename, (int)page, optlist);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -1218,7 +1220,7 @@ PHP_FUNCTION(pdf_add_pdflink)
 PHP_FUNCTION(pdf_add_thumbnail)
 {
 	PDF *pdf;
-	int image;
+	long image;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -1252,7 +1254,7 @@ PHP_FUNCTION(pdf_add_thumbnail)
 
 
 	pdf_try {
-		PDF_add_thumbnail(pdf, image);
+		PDF_add_thumbnail(pdf, (int)image);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -1412,7 +1414,7 @@ PHP_FUNCTION(pdf_attach_file)
 	if (object) {
 		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
 		if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-						"ddddssss", &llx, &lly, &urx, &ury,
+						"ddddsssss", &llx, &lly, &urx, &ury,
 						&filename, &flen, &description, &dlen, &author, &alen,
 						&mimetype, &mlen, &icon, &ilen)) {
 			php_std_error_handling();
@@ -1425,7 +1427,7 @@ PHP_FUNCTION(pdf_attach_file)
 		{
 			zval *p;
 			if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-						"rddddssss", &p, &llx, &lly, &urx, &ury,
+						"rddddsssss", &p, &llx, &lly, &urx, &ury,
 						&filename, &flen, &description, &dlen, &author, &alen,
 						&mimetype, &mlen, &icon, &ilen)) {
 	#if PHP_MAJOR_VERSION >= 5
@@ -1472,7 +1474,7 @@ PHP_FUNCTION(pdf_begin_document)
 	char *filename, *optlist;
 	int flen = 0;
 	int olen = 0;
-	int retval = 0;
+	long retval = 0;
 	const char * vfilename;
 
 	#if PHP_MAJOR_VERSION >= 5
@@ -1634,7 +1636,7 @@ PHP_FUNCTION(pdf_begin_item)
 	PDF *pdf;
 	char *tag, *optlist;
 	int tlen, olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -1681,7 +1683,7 @@ PHP_FUNCTION(pdf_begin_item)
 PHP_FUNCTION(pdf_begin_layer)
 {
 	PDF *pdf;
-	int layer;
+	long layer;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -1714,7 +1716,7 @@ PHP_FUNCTION(pdf_begin_layer)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_begin_layer(pdf, layer);
+		PDF_begin_layer(pdf, (int)layer);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -1822,8 +1824,8 @@ PHP_FUNCTION(pdf_begin_pattern)
 {
 	PDF *pdf;
 	double width, height, xstep, ystep;
-	int painttype;
-	int retval = 0;
+	long painttype;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -1856,7 +1858,7 @@ PHP_FUNCTION(pdf_begin_pattern)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_begin_pattern(pdf, width, height, xstep, ystep, painttype);
+		retval = PDF_begin_pattern(pdf, width, height, xstep, ystep, (int)painttype);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -1869,7 +1871,7 @@ PHP_FUNCTION(pdf_begin_template)
 {
 	PDF *pdf;
 	double width, height;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2048,7 +2050,7 @@ PHP_FUNCTION(pdf_close)
 PHP_FUNCTION(pdf_close_image)
 {
 	PDF *pdf;
-	int image;
+	long image;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2081,7 +2083,7 @@ PHP_FUNCTION(pdf_close_image)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_close_image(pdf, image);
+		PDF_close_image(pdf, (int)image);
 	} pdf_catch;
 }
 /* }}} */
@@ -2091,7 +2093,7 @@ PHP_FUNCTION(pdf_close_image)
 PHP_FUNCTION(pdf_close_pdi)
 {
 	PDF *pdf;
-	int doc;
+	long doc;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2124,7 +2126,7 @@ PHP_FUNCTION(pdf_close_pdi)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_close_pdi(pdf, doc);
+		PDF_close_pdi(pdf, (int)doc);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -2136,7 +2138,7 @@ PHP_FUNCTION(pdf_close_pdi)
 PHP_FUNCTION(pdf_close_pdi_page)
 {
 	PDF *pdf;
-	int page;
+	long page;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2169,7 +2171,7 @@ PHP_FUNCTION(pdf_close_pdi_page)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_close_pdi_page(pdf, page);
+		PDF_close_pdi_page(pdf, (int)page);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -2408,7 +2410,7 @@ PHP_FUNCTION(pdf_create_action)
 	PDF *pdf;
 	char *type, *optlist;
 	int tlen, olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2508,7 +2510,7 @@ PHP_FUNCTION(pdf_create_bookmark)
 	PDF *pdf;
 	char *text, *optlist;
 	int tlen, olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2655,7 +2657,7 @@ PHP_FUNCTION(pdf_create_gstate)
 	PDF *pdf;
 	char *optlist;
 	int olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2750,7 +2752,7 @@ PHP_FUNCTION(pdf_create_textflow)
 	PDF *pdf;
 	char *text, *optlist;
 	int tlen, olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2844,7 +2846,7 @@ PHP_FUNCTION(pdf_define_layer)
 	PDF *pdf;
 	char *name, *optlist;
 	int nlen, olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2934,7 +2936,7 @@ PHP_FUNCTION(pdf_delete_pvf)
 	PDF *pdf;
 	char *filename;
 	int flen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -2981,7 +2983,7 @@ PHP_FUNCTION(pdf_delete_pvf)
 PHP_FUNCTION(pdf_delete_textflow)
 {
 	PDF *pdf;
-	int textflow;
+	long textflow;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3014,7 +3016,7 @@ PHP_FUNCTION(pdf_delete_textflow)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_delete_textflow(pdf, textflow);
+		PDF_delete_textflow(pdf, (int)textflow);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -3028,7 +3030,8 @@ PHP_FUNCTION(pdf_encoding_set_char)
 {
 	PDF *pdf;
 	char *encoding, *glyphname;
-	int elen, glen, slot, uv;
+	int elen, glen;
+	long slot, uv;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3061,7 +3064,7 @@ PHP_FUNCTION(pdf_encoding_set_char)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_encoding_set_char(pdf, encoding, slot, glyphname, uv);
+		PDF_encoding_set_char(pdf, encoding, (int)slot, glyphname, (int)uv);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -3210,7 +3213,7 @@ PHP_FUNCTION(pdf_end_glyph)
 PHP_FUNCTION(pdf_end_item)
 {
 	PDF *pdf;
-	int id;
+	long id;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3243,7 +3246,7 @@ PHP_FUNCTION(pdf_end_item)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_end_item(pdf, id);
+		PDF_end_item(pdf, (int)id);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -3570,9 +3573,10 @@ PHP_FUNCTION(pdf_fill)
 PHP_FUNCTION(pdf_fill_imageblock)
 {
 	PDF *pdf;
-	int page, image, blen, olen;
+	long page, image;
+	int blen, olen;
 	char *blockname, *optlist;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3605,7 +3609,7 @@ PHP_FUNCTION(pdf_fill_imageblock)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_fill_imageblock(pdf, page, blockname, image, optlist);
+		retval = PDF_fill_imageblock(pdf, (int)page, blockname, (int)image, optlist);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* change return from -1 to 0 handled by PDFlib */
@@ -3617,9 +3621,10 @@ PHP_FUNCTION(pdf_fill_imageblock)
 PHP_FUNCTION(pdf_fill_pdfblock)
 {
 	PDF *pdf;
-	int page, contents, blen, olen;
+	long page, contents;
+	int blen, olen;
 	char *blockname, *optlist;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3652,7 +3657,7 @@ PHP_FUNCTION(pdf_fill_pdfblock)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_fill_pdfblock(pdf, page, blockname, contents, optlist);
+		retval = PDF_fill_pdfblock(pdf, (int)page, blockname, (int)contents, optlist);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* change return from -1 to 0 handled by PDFlib */
@@ -3708,9 +3713,10 @@ PHP_FUNCTION(pdf_fill_stroke)
 PHP_FUNCTION(pdf_fill_textblock)
 {
 	PDF *pdf;
-	int page, blen, tlen, olen;
+	long page;
+	int blen, tlen, olen;
 	char *blockname, *text, *optlist;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3743,7 +3749,7 @@ PHP_FUNCTION(pdf_fill_textblock)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_fill_textblock(pdf, page, blockname, text, tlen, optlist);
+		retval = PDF_fill_textblock(pdf, (int)page, blockname, text, tlen, optlist);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* change return from -1 to 0 handled by PDFlib */
@@ -3756,8 +3762,9 @@ PHP_FUNCTION(pdf_findfont)
 {
 	PDF *pdf;
 	char *fontname, *encoding;
-	int flen, elen, embed;
-	int retval = 0;
+	int flen, elen;
+	long embed;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -3790,7 +3797,7 @@ PHP_FUNCTION(pdf_findfont)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_findfont(pdf, fontname, encoding, embed);
+		retval = PDF_findfont(pdf, fontname, encoding, (int)embed);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -3802,7 +3809,8 @@ PHP_FUNCTION(pdf_findfont)
 PHP_FUNCTION(pdf_fit_image)
 {
 	PDF *pdf;
-	int image, olen;
+	long image;
+	int olen;
 	double x, y;
 	char *optlist;
 
@@ -3837,7 +3845,7 @@ PHP_FUNCTION(pdf_fit_image)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_fit_image(pdf, image, x, y, optlist);
+		PDF_fit_image(pdf, (int)image, x, y, optlist);
 	} pdf_catch;
 
 	RETURN_TRUE
@@ -3849,7 +3857,8 @@ PHP_FUNCTION(pdf_fit_image)
 PHP_FUNCTION(pdf_fit_pdi_page)
 {
 	PDF *pdf;
-	int page, olen;
+	long page;
+	int olen;
 	char *optlist;
 	double x, y;
 
@@ -3884,7 +3893,7 @@ PHP_FUNCTION(pdf_fit_pdi_page)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_fit_pdi_page(pdf, page, x, y, optlist);
+		PDF_fit_pdi_page(pdf, (int)page, x, y, optlist);
 	} pdf_catch;
 
 	RETURN_TRUE
@@ -3897,7 +3906,8 @@ PHP_FUNCTION(pdf_fit_pdi_page)
 PHP_FUNCTION(pdf_fit_textflow)
 {
 	PDF *pdf;
-	int textflow, olen;
+	long textflow;
+	int olen;
 	double llx, lly, urx, ury;
 	char *optlist;
 	const char *retbuf = NULL;
@@ -3933,7 +3943,7 @@ PHP_FUNCTION(pdf_fit_textflow)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retbuf = PDF_fit_textflow(pdf, textflow, llx, lly, urx, ury, optlist);
+		retbuf = PDF_fit_textflow(pdf, (int)textflow, llx, lly, urx, ury, optlist);
 	} pdf_catch;
 
 	RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
@@ -4133,7 +4143,7 @@ PHP_FUNCTION(pdf_get_errmsg)
 PHP_FUNCTION(pdf_get_errnum)
 {
 	PDF *pdf;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4236,7 +4246,8 @@ PHP_FUNCTION(pdf_get_pdi_parameter)
 {
 	PDF *pdf;
 	char *key;
-	int doc, page, reserved, klen;
+	long doc, page, reserved;
+	int klen;
 	const char *retbuf = NULL;
 	int size;
 
@@ -4271,7 +4282,7 @@ PHP_FUNCTION(pdf_get_pdi_parameter)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retbuf = PDF_get_pdi_parameter(pdf, key, doc, page, reserved, &size);
+		retbuf = PDF_get_pdi_parameter(pdf, key, (int)doc, (int)page, (int)reserved, &size);
 	} pdf_catch;
 
 	RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
@@ -4284,7 +4295,8 @@ PHP_FUNCTION(pdf_get_pdi_value)
 {
 	PDF *pdf;
 	char *key;
-	int klen, doc, page, reserved;
+	int klen;
+	long doc, page, reserved;
 	double retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
@@ -4318,7 +4330,7 @@ PHP_FUNCTION(pdf_get_pdi_value)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_get_pdi_value(pdf, key, doc, page, reserved);
+		retval = PDF_get_pdi_value(pdf, key, (int)doc, (int)page, (int)reserved);
 	} pdf_catch;
 
 	RETURN_DOUBLE(retval);
@@ -4393,7 +4405,8 @@ PHP_FUNCTION(pdf_info_textflow)
 {
 	PDF *pdf;
 	char *keyword;
-	int textflow, klen;
+	long textflow;
+	int klen;
 	double retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
@@ -4427,7 +4440,7 @@ PHP_FUNCTION(pdf_info_textflow)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_info_textflow(pdf, textflow, keyword);
+		retval = PDF_info_textflow(pdf, (int)textflow, keyword);
 	} pdf_catch;
 
 	RETURN_DOUBLE(retval);
@@ -4531,7 +4544,7 @@ PHP_FUNCTION(pdf_load_font)
 	PDF *pdf;
 	char *fontname, *encoding, *optlist;
 	int flen, elen, olen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4580,7 +4593,7 @@ PHP_FUNCTION(pdf_load_iccprofile)
 	char *profilename, *optlist;
 	int plen, olen;
 	char * vprofilename;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4641,7 +4654,7 @@ PHP_FUNCTION(pdf_load_image)
 	char *imagetype, *filename, *optlist;
 	int ilen, flen, olen;
 	const char *vfilename;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4702,7 +4715,7 @@ PHP_FUNCTION(pdf_makespotcolor)
 	PDF *pdf;
 	char *spotname;
 	int slen;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4836,9 +4849,10 @@ PHP_FUNCTION(pdf_open_ccitt)
 {
 	PDF *pdf;
 	char *filename;
-	int flen, width, height, bitreverse, k, blackis1;
+	int flen;
+	long width, height, bitreverse, k, blackis1;
 	char *vfilename;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4885,8 +4899,8 @@ PHP_FUNCTION(pdf_open_ccitt)
 #endif /* PDFLIB_CHECK_OPEN_BASEDIR */
 
 	pdf_try {
-		retval = PDF_open_CCITT(pdf, vfilename, width, height,
-				bitreverse, k, blackis1);
+		retval = PDF_open_CCITT(pdf, vfilename, (int)width, (int)height,
+				(int)bitreverse, (int)k, (int)blackis1);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -4901,7 +4915,7 @@ PHP_FUNCTION(pdf_open_file)
 	char *filename;
 	int flen;
 	const char *vfilename;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4964,8 +4978,9 @@ PHP_FUNCTION(pdf_open_image)
 {
 	PDF *pdf;
 	char *imagetype, *source, *data, *params;
-	int ilen, slen, plen, length, width, height, components, bpc;
-	int retval = 0;
+	int ilen, dlen, slen, plen;
+	long length, width, height, components, bpc;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -4974,8 +4989,8 @@ PHP_FUNCTION(pdf_open_image)
 		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
 		if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 						"sssllllls", &imagetype, &ilen, &source, &slen,
-						&data, &length, &width, &height, &components, &bpc,
-						&params, &plen)) {
+						&data, &dlen, &length, &width, &height, &components,
+						&bpc, &params, &plen)) {
 			php_std_error_handling();
 			return;
 		}
@@ -4987,8 +5002,8 @@ PHP_FUNCTION(pdf_open_image)
 			zval *p;
 			if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 						"rsssllllls", &p, &imagetype, &ilen, &source, &slen,
-						&data, &length, &width, &height, &components, &bpc,
-						&params, &plen)) {
+						&data, &dlen, &length, &width, &height, &components,
+						&bpc, &params, &plen)) {
 	#if PHP_MAJOR_VERSION >= 5
 				php_std_error_handling();
 	#endif /* PHP_MAJOR_VERSION >= 5 */
@@ -5003,7 +5018,7 @@ PHP_FUNCTION(pdf_open_image)
 
 	pdf_try {
 		retval = PDF_open_image(pdf, imagetype, source, data, length,
-			width, height, components, bpc, params);
+			(int)width, (int)height, (int)components, (int)bpc, params);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -5016,9 +5031,10 @@ PHP_FUNCTION(pdf_open_image_file)
 {
 	PDF *pdf;
 	char *imagetype, *filename, *stringparam;
-	int ilen, flen, slen, intparam;
+	int ilen, flen, slen;
+	long intparam;
 	const char *vfilename;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -5066,7 +5082,7 @@ PHP_FUNCTION(pdf_open_image_file)
 
 	pdf_try {
 		retval = PDF_open_image_file(pdf, imagetype, vfilename, stringparam,
-					intparam);
+					(int)intparam);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -5080,9 +5096,10 @@ PHP_FUNCTION(pdf_open_pdi)
 {
 	PDF *pdf;
 	char *filename, *optlist;
-	int flen, olen, len;
+	int flen, olen;
+	long len;
 	char *vfilename;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -5127,7 +5144,7 @@ PHP_FUNCTION(pdf_open_pdi)
 #endif /* PDFLIB_CHECK_OPEN_BASEDIR */
 
 	pdf_try {
-		retval = PDF_open_pdi(pdf, vfilename, optlist, len);
+		retval = PDF_open_pdi(pdf, vfilename, optlist, (int)len);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -5139,9 +5156,10 @@ PHP_FUNCTION(pdf_open_pdi)
 PHP_FUNCTION(pdf_open_pdi_page)
 {
 	PDF *pdf;
-	int doc, pagenumber, olen;
+	long doc, pagenumber;
+	int olen;
 	char *optlist;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -5174,7 +5192,7 @@ PHP_FUNCTION(pdf_open_pdi_page)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_open_pdi_page(pdf, doc, pagenumber, optlist);
+		retval = PDF_open_pdi_page(pdf, (int)doc, (int)pagenumber, optlist);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -5186,7 +5204,7 @@ PHP_FUNCTION(pdf_open_pdi_page)
 PHP_FUNCTION(pdf_place_image)
 {
 	PDF *pdf;
-	int image;
+	long image;
 	double x, y, scale;
 
 	#if PHP_MAJOR_VERSION >= 5
@@ -5220,7 +5238,7 @@ PHP_FUNCTION(pdf_place_image)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_place_image(pdf, image, x, y, scale);
+		PDF_place_image(pdf, (int)image, x, y, scale);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -5232,7 +5250,7 @@ PHP_FUNCTION(pdf_place_image)
 PHP_FUNCTION(pdf_place_pdi_page)
 {
 	PDF *pdf;
-	int page;
+	long page;
 	double x, y, sx, sy;
 
 	#if PHP_MAJOR_VERSION >= 5
@@ -5266,7 +5284,7 @@ PHP_FUNCTION(pdf_place_pdi_page)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_place_pdi_page(pdf, page, x, y, sx, sy);
+		PDF_place_pdi_page(pdf, (int)page, x, y, sx, sy);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -5278,9 +5296,10 @@ PHP_FUNCTION(pdf_place_pdi_page)
 PHP_FUNCTION(pdf_process_pdi)
 {
 	PDF *pdf;
-	int doc, page, olen;
+	long doc, page;
+	int olen;
 	char *optlist;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -5313,7 +5332,7 @@ PHP_FUNCTION(pdf_process_pdi)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_process_pdi(pdf, doc, page, optlist);
+		retval = PDF_process_pdi(pdf, (int)doc, (int)page, optlist);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -5733,7 +5752,7 @@ PHP_FUNCTION(pdf_set_border_style)
 PHP_FUNCTION(pdf_set_gstate)
 {
 	PDF *pdf;
-	int gstate;
+	long gstate;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -5766,7 +5785,7 @@ PHP_FUNCTION(pdf_set_gstate)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_set_gstate(pdf, gstate);
+		PDF_set_gstate(pdf, (int)gstate);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -6195,7 +6214,7 @@ PHP_FUNCTION(pdf_setflat)
  * Set the current font in the specified size. */
 PHP_FUNCTION(pdf_setfont)
 {
-	int font;
+	long font;
 	double fontsize;
 	PDF *pdf;
 
@@ -6230,7 +6249,7 @@ PHP_FUNCTION(pdf_setfont)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_setfont(pdf, font, fontsize);
+		PDF_setfont(pdf, (int)font, fontsize);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -6242,7 +6261,7 @@ PHP_FUNCTION(pdf_setfont)
 PHP_FUNCTION(pdf_setlinecap)
 {
 	PDF *pdf;
-	int linecap;
+	long linecap;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -6275,7 +6294,7 @@ PHP_FUNCTION(pdf_setlinecap)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_setlinecap(pdf, linecap);
+		PDF_setlinecap(pdf, (int)linecap);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -6287,7 +6306,7 @@ PHP_FUNCTION(pdf_setlinecap)
 PHP_FUNCTION(pdf_setlinejoin)
 {
 	PDF *pdf;
-	int linejoin;
+	long linejoin;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -6320,7 +6339,7 @@ PHP_FUNCTION(pdf_setlinejoin)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_setlinejoin(pdf, linejoin);
+		PDF_setlinejoin(pdf, (int)linejoin);
 	} pdf_catch;
 	
 	RETURN_TRUE;
@@ -6518,7 +6537,7 @@ PHP_FUNCTION(pdf_shading)
 	char *type, *optlist;
 	int tlen, olen;
 	double x0, y0, x1, y1, c1, c2, c3, c4;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -6567,9 +6586,10 @@ PHP_FUNCTION(pdf_shading)
 PHP_FUNCTION(pdf_shading_pattern)
 {
 	PDF *pdf;
-	int shading, olen;
+	long shading;
+	int olen;
 	char *optlist;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -6602,7 +6622,7 @@ PHP_FUNCTION(pdf_shading_pattern)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = PDF_shading_pattern(pdf, shading, optlist);
+		retval = PDF_shading_pattern(pdf, (int)shading, optlist);
 	} pdf_catch;
 
 	RETURN_LONG(retval); /* offset handled in PDFlib Kernel */
@@ -6615,7 +6635,7 @@ PHP_FUNCTION(pdf_shading_pattern)
 PHP_FUNCTION(pdf_shfill)
 {
 	PDF *pdf;
-	int shading;
+	long shading;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -6648,7 +6668,7 @@ PHP_FUNCTION(pdf_shfill)
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		PDF_shfill(pdf, shading);
+		PDF_shfill(pdf, (int)shading);
 	} pdf_catch;
 
 	RETURN_TRUE;
@@ -6709,7 +6729,7 @@ PHP_FUNCTION(pdf_show_boxed)
 	char *text, *hmode, *feature;
 	int tlen, hlen, flen;
 	double left, top, width, height;
-	int retval = 0;
+	long retval = 0;
 
 	#if PHP_MAJOR_VERSION >= 5
 	zval *object = getThis();
@@ -6850,7 +6870,8 @@ PHP_FUNCTION(pdf_stringwidth)
 {
 	PDF *pdf;
 	char *text;
-	int tlen, font;
+	int tlen;
+	long font;
 	double  fontsize;
 	double retval = 0;
 
@@ -6886,7 +6907,7 @@ PHP_FUNCTION(pdf_stringwidth)
 
 
 	pdf_try {
-		retval = PDF_stringwidth2(pdf, text, tlen, font, fontsize);
+		retval = PDF_stringwidth2(pdf, text, tlen, (int)font, fontsize);
 	} pdf_catch;
 
 	RETURN_DOUBLE(retval);
@@ -7039,7 +7060,7 @@ PHP_FUNCTION(pdf_open_memory_image)
 {
 	zval **p, **image;
 	int i, j, color;
-	int pdf_image;
+	long pdf_image;
 	gdImagePtr im;
 	unsigned char *buffer, *ptr;
 	PDF *pdf;
