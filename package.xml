@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../pear/package.dtd">
 <package>
- <name>pdf</name>
- <summary>Creating PDF on the fly with PDFlib</summary>
+ <name>pdflib</name>
+ <summary>Creating PDF on the fly with the PDFlib library</summary>
  <maintainers>
   <maintainer>
    <user>steinm</user>
@@ -18,8 +18,12 @@
   </maintainer>
  </maintainers>
  <description>
-The PDF functions in this extension can create PDF files 
-using the PDFlib library created by Thomas Merz.
+This extension wraps the PDFlib programming library
+for processing PDF on the fly, created by Thomas Merz. 
+
+PDFlib is available under the PDFlib Lite License
+(http://www.pdflib.com/pdffiles/PDFlib-Lite-License.pdf)
+and for commercial licensing.
  </description>
  <license>PHP</license>
  <release>
@@ -27,7 +31,7 @@ using the PDFlib library created by Thomas Merz.
   <version>1.0</version>
   <date>2004-05-26</date>
   <notes>
-package.xml added to support intallation using pear installer
+transfered pdflib extension to pecl.
   </notes>
   <configureoptions>
     <configureoption name="with-pdflib" default="autodetect" prompt="path to pdflib installation?"/>
