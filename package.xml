@@ -11,16 +11,16 @@ PDFlib is available under the PDFlib Lite License
 and for commercial licensing.</description>
   <maintainers>
     <maintainer>
-      <user>steinm</user>
-      <name>Uwe Steinmann</name>
-      <email>steinm@php.net</email>
-      <role>lead</role>
-    </maintainer>
-    <maintainer>
       <user>rjs</user>
       <name>Rainer Schaaf</name>
       <email>rjs@php.net</email>
       <role>lead</role>
+    </maintainer>
+    <maintainer>
+      <user>steinm</user>
+      <name>Uwe Steinmann</name>
+      <email>steinm@php.net</email>
+      <role>developer</role>
     </maintainer>
   </maintainers>
   <release>
