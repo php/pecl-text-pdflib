@@ -24,16 +24,17 @@ and for commercial licensing.</description>
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.1</version>
-    <date>2004-07-20</date>
+    <version>2.0.2</version>
+    <date>2004-07-28</date>
     <license>PHP</license>
     <state>stable</state>
-    <notes> some Bugfixes
-- Finetunes handling of long parameters (cast to int where required).
-- The wrapper for PDF_load_image() didn't check the length of the data
-  string, and the subsequent parameters were wrong.
-- One parameter was missing for PDF_attach_file().
-    </notes>
+    <notes>Bugfixes:
+- did not work with PHP versions before PHP-4.3.x
+  (php_error_docref is used but not defined).
+  build somtimes works fine, but the problem may
+  appear during runtime.
+- pear install will work on Mac OS X now
+</notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
     </deps>

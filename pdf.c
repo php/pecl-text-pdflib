@@ -108,6 +108,8 @@
 
 #include "pdflib.h"
 
+#define   PDFLIB_PECL_VERSIONSTRING "2.0.2"
+
 #if PDFLIB_MAJORVERSION >= 5
 	/* This wrapper code will work only with PDFlib V5 or greater,
 	 * because the special handling for returning 0 instead of -1
@@ -503,7 +505,7 @@ zend_module_entry pdf_module_entry = {
 	NULL,
 	NULL,
 	PHP_MINFO(pdf),
-    "2.0beta1",
+	PDFLIB_PECL_VERSIONSTRING,
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
@@ -579,6 +581,7 @@ static zend_function_entry PDFlibException_functions[] = {
 
 #else  /* ! PHP_MAJOR_VERSION >= 5  */
 
+#if defined(PHP_MAJOR_VERSION) /* PHP 4.3.0 or newer */
 #define P_FROM_OBJECT(pdf, object) \
     { \
         pdflib_object *obj = (pdflib_object*) \
@@ -589,6 +592,18 @@ static zend_function_entry PDFlibException_functions[] = {
             RETURN_NULL(); \
         } \
     }
+#else /* !PHP 4.3.0 or newer */
+#define P_FROM_OBJECT(pdf, object) \
+    { \
+        pdflib_object *obj = (pdflib_object*) \
+			zend_object_store_get_object(object TSRMLS_CC); \
+        pdf = obj->p; \
+        if (!pdf) { \
+            php_error_docref(NULL TSRMLS_CC, E_WARNING, "No PDFlib object available"); \
+            RETURN_NULL(); \
+        } \
+    }
+#endif /* PHP 4.3.0 or newer */
 
 #endif /* PHP_MAJOR_VERSION >= 5  */
 
@@ -615,7 +630,11 @@ static void _pdf_exception(int errnum, const char *apiname, const char *errmsg T
 		zend_throw_exception(pdflib_exception_class, (char *)errmsg, (long)errnum TSRMLS_CC);
 	}
 #else /* ! >= 5 */
+#if defined(PHP_MAJOR_VERSION) /* PHP 4.3.0 or newer */
 	php_error_docref(NULL TSRMLS_CC, E_ERROR, msgbuf);
+#else
+	php_error(E_ERROR, msgbuf);
+#endif
 #endif /* >= 5 */
 }
 /* }}} */
@@ -739,7 +758,7 @@ PHP_MINFO_FUNCTION(pdf)
 	php_info_print_table_start();
 	php_info_print_table_row(2, "PDF Support", "enabled" );
 	php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_VERSIONSTRING );
-	php_info_print_table_row(2, "PECL Version", "2.0.1" );
+	php_info_print_table_row(2, "PECL Version", PDFLIB_PECL_VERSIONSTRING);
 	php_info_print_table_row(2, "Revision", "$Revision$" );
 	php_info_print_table_end();
 
@@ -752,7 +771,11 @@ PHP_MINIT_FUNCTION(pdf)
 {
 	if ((PDF_get_majorversion() != PDFLIB_MAJORVERSION) ||
 			(PDF_get_minorversion() != PDFLIB_MINORVERSION)) {
+#if defined(PHP_MAJOR_VERSION) /* PHP 4.3.0 or newer */
 		php_error_docref(NULL TSRMLS_CC, E_ERROR,"PDFlib error: Version mismatch in wrapper code");
+#else
+		php_error(E_ERROR,"PDFlib error: Version mismatch in wrapper code");
+#endif
 	}
 	le_pdf = zend_register_list_destructors_ex(_free_pdf_doc, NULL, "pdf object", module_number);
 
@@ -6517,7 +6540,7 @@ PHP_FUNCTION(pdf_setpolydash)
 		PDF_setpolydash(pdf, xarray, len);
 	} pdf_catch;
 
-	efree(darray);
+	efree(xarray);
 	RETURN_TRUE;
 }
 /* }}} */
@@ -7067,7 +7090,11 @@ PHP_FUNCTION(pdf_open_memory_image)
 	ZEND_GET_RESOURCE_TYPE_ID(le_gd,"gd");
 	if(!le_gd)
 	{
+#if defined(PHP_MAJOR_VERSION) /* PHP 4.3.0 or newer */
 		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Unable to find handle for GD image stream. Please check the GD extension is loaded.");
+#else
+		php_error(E_ERROR, "Unable to find handle for GD image stream. Please check the GD extension is loaded.");
+#endif
 	}
 	ZEND_FETCH_RESOURCE(im, gdImagePtr, image, -1, "Image", le_gd);
 

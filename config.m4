@@ -7,16 +7,16 @@ PHP_ARG_WITH(pdflib,for PDFlib support,
 
 if test "$PHP_PDFLIB" != "no"; then
 
-  PHP_NEW_EXTENSION(pdf, pdf.c, $ext_shared)
-  PHP_SUBST(PDF_SHARED_LIBADD)
-
   dnl #
   dnl # The main PDFlib configure
   dnl #
 
+  PHP_NEW_EXTENSION(pdf, pdf.c, $ext_shared)
+  PHP_SUBST(PDF_SHARED_LIBADD)
+
   dnl # MacOSX requires this
-  case $host_alias in
-    *darwin*)
+  case `(uname -s) 2>/dev/null || echo unknown` in
+    *arwin*)
       PHP_ADD_FRAMEWORK(Carbon)
       ;;
   esac
@@ -31,6 +31,8 @@ if test "$PHP_PDFLIB" != "no"; then
 PDFlib extension requires at least pdflib 4.0.x.
 See config.log for more information.
 ])
+      ],[
+          -lm $PHP_FRAMEWORKS
       ])
     ;;
     *)
@@ -47,7 +49,7 @@ PDFlib extension requires at least pdflib 4.0.x.
 See config.log for more information.
 ])
         ],[
-          -L$PHP_PDFLIB/lib $PDF_SHARED_LIBADD -lm
+          -L$PHP_PDFLIB/lib $PDF_SHARED_LIBADD -lm $PHP_FRAMEWORKS
         ])
       else
         AC_MSG_ERROR([pdflib.h not found! Check the path passed to --with-pdflib=<PATH>. PATH should be the install prefix directory.])
