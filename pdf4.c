@@ -30,7 +30,6 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-*/
 
 #include "php.h"
 #include "php_ini.h"
@@ -58,6 +57,7 @@ static int le_gd;
 # include <io.h>
 # include <fcntl.h>
 #endif
+end alread included in pdf.c */
 /* }}} */
 
 #if HAVE_PDFLIB

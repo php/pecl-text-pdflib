@@ -24,15 +24,13 @@ and for commercial licensing.</description>
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.3</version>
-    <date>2004-11-24</date>
+    <version>2.0.4</version>
+    <date>2004-11-30</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
-- PDF_get_parameter crashed when called with only 2 parameters.
-Enhancements:
-- added pdf_utf8_to_utf16() and pdf_utf16_to_utf8() API's.
-- included support for PDFlib4 again </notes>
+- fixed buildproblems when used link PDFLib statically into PHP.
+    </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
     </deps>

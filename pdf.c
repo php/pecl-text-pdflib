@@ -70,22 +70,15 @@
 
 /* {{{ includes
  */
+
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#if HAVE_PDFLIB
-
-#include "pdflib.h"
-
-#if PDFLIB_MAJORVERSION >= 5
-	/* This wrapper code will work only with PDFlib V5 or greater,
-	 * because the special handling for returning 0 instead of -1
-	 * for PHP is now done in the PDFlib kernel */
-
 #include "php.h"
 #include "php_ini.h"
 #include "php_globals.h"
+#include "php_streams.h"
 #include "zend_list.h"
 #include "ext/standard/head.h"
 #include "ext/standard/info.h"
@@ -112,6 +105,14 @@
 # include <io.h>
 # include <fcntl.h>
 #endif /* PHP_WIN32 */
+
+#if HAVE_PDFLIB
+#include "pdflib.h"
+
+#if PDFLIB_MAJORVERSION >= 5
+	/* This wrapper code will work only with PDFlib V5 or greater,
+	 * because the special handling for returning 0 instead of -1
+	 * for PHP is now done in the PDFlib kernel */
 
 /* }}} */
 
