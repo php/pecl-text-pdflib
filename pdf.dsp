@@ -105,6 +105,14 @@ SOURCE=.\pdf.c
 
 SOURCE=.\php_pdf.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\pdf4.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\php_pdf4.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 

@@ -25,19 +25,19 @@ and for commercial licensing.</description>
   </maintainers>
   <release>
     <version>2.0.3</version>
-    <date>2004-??-??</date>
+    <date>2004-11-14</date>
     <license>PHP</license>
-    <state>stable</state>
+    <state>beta</state>
     <notes>Bugfixes:
 - PDF_get_parameter crashed when called with only 2 parameters.
 Enhancements:
 - added pdf_utf8_to_utf16() and pdf_utf16_to_utf8() API's.
-</notes>
+- included support for PDFlib4 again </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
     </deps>
     <configureoptions>
-      <configureoption name="with-pdflib" default="autodetect" prompt="path to pdflib installation?"/>
+      <configureoption name="with-pdflib" prompt="path to pdflib installation?"/>
     </configureoptions>
     <filelist>
       <file role="doc" name="CREDITS"/>
@@ -46,6 +46,8 @@ Enhancements:
       <file role="src" name="pdf.dsp"/>
       <file role="src" name="pdf.c"/>
       <file role="src" name="php_pdf.h"/>
+      <file role="src" name="pdf4.h"/>
+      <file role="src" name="php_pdf4.h"/>
     </filelist>
   </release>
 </package>

@@ -195,6 +195,11 @@ PHP_FUNCTION(pdf_stroke);
 PHP_FUNCTION(pdf_suspend_page);
 #endif /* PDFlib >= 6.0.0 */
 PHP_FUNCTION(pdf_translate);
+#if PDFLIB_MAJORVERSION >= 6
+PHP_FUNCTION(pdf_utf16_to_utf8);
+PHP_FUNCTION(pdf_utf8_to_utf16);
+#endif /* PDFlib >= 6.0.0 */
+
 
 #if HAVE_LIBGD13
 /* not supported by PDFlib GmbH */
