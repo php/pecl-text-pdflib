@@ -201,10 +201,12 @@ PHP_FUNCTION(pdf_utf8_to_utf16);
 #endif /* PDFlib >= 6.0.0 */
 
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 /* not supported by PDFlib GmbH */
 PHP_FUNCTION(pdf_open_memory_image);
 #endif
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 #ifdef ZTS
 #define PDFG(v) TSRMG(pdf_globals_id, php_pdf_globals *, v)

@@ -63,8 +63,12 @@
 
 /* Bootstrap of PDFlib Feature setup */
 #define PDF_FEATURE_INTERNAL
+#define   PDFLIB_PECL_VERSIONSTRING "2.0.5"
 
-#define   PDFLIB_PECL_VERSIONSTRING "2.0.3"
+/* set this define if you want to include GD support
+ * this adds the (unofficial) function pdf_open_memory_image()
+#define PDFLIB_WITH_GD_SUPPORT
+*/
 
 /* }}} */
 
@@ -87,6 +91,7 @@
 # include "Zend/zend_exceptions.h"
 #endif /* PHP_MAJOR_VERSION >= 5 */
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 # include "ext/gd/php_gd.h"
 # if HAVE_GD_BUNDLED
@@ -96,6 +101,7 @@
 # endif /* HAVE_GD_BUNDLED */
  static int le_gd;
 #endif /* HAVE_LIBGD13 */
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -299,10 +305,12 @@ function_entry pdf_functions[] = {
 
 	/* End of the official PDFLIB API */
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 	/* not supported by PDFlib GmbH */
 	PHP_FE(pdf_open_memory_image, NULL)
 #endif /* HAVE_LIBGD13 */
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 	{NULL, NULL, NULL}
 };
@@ -491,10 +499,12 @@ function_entry pdflib_funcs[] = {
 
 	/* End of the official PDFLIB API */
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 	/* not supported by PDFlib GmbH */
 	/* PHP_ME_MAPPING(open_memory_image, pdf_open_memory_image, NULL) */
 #endif /* HAVE_LIBGD13 */
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 	{NULL, NULL, NULL}
 };
@@ -7197,6 +7207,7 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
 
 
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 /* {{{ proto int pdf_open_memory_image(resource p, int image)
    Takes an GD image and returns an image for placement in a PDF document */
@@ -7276,6 +7287,7 @@ PHP_FUNCTION(pdf_open_memory_image)
 }
 /* }}} */
 #endif /* HAVE_LIBGD13 */
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 #else /* PDFLIB_MAJORVERSION < 5 */
 /* use the old wrapper for PDFlib 4 and earlier */

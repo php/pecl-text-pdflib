@@ -140,9 +140,11 @@ PHP_FUNCTION(pdf_open_gif);		/* deprecated */
 
 /* some more stuff for compatibility */
 PHP_FUNCTION(pdf_add_annotation);
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 PHP_FUNCTION(pdf_open_memory_image);
 #endif
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 #if (PDFLIB_MAJORVERSION >= 4)
 /* support for new functions in PDFlib V4.0 */

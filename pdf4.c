@@ -40,6 +40,7 @@
 #include "ext/standard/file.h"
 #include "php_streams.h"
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 #include "ext/gd/php_gd.h"
 #if HAVE_GD_BUNDLED
@@ -49,6 +50,7 @@
 #endif
 static int le_gd;
 #endif
+#endif / * PDFLIB_WITH_GD_SUPPORT * /
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -1949,6 +1951,7 @@ PHP_FUNCTION(pdf_open_image_file)
 }
 /* }}} */
 
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 /* {{{ proto int pdf_open_memory_image(int pdf, int image)
    Takes an GD image and returns an image for placement in a PDF document */
@@ -2015,6 +2018,7 @@ PHP_FUNCTION(pdf_open_memory_image)
 }
 /* }}} */
 #endif /* HAVE_LIBGD13 */
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 
 /* {{{ proto void pdf_close_image(int pdf, int pdfimage)
    Closes the PDF image */

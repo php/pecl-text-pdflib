@@ -3,12 +3,16 @@
 <package version="1.0">
   <name>pdflib</name>
   <summary>Creating PDF on the fly with the PDFlib library</summary>
-  <description>This extension wraps the PDFlib programming library
+  <description>
+This extension wraps the PDFlib programming library
 for processing PDF on the fly, created by Thomas Merz. 
 
-PDFlib is available under the PDFlib Lite License
-(http://www.pdflib.com/pdffiles/PDFlib-Lite-license.pdf)
-and for commercial licensing.</description>
+PDFlib is available for commercial licensing and under the PDFlib Lite License
+(see http://www.pdflib.com/pdffiles/PDFlib-Lite-license.pdf).
+
+More info on how to use PDFlib with PHP can be found at
+http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
+</description>
   <maintainers>
     <maintainer>
       <user>rjs</user>
@@ -24,12 +28,12 @@ and for commercial licensing.</description>
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.4</version>
-    <date>2004-11-30</date>
+    <version>2.0.5</version>
+    <date>2005-03-08</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
-- fixed buildproblems when used link PDFLib statically into PHP.
+- fixed Bug http://pecl.php.net/bugs/bug.php?id=3554
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
