@@ -24,16 +24,12 @@ and for commercial licensing.</description>
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.2</version>
-    <date>2004-07-28</date>
+    <version>2.0.3</version>
+    <date>2004-??-??</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
-- did not work with PHP versions before PHP-4.3.x
-  (php_error_docref is used but not defined).
-  build somtimes works fine, but the problem may
-  appear during runtime.
-- pear install will work on Mac OS X now
+- PDF_get_parameter crashed when called with 2 parameters.
 </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>

@@ -4103,7 +4103,7 @@ PHP_FUNCTION(pdf_get_buffer)
 		retbuf = PDF_get_buffer(pdf, &size);
 	} pdf_catch;
 
-	RETURN_STRINGL((char *)retbuf, size, 1);
+	RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
 }
 
 /* }}} */
@@ -4204,12 +4204,11 @@ PHP_FUNCTION(pdf_get_errnum)
  * Get the contents of some PDFlib parameter with string type. */
 PHP_FUNCTION(pdf_get_parameter)
 {
-	zval **argv[3];
-	int argc = ZEND_NUM_ARGS();
 	PDF *pdf;
 	char *key;
 	double modifier;
-	char *retval = 0;
+	char *retbuf = NULL;
+
 
 	#if PHP_MAJOR_VERSION >= 5
 	int klen;
@@ -4224,36 +4223,53 @@ PHP_FUNCTION(pdf_get_parameter)
 		}
 		P_FROM_OBJECT(pdf, object);
 	} else {
+		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
 	#endif /* PHP_MAJOR_VERSION >= 5 */
-		if(((argc < 2) || (argc > 3)) || zend_get_parameters_array_ex(argc, argv) == FAILURE) {
-			WRONG_PARAM_COUNT;
+		{
+			zval *p;
+			zval **argv[3];
+			int argc = ZEND_NUM_ARGS();
+
+			if((argc != 3) ||
+						zend_get_parameters_array_ex(argc, argv) == FAILURE) {
+			        WRONG_PARAM_COUNT;
+	#if PHP_MAJOR_VERSION >= 5
+					php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+					return;
+			}
+
+			convert_to_string_ex(argv[1]);
+			key = Z_STRVAL_PP(argv[1]);
+			if(0 == (strcmp(key, "version"))) {
+				retbuf = (char *)PDF_get_parameter(0, key, 0);
+	#if PHP_MAJOR_VERSION >= 5
+				php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+				RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
+			} else if(0 == (strcmp(key, "pdi"))) {
+				retbuf = (char *)PDF_get_parameter(0, key, 0);
+	#if PHP_MAJOR_VERSION >= 5
+				php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+				RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
+			} else {
+				ZEND_FETCH_RESOURCE(pdf, PDF *, argv[0], -1,
+						"pdf object", le_pdf);
+			}
+			convert_to_double_ex(argv[2]);
+			modifier = Z_DVAL_PP(argv[2]);
 		}
-
-		convert_to_string_ex(argv[1]);
-
-		if(0 == (strcmp(Z_STRVAL_PP(argv[1]), "version"))) {
-			retval = (char *) PDF_get_parameter(0, Z_STRVAL_PP(argv[1]), 0.0);
-			RETURN_STRING(retval, 1);
-		} else if(0 == (strcmp(Z_STRVAL_PP(argv[1]), "pdi"))) {
-			retval = (char *) PDF_get_parameter(0, Z_STRVAL_PP(argv[1]), 0.0);
-			RETURN_STRING(retval, 1);
-		}
-
-		ZEND_FETCH_RESOURCE(pdf, PDF *, argv[0], -1, "pdf object", le_pdf);
-
-		key = Z_STRVAL_PP(argv[1]);
-		convert_to_double_ex(argv[2]);
-		modifier = Z_DVAL_PP(argv[2]);
-
 	#if PHP_MAJOR_VERSION >= 5
 	}
+	php_std_error_handling();
 	#endif /* PHP_MAJOR_VERSION >= 5 */
 
 	pdf_try {
-		retval = (char *)PDF_get_parameter(pdf, key, modifier);
+		retbuf = (char *)PDF_get_parameter(pdf, key, modifier);
 	} pdf_catch;
 
-	RETURN_STRING(retval, 1);
+	RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
 }
 /* }}} */
 
@@ -7150,9 +7166,6 @@ PHP_FUNCTION(pdf_open_memory_image)
 /* }}} */
 #endif /* HAVE_LIBGD13 */
 
-#elif PDFLIB_MAJORVERSION == 4
- /* use the old PDFlib wrapper */
-# include "pdf4.c"
 #else /* PDFLIB_MAJORVERSION < 5 */
 # error "PDFlib version does not match PHP-wrapper code"
 #endif /* PDFlib >= 5.0.0 */
