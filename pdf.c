@@ -2,7 +2,7 @@
    +----------------------------------------------------------------------+
    | PHP Version 4                                                        |
    +----------------------------------------------------------------------+
-   | Copyright (c) 1997-2002 The PHP Group                                |
+   | Copyright (c) 1997-2003 The PHP Group                                |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -40,7 +40,11 @@
 
 #if HAVE_LIBGD13
 #include "ext/gd/php_gd.h"
+#if HAVE_GD_BUNDLED
+#include "ext/gd/libgd/gd.h"
+#else
 #include "gd.h"
+#endif
 static int le_gd;
 #endif
 
@@ -272,7 +276,6 @@ static void custom_errorhandler(PDF *p, int type, const char *shortmsg)
 		case PDF_SystemError:
 		case PDF_UnknownError:
 		default:
-			if (p !=NULL) PDF_delete(p); /* clean up PDFlib */
 			php_error(E_ERROR,"PDFlib error: %s", shortmsg);
 		}
 }
@@ -445,30 +448,30 @@ PHP_FUNCTION(pdf_set_info_keywords)
 PHP_FUNCTION(pdf_open)
 {
 	zval **file;
-	void *what;
-	int type;
 	FILE *fp = NULL;
 	PDF *pdf;
 	int argc = ZEND_NUM_ARGS();
 
-	if(argc > 1) 
+	if(argc > 1)  {
 		WRONG_PARAM_COUNT;
-	if (argc != 1 || zend_get_parameters_ex(1, &file) == FAILURE) {
+	} else if (argc != 1 || zend_get_parameters_ex(1, &file) == FAILURE) {
 		fp = NULL;
 	} else {
-		what = zend_fetch_resource(file TSRMLS_CC, -1, "File-Handle", &type, 1, php_file_le_stream());
-		ZEND_VERIFY_RESOURCE(what);
+		php_stream *stream;
+
+		php_stream_from_zval(stream, file);
 		
-		if (php_stream_cast((php_stream*)what, PHP_STREAM_AS_STDIO, (void*)&fp, 1) == FAILURE)	{
+		if (php_stream_cast(stream, PHP_STREAM_AS_STDIO, (void*)&fp, 1) == FAILURE)	{
 			RETURN_FALSE;
 		}
-		/* XXX should do a zend_list_addref for <fp> here! */
 	}
 
 	pdf = PDF_new2(custom_errorhandler, pdf_emalloc, pdf_realloc, pdf_efree, NULL);
 
 	if(fp) {
-		if (PDF_open_fp(pdf, fp) < 0) RETURN_FALSE;
+		if (PDF_open_fp(pdf, fp) < 0) {
+			RETURN_FALSE;
+		}
 	} else {
 		PDF_open_mem(pdf, pdf_flushwrite);
 	}
@@ -1834,7 +1837,11 @@ static void _php_pdf_open_image(INTERNAL_FUNCTION_PARAMETERS, char *type)
 #else
 	image = Z_STRVAL_PP(arg2);
 #endif  
-        
+
+	if (php_check_open_basedir(image TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(image, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+		RETURN_FALSE;
+	}
+
 	pdf_image = PDF_open_image_file(pdf, type, image, "", 0);
 
 	RETURN_LONG(pdf_image+PDFLIB_IMAGE_OFFSET);
@@ -1908,6 +1915,10 @@ PHP_FUNCTION(pdf_open_image_file)
 	image = Z_STRVAL_PP(arg3);
 #endif  
 
+	if (php_check_open_basedir(image TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(image, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+		RETURN_FALSE;
+	}
+
 	if (argc == 3) {
 		pdf_image = PDF_open_image_file(pdf, Z_STRVAL_PP(arg2), image, "", 0);
 	} else {
@@ -1960,17 +1971,30 @@ PHP_FUNCTION(pdf_open_memory_image)
 	ZEND_FETCH_RESOURCE(im, gdImagePtr, arg2, -1, "Image", le_gd);
 
 	count = 3 * im->sx * im->sy;
-	if(NULL == (buffer = (unsigned char *) emalloc(count))) {
-		RETURN_FALSE;
-	}
+	buffer = (unsigned char *) emalloc(count);
 
 	ptr = buffer;
 	for(i=0; i<im->sy; i++) {
 		for(j=0; j<im->sx; j++) {
-			color = im->pixels[i][j];
-			*ptr++ = im->red[color];
-			*ptr++ = im->green[color];
-			*ptr++ = im->blue[color];
+#if HAVE_LIBGD20
+			if(gdImageTrueColor(im)) {
+				if (im->tpixels && gdImageBoundsSafe(im, j, i)) {
+					color = gdImageTrueColorPixel(im, j, i);
+					*ptr++ = (color >> 16) & 0xFF;
+					*ptr++ = (color >> 8) & 0xFF;
+					*ptr++ = color & 0xFF;
+				}
+			} else {
+#endif
+				if (im->pixels && gdImageBoundsSafe(im, j, i)) {
+					color = im->pixels[i][j];
+					*ptr++ = im->red[color];
+					*ptr++ = im->green[color];
+					*ptr++ = im->blue[color];
+				}
+#if HAVE_LIBGD20
+			}
+#endif		
 		}
 	}
 
@@ -2311,6 +2335,11 @@ PHP_FUNCTION(pdf_open_file)
 	if (argc == 2) {
 		convert_to_string_ex(arg2);
 		filename = Z_STRVAL_PP(arg2);
+
+		if (php_check_open_basedir(filename TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(filename, "wb+", CHECKUID_CHECK_MODE_PARAM))) {
+			RETURN_FALSE;
+		}
+
 		pdf_file = PDF_open_file(pdf, filename);
 	} else {
 		/* open in memory */
@@ -2443,7 +2472,7 @@ PHP_FUNCTION(pdf_setpolydash)
 	array = Z_ARRVAL_PP(arg2);
 	len = zend_hash_num_elements(array);
 
-	if (NULL == (darray = emalloc(len * sizeof(double)))) {
+	if (NULL == (darray = safe_emalloc(len, sizeof(double), 0))) {
 	    RETURN_FALSE;
 	}
 	zend_hash_internal_pointer_reset(array);
@@ -2523,6 +2552,10 @@ PHP_FUNCTION(pdf_open_ccitt)
 	image = Z_STRVAL_PP(arg2);
 #endif  
 
+	if (php_check_open_basedir(image TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(image, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+		RETURN_FALSE;
+	}
+
 	convert_to_long_ex(arg3);
 	convert_to_long_ex(arg4);
 	convert_to_long_ex(arg5);
@@ -2572,6 +2605,10 @@ PHP_FUNCTION(pdf_open_image)
 	image = Z_STRVAL_PP(arg4);
 #endif  
 
+	if (php_check_open_basedir(image TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(image, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+		RETURN_FALSE;
+	}
+
 	pdf_image = PDF_open_image(pdf,
 		Z_STRVAL_PP(arg2),
 		Z_STRVAL_PP(arg3),
@@ -2609,6 +2646,10 @@ PHP_FUNCTION(pdf_attach_file)
 	convert_to_string_ex(arg8);
 	convert_to_string_ex(arg9);
 	convert_to_string_ex(arg10);
+
+	if (php_check_open_basedir(Z_STRVAL_PP(arg6) TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(Z_STRVAL_PP(arg6), "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+		RETURN_FALSE;
+	}
 
 	PDF_attach_file(pdf,
 		(float) Z_DVAL_PP(arg2),
@@ -2749,6 +2790,10 @@ PHP_FUNCTION(pdf_open_pdi)
 #else
 	file = Z_STRVAL_PP(arg2);
 #endif  
+
+	if (php_check_open_basedir(file TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(file, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+		RETURN_FALSE;
+	}
 
 	pdi_handle = PDF_open_pdi(pdf,
 		file,
