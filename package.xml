@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="2.0">
+<package version="1.0">
   <name>pdflib</name>
   <summary>Creating PDF on the fly with the PDFlib library</summary>
   <description>This extension wraps the PDFlib programming library
