@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="pdf" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="pdflib" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=pdf - Win32 Release_TS
+CFG=pdflib - Win32 Release_TS
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "pdf.mak".
+!MESSAGE NMAKE /f "pdflib.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "pdf.mak" CFG="pdf - Win32 Release_TS"
+!MESSAGE NMAKE /f "pdflib.mak" CFG="pdflib - Win32 Release_TS"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "pdf - Win32 Release_TS" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "pdf - Win32 Debug_TS" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "pdflib - Win32 Release_TS" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "pdflib - Win32 Debug_TS" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "pdf - Win32 Release_TS"
+!IF  "$(CFG)" == "pdflib - Win32 Release_TS"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -57,7 +57,7 @@ LINK32=link.exe
 # ADD LINK32 php5ts.lib pdflib.lib zlib.lib libpng.lib libtiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"..\..\Release_TS/php_pdf.dll" /libpath:"..\..\Release_TS" /libpath:"..\..\Release_TS_Inline"
 # SUBTRACT LINK32 /pdb:none
 
-!ELSEIF  "$(CFG)" == "pdf - Win32 Debug_TS"
+!ELSEIF  "$(CFG)" == "pdflib - Win32 Debug_TS"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -88,8 +88,8 @@ LINK32=link.exe
 
 # Begin Target
 
-# Name "pdf - Win32 Release_TS"
-# Name "pdf - Win32 Debug_TS"
+# Name "pdflib - Win32 Release_TS"
+# Name "pdflib - Win32 Debug_TS"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
