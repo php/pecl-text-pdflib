@@ -61,11 +61,8 @@
 	- changed old API's with varargs to only accept all args now
 */
 
-#ifdef PDF_FEATURE_PUBLIC
-#else   /* !PDF_FEATURE_PUBLIC */
 /* Bootstrap of PDFlib Feature setup */
 #define PDF_FEATURE_INTERNAL
-#endif  /* PDF_FEATURE_PUBLIC */
 
 /* }}} */
 
@@ -741,11 +738,8 @@ PHP_MINFO_FUNCTION(pdf)
 
 	php_info_print_table_start();
 	php_info_print_table_row(2, "PDF Support", "enabled" );
-#ifdef PDF_FEATURE_INTERNAL
-	php_info_print_table_row(2, "PDFlib GmbH Binary-Version", PDFLIB_VERSIONSTRING );
-#else /* PDF_FEATURE_INTERNAL */
 	php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_VERSIONSTRING );
-#endif /* PDF_FEATURE_INTERNAL */
+	php_info_print_table_row(2, "PECL Version", "2.0.1" );
 	php_info_print_table_row(2, "Revision", "$Revision$" );
 	php_info_print_table_end();
 
