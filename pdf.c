@@ -108,7 +108,7 @@
 
 #include "pdflib.h"
 
-#define   PDFLIB_PECL_VERSIONSTRING "2.0.2"
+#define   PDFLIB_PECL_VERSIONSTRING "2.0.3"
 
 #if PDFLIB_MAJORVERSION >= 5
 	/* This wrapper code will work only with PDFlib V5 or greater,
@@ -291,6 +291,10 @@ function_entry pdf_functions[] = {
 	PHP_FE(pdf_suspend_page, NULL)
 #endif /* PDFlib >= 6.0.0 */
 	PHP_FE(pdf_translate, NULL)
+#if PDFLIB_MAJORVERSION >= 6
+	PHP_FE(pdf_utf16_to_utf8, NULL)
+	PHP_FE(pdf_utf8_to_utf16, NULL)
+#endif /* PDFlib >= 6.0.0 */
 
 	/* End of the official PDFLIB API */
 
@@ -479,6 +483,10 @@ function_entry pdflib_funcs[] = {
 	PHP_ME_MAPPING(suspend_page, pdf_suspend_page, NULL)
 #endif /* PDFlib >= 6.0.0 */
 	PHP_ME_MAPPING(translate, pdf_translate, NULL)
+#if PDFLIB_MAJORVERSION >= 6
+	PHP_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
+	PHP_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
+#endif /* PDFlib >= 6.0.0 */
 
 	/* End of the official PDFLIB API */
 
@@ -7082,6 +7090,108 @@ PHP_FUNCTION(pdf_translate)
 
 	RETURN_TRUE;
 }
+/* }}} */
+
+/* {{{ proto string PDF_utf16_to_utf8(resource p, string utf16string);
+ * Convert a string from UTF-16 format to UTF-8. */
+#if PDFLIB_MAJORVERSION >= 6
+PHP_FUNCTION(pdf_utf16_to_utf8)
+{
+	PDF *pdf;
+	char *utf16string;
+	int ulen;
+	const char *retbuf = NULL;
+	int size;
+
+	#if PHP_MAJOR_VERSION >= 5
+	zval *object = getThis();
+
+	if (object) {
+		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+		if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+						"s", &utf16string, &ulen)) {
+			php_std_error_handling();
+			return;
+		}
+		P_FROM_OBJECT(pdf, object);
+	} else {
+		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+		{
+			zval *p;
+			if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+						"rs", &p, &utf16string, &ulen)) {
+	#if PHP_MAJOR_VERSION >= 5
+				php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+				return;
+			}
+			ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+		}
+	#if PHP_MAJOR_VERSION >= 5
+	}
+	php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+
+	pdf_try {
+		retbuf = PDF_utf16_to_utf8(pdf, utf16string, ulen, &size);
+	} pdf_catch;
+
+	RETURN_STRINGL((char *)retbuf, size, 1);
+}
+#endif /* PDFLIB_MAJORVERSION >= 6 */
+/* }}} */
+
+/* {{{ proto string PDF_utf8_to_utf16(resource p, string utf8string, string ordering);
+ * Convert a string from UTF-8 format to UTF-16. */
+#if PDFLIB_MAJORVERSION >= 6
+PHP_FUNCTION(pdf_utf8_to_utf16)
+{
+	PDF *pdf;
+	char *utf8string;
+	char *ordering;
+	int ulen;
+	int olen;
+	const char *retbuf = NULL;
+	int size;
+
+	#if PHP_MAJOR_VERSION >= 5
+	zval *object = getThis();
+
+	if (object) {
+		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+		if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+						"ss", &utf8string, &ulen, &ordering, &olen)) {
+			php_std_error_handling();
+			return;
+		}
+		P_FROM_OBJECT(pdf, object);
+	} else {
+		php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+		{
+			zval *p;
+			if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+						"rss", &p, &utf8string, &ulen, &ordering, &olen)) {
+	#if PHP_MAJOR_VERSION >= 5
+				php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+				return;
+			}
+			ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+		}
+	#if PHP_MAJOR_VERSION >= 5
+	}
+	php_std_error_handling();
+	#endif /* PHP_MAJOR_VERSION >= 5 */
+
+	pdf_try {
+		retbuf = PDF_utf8_to_utf16(pdf, utf8string, ordering, &size);
+	} pdf_catch;
+
+	RETURN_STRINGL((char *)retbuf, size, 1);
+}
+#endif /* PDFLIB_MAJORVERSION >= 6 */
 /* }}} */
 
 

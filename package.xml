@@ -29,7 +29,9 @@ and for commercial licensing.</description>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
-- PDF_get_parameter crashed when called with 2 parameters.
+- PDF_get_parameter crashed when called with only 2 parameters.
+Enhancements:
+- added pdf_utf8_to_utf16() and pdf_utf16_to_utf8() API's.
 </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
