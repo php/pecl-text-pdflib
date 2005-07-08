@@ -189,8 +189,10 @@ function_entry pdf_functions[] = {
 
 	/* some more stuff for compatibility */
 	PHP_FE(pdf_add_annotation, NULL)
+#if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 	PHP_FE(pdf_open_memory_image, NULL)
+#endif
 #endif
 	/* depreciatet after V4.0 of PDFlib */
 	PHP_FE(pdf_setgray_fill, NULL)
