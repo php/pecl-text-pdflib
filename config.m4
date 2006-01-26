@@ -17,7 +17,7 @@ if test "$PHP_PDFLIB" != "no"; then
   dnl # MacOSX requires this
   case `(uname -s) 2>/dev/null || echo unknown` in
     *arwin*)
-      PHP_ADD_FRAMEWORK(Carbon)
+      PHP_ADD_FRAMEWORK(ApplicationServices)
       ;;
   esac
 

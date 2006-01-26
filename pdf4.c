@@ -193,7 +193,7 @@ function_entry pdf_functions[] = {
 #if HAVE_LIBGD13
 	PHP_FE(pdf_open_memory_image, NULL)
 #endif
-#endif
+#endif /* PDFLIB_WITH_GD_SUPPORT */
 	/* depreciatet after V4.0 of PDFlib */
 	PHP_FE(pdf_setgray_fill, NULL)
 	PHP_FE(pdf_setgray_stroke, NULL)

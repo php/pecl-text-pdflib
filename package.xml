@@ -29,7 +29,7 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
   </maintainers>
   <release>
     <version>2.0.5</version>
-    <date>2005-03-08</date>
+    <date>2006-01-26</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
@@ -45,7 +45,7 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
       <file role="doc" name="CREDITS"/>
       <file role="src" name="config.m4"/>
       <file role="src" name="config.w32"/>
-      <file role="src" name="pdf.dsp"/>
+      <file role="src" name="pdflib.dsp"/>
       <file role="src" name="pdf.c"/>
       <file role="src" name="php_pdf.h"/>
       <file role="src" name="pdf4.c"/>
