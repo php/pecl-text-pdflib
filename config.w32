@@ -4,16 +4,16 @@
 ARG_WITH("pdflib", "PDF support", "no");
 
 if (PHP_PDFLIB != "no") {
-    if (CHECK_HEADER_ADD_INCLUDE("pdflib.h", "CFLAGS_PDF", PHP_PDF) &&
-		CHECK_LIB("gdi32.lib", "pdf", PHP_PDF) &&
-		( CHECK_LIB("pdflib.lib", "pdf", PHP_PDF + "\\Release_mtDLL")
-		  || CHECK_LIB("pdflib.lib", "pdf", PHP_PDF)
+    if (CHECK_HEADER_ADD_INCLUDE("pdflib.h", "CFLAGS_PDFLIB", PHP_PDFLIB) &&
+		CHECK_LIB("gdi32.lib", "pdflib", PHP_PDFLIB) &&
+		( CHECK_LIB("pdflib.lib", "pdflib", PHP_PDFLIB + "\\Release_mtDLL")
+		  || CHECK_LIB("pdflib.lib", "pdflib", PHP_PDFLIB)
 		)
 	)
     {
-	EXTENSION('pdf', 'pdf.c');
+	EXTENSION('pdflib', 'pdf.c');
 	AC_DEFINE('HAVE_PDFLIB', 1);
     } else {
-	WARNING("pdf not enabled; libraries and headers not found");
+	WARNING("pdflib not enabled; libraries and headers not found");
     }
 }
