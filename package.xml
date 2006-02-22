@@ -8,7 +8,7 @@ This extension wraps the PDFlib programming library
 for processing PDF on the fly, created by Thomas Merz. 
 
 PDFlib is available for commercial licensing and under the PDFlib Lite License
-(see http://www.pdflib.com/pdffiles/PDFlib-Lite-license.pdf).
+(see http://www.pdflib.com/products/pdflib/info/PDFlib-Lite-license.pdf).
 
 More info on how to use PDFlib with PHP can be found at
 http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
