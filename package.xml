@@ -29,11 +29,12 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
   </maintainers>
   <release>
     <version>2.0.5</version>
-    <date>2006-01-26</date>
+    <date>2006-02-23</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
 - fixed Bug http://pecl.php.net/bugs/bug.php?id=3554
+- windows build should work now
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
