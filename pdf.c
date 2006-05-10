@@ -332,7 +332,7 @@ typedef struct _pdflib_object {
 
 function_entry pdflib_funcs[] = {
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(activate_item, pdf_activate_item, NULL, 0, 0)
+	PHP_ME_MAPPING(activate_item, pdf_activate_item, NULL, 0)
 #endif /* PDFlib >= 6.0.0 */
 /* 	PHP_ME_MAPPING(add_bookmark, pdf_add_bookmark, NULL, 0) deprecated */
 /* 	PHP_ME_MAPPING(add_launchlink, pdf_add_launchlink, NULL, 0) deprecated */
