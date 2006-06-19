@@ -323,6 +323,15 @@ zend_class_entry *pdflib_class;
 zend_class_entry *pdflib_exception_class;
 
 #if PHP_MAJOR_VERSION >= 5
+
+/* allow to be compiled with various PHP Versions allthough
+   the API of the PHP_ME_MAPPING() Macro changed */
+#if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2
+	#define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c, 0)
+#else /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
+	#define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c)
+#endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
+
 static zend_object_handlers pdflib_handlers;
 
 typedef struct _pdflib_object {
@@ -332,169 +341,169 @@ typedef struct _pdflib_object {
 
 function_entry pdflib_funcs[] = {
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(activate_item, pdf_activate_item, NULL, 0)
+	PDF_ME_MAPPING(activate_item, pdf_activate_item, NULL)
 #endif /* PDFlib >= 6.0.0 */
-/* 	PHP_ME_MAPPING(add_bookmark, pdf_add_bookmark, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(add_launchlink, pdf_add_launchlink, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(add_locallink, pdf_add_locallink, NULL, 0) deprecated */
-	PHP_ME_MAPPING(add_nameddest, pdf_add_nameddest, NULL, 0)
-/* 	PHP_ME_MAPPING(add_note, pdf_add_note, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(add_pdflink, pdf_add_pdflink, NULL, 0) deprecated */
-	PHP_ME_MAPPING(add_thumbnail, pdf_add_thumbnail, NULL, 0)
-/* 	PHP_ME_MAPPING(add_weblink, pdf_add_weblink, NULL, 0) deprecated */
-	PHP_ME_MAPPING(arc, pdf_arc, NULL, 0)
-	PHP_ME_MAPPING(arcn, pdf_arcn, NULL, 0)
-/* 	PHP_ME_MAPPING(attach_file, pdf_attach_file, NULL, 0) deprecated */
+/* 	PDF_ME_MAPPING(add_bookmark, pdf_add_bookmark, NULL) deprecated */
+/* 	PDF_ME_MAPPING(add_launchlink, pdf_add_launchlink, NULL) deprecated */
+/* 	PDF_ME_MAPPING(add_locallink, pdf_add_locallink, NULL) deprecated */
+	PDF_ME_MAPPING(add_nameddest, pdf_add_nameddest, NULL)
+/* 	PDF_ME_MAPPING(add_note, pdf_add_note, NULL) deprecated */
+/* 	PDF_ME_MAPPING(add_pdflink, pdf_add_pdflink, NULL) deprecated */
+	PDF_ME_MAPPING(add_thumbnail, pdf_add_thumbnail, NULL)
+/* 	PDF_ME_MAPPING(add_weblink, pdf_add_weblink, NULL) deprecated */
+	PDF_ME_MAPPING(arc, pdf_arc, NULL)
+	PDF_ME_MAPPING(arcn, pdf_arcn, NULL)
+/* 	PDF_ME_MAPPING(attach_file, pdf_attach_file, NULL) deprecated */
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(begin_document, pdf_begin_document, NULL, 0)
+	PDF_ME_MAPPING(begin_document, pdf_begin_document, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(begin_font, pdf_begin_font, NULL, 0)
-	PHP_ME_MAPPING(begin_glyph, pdf_begin_glyph, NULL, 0)
+	PDF_ME_MAPPING(begin_font, pdf_begin_font, NULL)
+	PDF_ME_MAPPING(begin_glyph, pdf_begin_glyph, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(begin_item, pdf_begin_item, NULL, 0)
-	PHP_ME_MAPPING(begin_layer, pdf_begin_layer, NULL, 0)
+	PDF_ME_MAPPING(begin_item, pdf_begin_item, NULL)
+	PDF_ME_MAPPING(begin_layer, pdf_begin_layer, NULL)
 #endif /* PDFlib >= 6.0.0 */
-/* 	PHP_ME_MAPPING(begin_page, pdf_begin_page, NULL, 0) deprecated */
+/* 	PDF_ME_MAPPING(begin_page, pdf_begin_page, NULL) deprecated */
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(begin_page_ext, pdf_begin_page_ext, NULL, 0)
+	PDF_ME_MAPPING(begin_page_ext, pdf_begin_page_ext, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(begin_pattern, pdf_begin_pattern, NULL, 0)
-	PHP_ME_MAPPING(begin_template, pdf_begin_template, NULL, 0)
-	PHP_ME_MAPPING(circle, pdf_circle, NULL, 0)
-	PHP_ME_MAPPING(clip, pdf_clip, NULL, 0)
-/* 	PHP_ME_MAPPING(close, pdf_close, NULL, 0) deprecated */
-	PHP_ME_MAPPING(close_image, pdf_close_image, NULL, 0)
-	PHP_ME_MAPPING(close_pdi, pdf_close_pdi, NULL, 0)
-	PHP_ME_MAPPING(close_pdi_page, pdf_close_pdi_page, NULL, 0)
-	PHP_ME_MAPPING(closepath, pdf_closepath, NULL, 0)
-	PHP_ME_MAPPING(closepath_fill_stroke, pdf_closepath_fill_stroke, NULL, 0)
-	PHP_ME_MAPPING(closepath_stroke, pdf_closepath_stroke, NULL, 0)
-	PHP_ME_MAPPING(concat, pdf_concat, NULL, 0)
-	PHP_ME_MAPPING(continue_text, pdf_continue_text, NULL, 0)
+	PDF_ME_MAPPING(begin_pattern, pdf_begin_pattern, NULL)
+	PDF_ME_MAPPING(begin_template, pdf_begin_template, NULL)
+	PDF_ME_MAPPING(circle, pdf_circle, NULL)
+	PDF_ME_MAPPING(clip, pdf_clip, NULL)
+/* 	PDF_ME_MAPPING(close, pdf_close, NULL) deprecated */
+	PDF_ME_MAPPING(close_image, pdf_close_image, NULL)
+	PDF_ME_MAPPING(close_pdi, pdf_close_pdi, NULL)
+	PDF_ME_MAPPING(close_pdi_page, pdf_close_pdi_page, NULL)
+	PDF_ME_MAPPING(closepath, pdf_closepath, NULL)
+	PDF_ME_MAPPING(closepath_fill_stroke, pdf_closepath_fill_stroke, NULL)
+	PDF_ME_MAPPING(closepath_stroke, pdf_closepath_stroke, NULL)
+	PDF_ME_MAPPING(concat, pdf_concat, NULL)
+	PDF_ME_MAPPING(continue_text, pdf_continue_text, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(create_action, pdf_create_action, NULL, 0)
-	PHP_ME_MAPPING(create_annotation, pdf_create_annotation, NULL, 0)
-	PHP_ME_MAPPING(create_bookmark, pdf_create_bookmark, NULL, 0)
-	PHP_ME_MAPPING(create_field, pdf_create_field, NULL, 0)
-	PHP_ME_MAPPING(create_fieldgroup, pdf_create_fieldgroup, NULL, 0)
+	PDF_ME_MAPPING(create_action, pdf_create_action, NULL)
+	PDF_ME_MAPPING(create_annotation, pdf_create_annotation, NULL)
+	PDF_ME_MAPPING(create_bookmark, pdf_create_bookmark, NULL)
+	PDF_ME_MAPPING(create_field, pdf_create_field, NULL)
+	PDF_ME_MAPPING(create_fieldgroup, pdf_create_fieldgroup, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(create_gstate, pdf_create_gstate, NULL, 0)
-	PHP_ME_MAPPING(create_pvf, pdf_create_pvf, NULL, 0)
+	PDF_ME_MAPPING(create_gstate, pdf_create_gstate, NULL)
+	PDF_ME_MAPPING(create_pvf, pdf_create_pvf, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(create_textflow, pdf_create_textflow, NULL, 0)
+	PDF_ME_MAPPING(create_textflow, pdf_create_textflow, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(curveto, pdf_curveto, NULL, 0)
+	PDF_ME_MAPPING(curveto, pdf_curveto, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(define_layer, pdf_define_layer, NULL, 0)
+	PDF_ME_MAPPING(define_layer, pdf_define_layer, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(delete, pdf_delete, NULL, 0)
-	PHP_ME_MAPPING(delete_pvf, pdf_delete_pvf, NULL, 0)
+	PDF_ME_MAPPING(delete, pdf_delete, NULL)
+	PDF_ME_MAPPING(delete_pvf, pdf_delete_pvf, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(delete_textflow, pdf_delete_textflow, NULL, 0)
+	PDF_ME_MAPPING(delete_textflow, pdf_delete_textflow, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(encoding_set_char, pdf_encoding_set_char, NULL, 0)
+	PDF_ME_MAPPING(encoding_set_char, pdf_encoding_set_char, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(end_document, pdf_end_document, NULL, 0)
+	PDF_ME_MAPPING(end_document, pdf_end_document, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(end_font, pdf_end_font, NULL, 0)
-	PHP_ME_MAPPING(end_glyph, pdf_end_glyph, NULL, 0)
+	PDF_ME_MAPPING(end_font, pdf_end_font, NULL)
+	PDF_ME_MAPPING(end_glyph, pdf_end_glyph, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(end_item, pdf_end_item, NULL, 0)
-	PHP_ME_MAPPING(end_layer, pdf_end_layer, NULL, 0)
+	PDF_ME_MAPPING(end_item, pdf_end_item, NULL)
+	PDF_ME_MAPPING(end_layer, pdf_end_layer, NULL)
 #endif /* PDFlib >= 6.0.0 */
-/* 	PHP_ME_MAPPING(end_page, pdf_end_page, NULL, 0) deprecated */
+/* 	PDF_ME_MAPPING(end_page, pdf_end_page, NULL) deprecated */
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(end_page_ext, pdf_end_page_ext, NULL, 0)
+	PDF_ME_MAPPING(end_page_ext, pdf_end_page_ext, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(end_pattern, pdf_end_pattern, NULL, 0)
-	PHP_ME_MAPPING(end_template, pdf_end_template, NULL, 0)
-	PHP_ME_MAPPING(endpath, pdf_endpath, NULL, 0)
-	PHP_ME_MAPPING(fill, pdf_fill, NULL, 0)
-	PHP_ME_MAPPING(fill_imageblock, pdf_fill_imageblock, NULL, 0)
-	PHP_ME_MAPPING(fill_pdfblock, pdf_fill_pdfblock, NULL, 0)
-	PHP_ME_MAPPING(fill_stroke, pdf_fill_stroke, NULL, 0)
-	PHP_ME_MAPPING(fill_textblock, pdf_fill_textblock, NULL, 0)
-/* 	PHP_ME_MAPPING(findfont, pdf_findfont, NULL, 0) deprecated */
-	PHP_ME_MAPPING(fit_image, pdf_fit_image, NULL, 0)
-	PHP_ME_MAPPING(fit_pdi_page, pdf_fit_pdi_page, NULL, 0)
+	PDF_ME_MAPPING(end_pattern, pdf_end_pattern, NULL)
+	PDF_ME_MAPPING(end_template, pdf_end_template, NULL)
+	PDF_ME_MAPPING(endpath, pdf_endpath, NULL)
+	PDF_ME_MAPPING(fill, pdf_fill, NULL)
+	PDF_ME_MAPPING(fill_imageblock, pdf_fill_imageblock, NULL)
+	PDF_ME_MAPPING(fill_pdfblock, pdf_fill_pdfblock, NULL)
+	PDF_ME_MAPPING(fill_stroke, pdf_fill_stroke, NULL)
+	PDF_ME_MAPPING(fill_textblock, pdf_fill_textblock, NULL)
+/* 	PDF_ME_MAPPING(findfont, pdf_findfont, NULL) deprecated */
+	PDF_ME_MAPPING(fit_image, pdf_fit_image, NULL)
+	PDF_ME_MAPPING(fit_pdi_page, pdf_fit_pdi_page, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(fit_textflow, pdf_fit_textflow, NULL, 0)
+	PDF_ME_MAPPING(fit_textflow, pdf_fit_textflow, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(fit_textline, pdf_fit_textline, NULL, 0)
-	PHP_ME_MAPPING(get_apiname, pdf_get_apiname, NULL, 0)
-	PHP_ME_MAPPING(get_buffer, pdf_get_buffer, NULL, 0)
-	PHP_ME_MAPPING(get_errmsg, pdf_get_errmsg, NULL, 0)
-	PHP_ME_MAPPING(get_errnum, pdf_get_errnum, NULL, 0)
-	PHP_ME_MAPPING(get_parameter, pdf_get_parameter, NULL, 0)
-	PHP_ME_MAPPING(get_pdi_parameter, pdf_get_pdi_parameter, NULL, 0)
-	PHP_ME_MAPPING(get_pdi_value, pdf_get_pdi_value, NULL, 0)
-	PHP_ME_MAPPING(get_value, pdf_get_value, NULL, 0)
+	PDF_ME_MAPPING(fit_textline, pdf_fit_textline, NULL)
+	PDF_ME_MAPPING(get_apiname, pdf_get_apiname, NULL)
+	PDF_ME_MAPPING(get_buffer, pdf_get_buffer, NULL)
+	PDF_ME_MAPPING(get_errmsg, pdf_get_errmsg, NULL)
+	PDF_ME_MAPPING(get_errnum, pdf_get_errnum, NULL)
+	PDF_ME_MAPPING(get_parameter, pdf_get_parameter, NULL)
+	PDF_ME_MAPPING(get_pdi_parameter, pdf_get_pdi_parameter, NULL)
+	PDF_ME_MAPPING(get_pdi_value, pdf_get_pdi_value, NULL)
+	PDF_ME_MAPPING(get_value, pdf_get_value, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(info_textflow, pdf_info_textflow, NULL, 0)
+	PDF_ME_MAPPING(info_textflow, pdf_info_textflow, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(initgraphics, pdf_initgraphics, NULL, 0)
-	PHP_ME_MAPPING(lineto, pdf_lineto, NULL, 0)
-	PHP_ME_MAPPING(load_font, pdf_load_font, NULL, 0)
-	PHP_ME_MAPPING(load_iccprofile, pdf_load_iccprofile, NULL, 0)
-	PHP_ME_MAPPING(load_image, pdf_load_image, NULL, 0)
-	PHP_ME_MAPPING(makespotcolor, pdf_makespotcolor, NULL, 0)
-	PHP_ME_MAPPING(moveto, pdf_moveto, NULL, 0)
-	PHP_ME_MAPPING(__construct, pdf_new, NULL, 0)
-/* 	PHP_ME_MAPPING(open_ccitt, pdf_open_ccitt, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(open_file, pdf_open_file, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(open_image, pdf_open_image, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(open_image_file, pdf_open_image_file, NULL, 0) deprecated */
-	PHP_ME_MAPPING(open_pdi, pdf_open_pdi, NULL, 0)
-	PHP_ME_MAPPING(open_pdi_page, pdf_open_pdi_page, NULL, 0)
-/* 	PHP_ME_MAPPING(place_image, pdf_place_image, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(place_pdi_page, pdf_place_pdi_page, NULL, 0) deprecated */
-	PHP_ME_MAPPING(process_pdi, pdf_process_pdi, NULL, 0)
-	PHP_ME_MAPPING(rect, pdf_rect, NULL, 0)
-	PHP_ME_MAPPING(restore, pdf_restore, NULL, 0)
+	PDF_ME_MAPPING(initgraphics, pdf_initgraphics, NULL)
+	PDF_ME_MAPPING(lineto, pdf_lineto, NULL)
+	PDF_ME_MAPPING(load_font, pdf_load_font, NULL)
+	PDF_ME_MAPPING(load_iccprofile, pdf_load_iccprofile, NULL)
+	PDF_ME_MAPPING(load_image, pdf_load_image, NULL)
+	PDF_ME_MAPPING(makespotcolor, pdf_makespotcolor, NULL)
+	PDF_ME_MAPPING(moveto, pdf_moveto, NULL)
+	PDF_ME_MAPPING(__construct, pdf_new, NULL)
+/* 	PDF_ME_MAPPING(open_ccitt, pdf_open_ccitt, NULL) deprecated */
+/* 	PDF_ME_MAPPING(open_file, pdf_open_file, NULL) deprecated */
+/* 	PDF_ME_MAPPING(open_image, pdf_open_image, NULL) deprecated */
+/* 	PDF_ME_MAPPING(open_image_file, pdf_open_image_file, NULL) deprecated */
+	PDF_ME_MAPPING(open_pdi, pdf_open_pdi, NULL)
+	PDF_ME_MAPPING(open_pdi_page, pdf_open_pdi_page, NULL)
+/* 	PDF_ME_MAPPING(place_image, pdf_place_image, NULL) deprecated */
+/* 	PDF_ME_MAPPING(place_pdi_page, pdf_place_pdi_page, NULL) deprecated */
+	PDF_ME_MAPPING(process_pdi, pdf_process_pdi, NULL)
+	PDF_ME_MAPPING(rect, pdf_rect, NULL)
+	PDF_ME_MAPPING(restore, pdf_restore, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(resume_page, pdf_resume_page, NULL, 0)
+	PDF_ME_MAPPING(resume_page, pdf_resume_page, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(rotate, pdf_rotate, NULL, 0)
-	PHP_ME_MAPPING(save, pdf_save, NULL, 0)
-	PHP_ME_MAPPING(scale, pdf_scale, NULL, 0)
-/* 	PHP_ME_MAPPING(set_border_color, pdf_set_border_color, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(set_border_dash, pdf_set_border_dash, NULL, 0) deprecated */
-/* 	PHP_ME_MAPPING(set_border_style, pdf_set_border_style, NULL, 0) deprecated */
-	PHP_ME_MAPPING(set_gstate, pdf_set_gstate, NULL, 0)
-	PHP_ME_MAPPING(set_info, pdf_set_info, NULL, 0)
+	PDF_ME_MAPPING(rotate, pdf_rotate, NULL)
+	PDF_ME_MAPPING(save, pdf_save, NULL)
+	PDF_ME_MAPPING(scale, pdf_scale, NULL)
+/* 	PDF_ME_MAPPING(set_border_color, pdf_set_border_color, NULL) deprecated */
+/* 	PDF_ME_MAPPING(set_border_dash, pdf_set_border_dash, NULL) deprecated */
+/* 	PDF_ME_MAPPING(set_border_style, pdf_set_border_style, NULL) deprecated */
+	PDF_ME_MAPPING(set_gstate, pdf_set_gstate, NULL)
+	PDF_ME_MAPPING(set_info, pdf_set_info, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(set_layer_dependency, pdf_set_layer_dependency, NULL, 0)
+	PDF_ME_MAPPING(set_layer_dependency, pdf_set_layer_dependency, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(set_parameter, pdf_set_parameter, NULL, 0)
-	PHP_ME_MAPPING(set_text_pos, pdf_set_text_pos, NULL, 0)
-	PHP_ME_MAPPING(set_value, pdf_set_value, NULL, 0)
-	PHP_ME_MAPPING(setcolor, pdf_setcolor, NULL, 0)
-	PHP_ME_MAPPING(setdash, pdf_setdash, NULL, 0)
-	PHP_ME_MAPPING(setdashpattern, pdf_setdashpattern, NULL, 0)
-	PHP_ME_MAPPING(setflat, pdf_setflat, NULL, 0)
-	PHP_ME_MAPPING(setfont, pdf_setfont, NULL, 0)
-	PHP_ME_MAPPING(setlinecap, pdf_setlinecap, NULL, 0)
-	PHP_ME_MAPPING(setlinejoin, pdf_setlinejoin, NULL, 0)
-	PHP_ME_MAPPING(setlinewidth, pdf_setlinewidth, NULL, 0)
-	PHP_ME_MAPPING(setmatrix, pdf_setmatrix, NULL, 0)
-	PHP_ME_MAPPING(setmiterlimit, pdf_setmiterlimit, NULL, 0)
-/* 	PHP_ME_MAPPING(setpolydash, pdf_setpolydash, NULL, 0) deprecated */
-	PHP_ME_MAPPING(shading, pdf_shading, NULL, 0)
-	PHP_ME_MAPPING(shading_pattern, pdf_shading_pattern, NULL, 0)
-	PHP_ME_MAPPING(shfill, pdf_shfill, NULL, 0)
-	PHP_ME_MAPPING(show, pdf_show, NULL, 0)
-	PHP_ME_MAPPING(show_boxed, pdf_show_boxed, NULL, 0)
-	PHP_ME_MAPPING(show_xy, pdf_show_xy, NULL, 0)
-	PHP_ME_MAPPING(skew, pdf_skew, NULL, 0)
-	PHP_ME_MAPPING(stringwidth, pdf_stringwidth, NULL, 0)
-	PHP_ME_MAPPING(stroke, pdf_stroke, NULL, 0)
+	PDF_ME_MAPPING(set_parameter, pdf_set_parameter, NULL)
+	PDF_ME_MAPPING(set_text_pos, pdf_set_text_pos, NULL)
+	PDF_ME_MAPPING(set_value, pdf_set_value, NULL)
+	PDF_ME_MAPPING(setcolor, pdf_setcolor, NULL)
+	PDF_ME_MAPPING(setdash, pdf_setdash, NULL)
+	PDF_ME_MAPPING(setdashpattern, pdf_setdashpattern, NULL)
+	PDF_ME_MAPPING(setflat, pdf_setflat, NULL)
+	PDF_ME_MAPPING(setfont, pdf_setfont, NULL)
+	PDF_ME_MAPPING(setlinecap, pdf_setlinecap, NULL)
+	PDF_ME_MAPPING(setlinejoin, pdf_setlinejoin, NULL)
+	PDF_ME_MAPPING(setlinewidth, pdf_setlinewidth, NULL)
+	PDF_ME_MAPPING(setmatrix, pdf_setmatrix, NULL)
+	PDF_ME_MAPPING(setmiterlimit, pdf_setmiterlimit, NULL)
+/* 	PDF_ME_MAPPING(setpolydash, pdf_setpolydash, NULL) deprecated */
+	PDF_ME_MAPPING(shading, pdf_shading, NULL)
+	PDF_ME_MAPPING(shading_pattern, pdf_shading_pattern, NULL)
+	PDF_ME_MAPPING(shfill, pdf_shfill, NULL)
+	PDF_ME_MAPPING(show, pdf_show, NULL)
+	PDF_ME_MAPPING(show_boxed, pdf_show_boxed, NULL)
+	PDF_ME_MAPPING(show_xy, pdf_show_xy, NULL)
+	PDF_ME_MAPPING(skew, pdf_skew, NULL)
+	PDF_ME_MAPPING(stringwidth, pdf_stringwidth, NULL)
+	PDF_ME_MAPPING(stroke, pdf_stroke, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(suspend_page, pdf_suspend_page, NULL, 0)
+	PDF_ME_MAPPING(suspend_page, pdf_suspend_page, NULL)
 #endif /* PDFlib >= 6.0.0 */
-	PHP_ME_MAPPING(translate, pdf_translate, NULL, 0)
+	PDF_ME_MAPPING(translate, pdf_translate, NULL)
 #if PDFLIB_MAJORVERSION >= 6
-	PHP_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL, 0)
-	PHP_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL, 0)
+	PDF_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
+	PDF_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
 #endif /* PDFlib >= 6.0.0 */
 
 	/* End of the official PDFLIB API */
@@ -502,7 +511,7 @@ function_entry pdflib_funcs[] = {
 #if PDFLIB_WITH_GD_SUPPORT
 #if HAVE_LIBGD13
 	/* not supported by PDFlib GmbH */
-	/* PHP_ME_MAPPING(open_memory_image, pdf_open_memory_image, NULL, 0) */
+	/* PDF_ME_MAPPING(open_memory_image, pdf_open_memory_image, NULL) */
 #endif /* HAVE_LIBGD13 */
 #endif /* PDFLIB_WITH_GD_SUPPORT */
 

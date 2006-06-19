@@ -28,13 +28,13 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.5</version>
-    <date>2006-02-23</date>
+    <version>2.0.6</version>
+    <date>2006-xx-xx</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
-- fixed Bug http://pecl.php.net/bugs/bug.php?id=3554
-- windows build should work now
+- prepaired build with PHP 5.2 (API of PHP_ME_MAPPING changed)
+- repaired build on Mac (adding the framwork did not work)
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>

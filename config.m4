@@ -16,7 +16,7 @@ if test "$PHP_PDFLIB" != "no"; then
   case `(uname -s) 2>/dev/null || echo unknown` in
     *arwin*)
       PHP_ADD_FRAMEWORK(ApplicationServices)
-      PDF_SHARED_LIBADD="$PDF_SHARED_LIBADD $PHP_FRAMEWORK"
+      PDF_SHARED_LIBADD="$PDF_SHARED_LIBADD $PHP_FRAMEWORKS"
       ;;
   esac
   PHP_SUBST(PDF_SHARED_LIBADD)
@@ -49,7 +49,7 @@ PDFlib extension requires at least pdflib 4.0.x.
 See config.log for more information.
 ])
         ],[
-          -L$PHP_PDFLIB/lib $PDF_SHARED_LIBADD -lm $PHP_FRAMEWORKS
+          -L$PHP_PDFLIB/lib $PDF_SHARED_LIBADD -lm
         ])
       else
         AC_MSG_ERROR([pdflib.h not found! Check the path passed to --with-pdflib=<PATH>. PATH should be the install prefix directory.])
