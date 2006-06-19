@@ -12,14 +12,14 @@ if test "$PHP_PDFLIB" != "no"; then
   dnl #
 
   PHP_NEW_EXTENSION(pdf, pdf.c, $ext_shared)
-  PHP_SUBST(PDF_SHARED_LIBADD)
-
   dnl # MacOSX requires this
   case `(uname -s) 2>/dev/null || echo unknown` in
     *arwin*)
       PHP_ADD_FRAMEWORK(ApplicationServices)
+      PDF_SHARED_LIBADD="$PDF_SHARED_LIBADD $PHP_FRAMEWORK"
       ;;
   esac
+  PHP_SUBST(PDF_SHARED_LIBADD)
 
   case $PHP_PDFLIB in
     yes)
