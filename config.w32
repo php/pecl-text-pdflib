@@ -1,19 +1,19 @@
 // $Id$
 // vim:ft=javascript
 
-ARG_WITH("pdflib", "PDF support", "no");
+ARG_WITH("pdf", "PDFlib support", "no");
 
-if (PHP_PDFLIB != "no") {
-    if (CHECK_HEADER_ADD_INCLUDE("pdflib.h", "CFLAGS_PDFLIB", PHP_PDFLIB) &&
-		CHECK_LIB("gdi32.lib", "pdflib", PHP_PDFLIB) &&
-		( CHECK_LIB("pdflib.lib", "pdflib", PHP_PDFLIB + "\\Release_mtDLL")
-		  || CHECK_LIB("pdflib.lib", "pdflib", PHP_PDFLIB)
+if (PHP_PDF != "no") {
+    if (CHECK_HEADER_ADD_INCLUDE("pdflib.h", "CFLAGS_PDF", PHP_PDF) &&
+		CHECK_LIB("gdi32.lib", "pdf", PHP_PDF) &&
+		( CHECK_LIB("pdflib.lib", "pdf", PHP_PDF + "\\Release_mtDLL")
+		  || CHECK_LIB("pdflib.lib", "pdf", PHP_PDF)
 		)
 	)
     {
-	EXTENSION('pdflib', 'pdf.c');
 	AC_DEFINE('HAVE_PDFLIB', 1);
+	EXTENSION('pdf', 'pdf.c');
     } else {
-	WARNING("pdflib not enabled; libraries and headers not found");
+	WARNING("PDFlib not enabled; libraries and/or headers not found");
     }
 }

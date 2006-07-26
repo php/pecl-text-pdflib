@@ -33,7 +33,7 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
     <license>PHP</license>
     <state>stable</state>
     <notes>Bugfixes:
-- prepaired build with PHP 5.2 (API of PHP_ME_MAPPING changed)
+- prepaired for build with PHP 5.2 (API of PHP_ME_MAPPING changed)
 - repaired build on Mac (adding the framwork did not work)
     </notes>
     <deps>

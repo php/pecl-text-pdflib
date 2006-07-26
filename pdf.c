@@ -816,7 +816,13 @@ PHP_MINIT_FUNCTION(pdf)
 	zend_class_entry ce;
 	INIT_CLASS_ENTRY(ce, "PDFlibException", PDFlibException_functions);
     pdflib_exception_class = zend_register_internal_class_ex(&ce,
-			zend_exception_get_default(), NULL TSRMLS_CC);
+#if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2
+            zend_exception_get_default(TSRMLS_C),
+#else
+            zend_exception_get_default(),
+#endif
+			 NULL TSRMLS_CC);
+
 	zend_declare_property_string(pdflib_exception_class, "apiname",
 			sizeof("apiname")-1, "", ZEND_ACC_PROTECTED TSRMLS_CC);
     pdflib_exception_class->ce_flags |= ZEND_ACC_FINAL;
