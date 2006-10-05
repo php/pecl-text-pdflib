@@ -43,7 +43,7 @@
 	to fit into scheme used by php to return 0 in case of errors, whereas
 	in PDFlib the errorcode is -1 and "0" is a valid handle.
 
-	As the optionlist may contain filenames on various places the 
+	As the optionlist may contain filenames on various places the
 	VIRTUAL_DIR support and the CHECK_OPEN_BASEDIR checks implemented
 	in the wrapper will not work reliable too. So VIRTUAL_DIR support
 	and the CHECK_OPEN_BASEDIR checking is disabled here too, as it would
@@ -63,7 +63,7 @@
 
 /* Bootstrap of PDFlib Feature setup */
 #define PDF_FEATURE_INTERNAL
-#define   PDFLIB_PECL_VERSIONSTRING "2.0.5"
+#define   PDFLIB_PECL_VERSIONSTRING "2.1.0"
 
 /* set this define if you want to include GD support
  * this adds the (unofficial) function pdf_open_memory_image()
@@ -121,6 +121,14 @@
 	 * for PHP is now done in the PDFlib kernel */
 
 /* }}} */
+
+#if PDFLIB_MAJORVERSION >= 7
+
+	/* With PDFlib 7 we start with an automatically generated code
+	 */
+#include "pdf7.c"
+
+#else /* PDFLIB_MAJORVERSION >= 7 */
 
 #include "php_pdf.h"
 
@@ -565,7 +573,7 @@ static zend_function_entry PDFlibException_functions[] = {
 	}
 
 #if PHP_MAJOR_VERSION >= 5
-/* use our own version of WRONG_PARAM_COUNT and ZEND_FETCH_RESOURCE 
+/* use our own version of WRONG_PARAM_COUNT and ZEND_FETCH_RESOURCE
  * to change error handling to exceptions in case of problems. */
 
 #undef WRONG_PARAM_COUNT
@@ -707,7 +715,7 @@ static void
 pdflib_object_dtor(void *object TSRMLS_DC)
 {
 	pdflib_object *intern = (pdflib_object *)object;
-	
+
 	zend_hash_destroy(intern->std.properties);
 	FREE_HASHTABLE(intern->std.properties);
 
@@ -2356,7 +2364,7 @@ PHP_FUNCTION(pdf_closepath_stroke)
 	pdf_try {
 		PDF_closepath_stroke(pdf);
 	} pdf_catch;
-	
+
 	RETURN_TRUE;
 }
 /* }}} */
@@ -4873,8 +4881,8 @@ PHP_FUNCTION(pdf_moveto)
 PHP_FUNCTION(pdf_new)
 {
 	PDF *pdf;
-	zval *object = getThis();
 #if PHP_MAJOR_VERSION >= 5
+	zval *object = getThis();
 	pdflib_object *intern;
 #endif /* PHP_MAJOR_VERSION >= 5 */
 
@@ -4882,7 +4890,6 @@ PHP_FUNCTION(pdf_new)
 
 	if (pdf != NULL) {
 		pdf_try {
-			PDF_set_parameter(pdf, "imagewarning", "true");
 			/* Trigger special handling of PDFlib-handles for PHP */
 			PDF_set_parameter(pdf, "hastobepos", "true");
 #if PHP_MAJOR_VERSION >= 5
@@ -5486,7 +5493,7 @@ PHP_FUNCTION(pdf_restore)
 	}
 	php_std_error_handling();
 	#endif /* PHP_MAJOR_VERSION >= 5 */
-	
+
 	pdf_try {
 		PDF_restore(pdf);
 	} pdf_catch;
@@ -5762,7 +5769,7 @@ PHP_FUNCTION(pdf_set_border_dash)
 	pdf_try {
 		PDF_set_border_dash(pdf, b, w);
 	} pdf_catch;
-	
+
 	RETURN_TRUE;
 }
 /* }}} */
@@ -6272,7 +6279,7 @@ PHP_FUNCTION(pdf_setflat)
 	pdf_try {
 		PDF_setflat(pdf, flatness);
 	} pdf_catch;
-	
+
 	RETURN_TRUE;
 }
 /* }}} */
@@ -6408,7 +6415,7 @@ PHP_FUNCTION(pdf_setlinejoin)
 	pdf_try {
 		PDF_setlinejoin(pdf, (int)linejoin);
 	} pdf_catch;
-	
+
 	RETURN_TRUE;
 }
 /* }}} */
@@ -7304,6 +7311,7 @@ PHP_FUNCTION(pdf_open_memory_image)
 #endif /* HAVE_LIBGD13 */
 #endif /* PDFLIB_WITH_GD_SUPPORT */
 
+#endif /* PDFlib <= 7.0.0 */
 #else /* PDFLIB_MAJORVERSION < 5 */
 /* use the old wrapper for PDFlib 4 and earlier */
 #include "pdf4.c"

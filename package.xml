@@ -28,13 +28,13 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.6</version>
-    <date>2006-xx-xx</date>
+    <version>2.1.0</version>
+    <date>2006-10-05</date>
     <license>PHP</license>
     <state>stable</state>
-    <notes>Bugfixes:
+    <notes>
+- added support for PDFlib 7
 - prepaired for build with PHP 5.2 (API of PHP_ME_MAPPING changed)
-- repaired build on Mac (adding the framwork did not work)
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>
@@ -51,6 +51,9 @@ http://www.pdflib.com/products/pdflib/info/PDFlib-in-PHP-HowTo.pdf.
       <file role="src" name="php_pdf.h"/>
       <file role="src" name="pdf4.c"/>
       <file role="src" name="php_pdf4.h"/>
+      <file role="src" name="pdf7.c"/>
+      <file role="src" name="php_pdf7.h"/>
+      <file role="src" name="php_wrapped.c"/>
     </filelist>
   </release>
 </package>
