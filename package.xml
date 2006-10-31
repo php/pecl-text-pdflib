@@ -28,13 +28,12 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto
     </maintainer>
   </maintainers>
   <release>
-    <version>2.1.0</version>
-    <date>2006-10-05</date>
+    <version>2.1.1</version>
+    <date>2006-10-31</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>
-- added support for PDFlib 7
-- prepaired for build with PHP 5.2 (API of PHP_ME_MAPPING changed)
+- utf16_to_utf8() adn utf8_to_utf16() was missing in the OO-Wrapper
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>

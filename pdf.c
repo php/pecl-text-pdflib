@@ -63,7 +63,7 @@
 
 /* Bootstrap of PDFlib Feature setup */
 #define PDF_FEATURE_INTERNAL
-#define   PDFLIB_PECL_VERSIONSTRING "2.1.0"
+#define   PDFLIB_PECL_VERSIONSTRING "2.1.1"
 
 /* set this define if you want to include GD support
  * this adds the (unofficial) function pdf_open_memory_image()
