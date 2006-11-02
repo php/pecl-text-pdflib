@@ -28,12 +28,12 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto
     </maintainer>
   </maintainers>
   <release>
-    <version>2.1.1</version>
-    <date>2006-10-31</date>
+    <version>2.1.2</version>
+    <date>2006-11-02</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>
-- utf16_to_utf8() adn utf8_to_utf16() was missing in the OO-Wrapper
+- fixed: Bug #9216  	Don't build with PHP 5.2 (again)
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>

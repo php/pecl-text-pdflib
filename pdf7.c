@@ -58,8 +58,8 @@ function_entry pdflib_funcs[] = {
 	PDF_ME_MAPPING(open_pdi, pdf_open_pdi, NULL)
 	PDF_ME_MAPPING(__construct, pdf_new, NULL)
 	PDF_ME_MAPPING(delete, pdf_delete, NULL)
-	PHP_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
-	PHP_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
+	PDF_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
+	PDF_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
 	{NULL, NULL, NULL}
 };
 
