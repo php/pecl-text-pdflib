@@ -189,7 +189,7 @@ static void _pdf_exception(int errnum, const char *apiname, const char *errmsg T
 {
 	char msgbuf[2048];
 
-	sprintf(msgbuf, "[%d] %s: %s", errnum, apiname, errmsg);
+	snprintf(msgbuf, sizeof(msgbuf), "[%d] %s: %s", errnum, apiname, errmsg);
 
 #if PHP_MAJOR_VERSION >= 5
 	{
