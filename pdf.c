@@ -570,6 +570,7 @@ static zend_function_entry PDFlibException_functions[] = {
 
 #define pdf_catch	PDF_CATCH(pdf) { \
 	_pdf_exception(PDF_get_errnum(pdf), PDF_get_apiname(pdf), PDF_get_errmsg(pdf) TSRMLS_CC); \
+	RETURN_FALSE; \
 	}
 
 #if PHP_MAJOR_VERSION >= 5
