@@ -28,13 +28,12 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto
     </maintainer>
   </maintainers>
   <release>
-    <version>2.1.3</version>
-    <date>2006-03-08</date>
+    <version>2.1.4</version>
+    <date>2007-09-25</date>
     <license>PHP</license>
     <state>stable</state>
     <notes>
-- fixed potential crash after exceptions
-- show_boxed was missing in the OO-Wrapper
+- fixed wrong handling of int parameters which on some 64bit platforms caused problems.
     </notes>
     <deps>
       <dep type="php" rel="ge" version="4.1"/>

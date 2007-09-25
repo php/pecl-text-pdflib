@@ -6,7 +6,8 @@ ARG_WITH("pdf", "PDFlib support", "no");
 if (PHP_PDF != "no") {
     if (CHECK_HEADER_ADD_INCLUDE("pdflib.h", "CFLAGS_PDF", PHP_PDF) &&
 		CHECK_LIB("gdi32.lib", "pdf", PHP_PDF) &&
-		( CHECK_LIB("pdflib.lib", "pdf", PHP_PDF + "\\Release_mtDLL")
+		( CHECK_LIB("pdflib.lib", "pdf", PHP_PDF + "\\Release_MD")
+		  || CHECK_LIB("pdflib.lib", "pdf", PHP_PDF + "\\Release_mtDLL")
 		  || CHECK_LIB("pdflib.lib", "pdf", PHP_PDF)
 		)
 	)

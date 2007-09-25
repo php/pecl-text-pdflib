@@ -331,11 +331,7 @@ PHP_MINFO_FUNCTION(pdf)
 
 	php_info_print_table_start();
 	php_info_print_table_row(2, "PDF Support", "enabled" );
-#ifdef PDF_FEATURE_INTERNAL
-	php_info_print_table_row(2, "PDFlib GmbH Binary-Version", PDFLIB_VERSIONSTRING );
-#else /* PDF_FEATURE_INTERNAL */
 	php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_VERSIONSTRING );
-#endif /* PDF_FEATURE_INTERNAL */
 	php_info_print_table_row(2, "PECL Version", PDFLIB_PECL_VERSIONSTRING);
 	php_info_print_table_row(2, "Revision", "$Revision$" );
 	php_info_print_table_end();
@@ -551,7 +547,7 @@ PHP_FUNCTION(pdf_delete)
 }
 /* }}} */
 
-/* {{{ proto int pdf_new()
+/* {{{ proto resource pdf_new()
  * Create a new PDFlib object with default settings. */
 PHP_FUNCTION(pdf_new)
 {
@@ -591,7 +587,7 @@ PHP_FUNCTION(pdf_new)
 }
 /* }}} */
 
-/* {{{ proto int pdf_open_image(resource p, string imagetype, string source, string data, long length, int width, int height, int components, int bpc, string params)
+/* {{{ proto int pdf_open_image(resource p, string imagetype, string source, string data, int length, int width, int height, int components, int bpc, string params)
  * Deprecated, use PDF_load_image() with virtual files. */
 PHP_FUNCTION(pdf_open_image)
 {

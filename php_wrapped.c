@@ -6,7 +6,7 @@
 PHP_FUNCTION(pdf_activate_item)
 {
     PDF *pdf;
-    int id;
+    long id;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -157,8 +157,8 @@ PHP_FUNCTION(pdf_add_bookmark)
     PDF *pdf;
     const char * text;
     int text_len;
-    int parent;
-    int open;
+    long parent;
+    long open;
     int _result = 0;
 
 
@@ -262,7 +262,7 @@ PHP_FUNCTION(pdf_add_locallink)
     double lly;
     double urx;
     double ury;
-    int page;
+    long page;
     const char * optlist;
     int optlist_len;
 
@@ -371,7 +371,7 @@ PHP_FUNCTION(pdf_add_note)
     int title_len;
     const char * icon;
     int icon_len;
-    int open;
+    long open;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -424,7 +424,7 @@ PHP_FUNCTION(pdf_add_pdflink)
     double ury;
     const char * filename;
     int filename_len;
-    int page;
+    long page;
     const char * optlist;
     int optlist_len;
 
@@ -473,9 +473,9 @@ PHP_FUNCTION(pdf_add_pdflink)
 PHP_FUNCTION(pdf_add_table_cell)
 {
     PDF *pdf;
-    int table;
-    int column;
-    int row;
+    long table;
+    long column;
+    long row;
     const char * text;
     int text_len;
     const char * optlist;
@@ -527,7 +527,7 @@ PHP_FUNCTION(pdf_add_table_cell)
 PHP_FUNCTION(pdf_add_textflow)
 {
     PDF *pdf;
-    int textflow;
+    long textflow;
     const char * text;
     int text_len;
     const char * optlist;
@@ -579,7 +579,7 @@ PHP_FUNCTION(pdf_add_textflow)
 PHP_FUNCTION(pdf_add_thumbnail)
 {
     PDF *pdf;
-    int image;
+    long image;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -1051,7 +1051,7 @@ PHP_FUNCTION(pdf_begin_item)
 PHP_FUNCTION(pdf_begin_layer)
 {
     PDF *pdf;
-    int layer;
+    long layer;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -1200,7 +1200,7 @@ PHP_FUNCTION(pdf_begin_pattern)
     double height;
     double xstep;
     double ystep;
-    int painttype;
+    long painttype;
     int _result = 0;
 
 
@@ -1489,7 +1489,7 @@ PHP_FUNCTION(pdf_close)
 PHP_FUNCTION(pdf_close_image)
 {
     PDF *pdf;
-    int image;
+    long image;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -1536,7 +1536,7 @@ PHP_FUNCTION(pdf_close_image)
 PHP_FUNCTION(pdf_close_pdi)
 {
     PDF *pdf;
-    int doc;
+    long doc;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -1583,7 +1583,7 @@ PHP_FUNCTION(pdf_close_pdi)
 PHP_FUNCTION(pdf_close_pdi_document)
 {
     PDF *pdf;
-    int doc;
+    long doc;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -1630,7 +1630,7 @@ PHP_FUNCTION(pdf_close_pdi_document)
 PHP_FUNCTION(pdf_close_pdi_page)
 {
     PDF *pdf;
-    int page;
+    long page;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -2481,7 +2481,7 @@ PHP_FUNCTION(pdf_delete_pvf)
 PHP_FUNCTION(pdf_delete_table)
 {
     PDF *pdf;
-    int table;
+    long table;
     const char * optlist;
     int optlist_len;
 
@@ -2530,7 +2530,7 @@ PHP_FUNCTION(pdf_delete_table)
 PHP_FUNCTION(pdf_delete_textflow)
 {
     PDF *pdf;
-    int textflow;
+    long textflow;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -2579,10 +2579,10 @@ PHP_FUNCTION(pdf_encoding_set_char)
     PDF *pdf;
     const char * encoding;
     int encoding_len;
-    int slot;
+    long slot;
     const char * glyphname;
     int glyphname_len;
-    int uv;
+    long uv;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -2769,7 +2769,7 @@ PHP_FUNCTION(pdf_end_glyph)
 PHP_FUNCTION(pdf_end_item)
 {
     PDF *pdf;
-    int id;
+    long id;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -3186,10 +3186,10 @@ PHP_FUNCTION(pdf_fill)
 PHP_FUNCTION(pdf_fill_imageblock)
 {
     PDF *pdf;
-    int page;
+    long page;
     const char * blockname;
     int blockname_len;
-    int image;
+    long image;
     const char * optlist;
     int optlist_len;
     int _result = 0;
@@ -3239,10 +3239,10 @@ PHP_FUNCTION(pdf_fill_imageblock)
 PHP_FUNCTION(pdf_fill_pdfblock)
 {
     PDF *pdf;
-    int page;
+    long page;
     const char * blockname;
     int blockname_len;
-    int contents;
+    long contents;
     const char * optlist;
     int optlist_len;
     int _result = 0;
@@ -3338,7 +3338,7 @@ PHP_FUNCTION(pdf_fill_stroke)
 PHP_FUNCTION(pdf_fill_textblock)
 {
     PDF *pdf;
-    int page;
+    long page;
     const char * blockname;
     int blockname_len;
     const char * text;
@@ -3396,7 +3396,7 @@ PHP_FUNCTION(pdf_findfont)
     int fontname_len;
     const char * encoding;
     int encoding_len;
-    int embed;
+    long embed;
     int _result = 0;
 
 
@@ -3444,7 +3444,7 @@ PHP_FUNCTION(pdf_findfont)
 PHP_FUNCTION(pdf_fit_image)
 {
     PDF *pdf;
-    int image;
+    long image;
     double x;
     double y;
     const char * optlist;
@@ -3495,7 +3495,7 @@ PHP_FUNCTION(pdf_fit_image)
 PHP_FUNCTION(pdf_fit_pdi_page)
 {
     PDF *pdf;
-    int page;
+    long page;
     double x;
     double y;
     const char * optlist;
@@ -3546,7 +3546,7 @@ PHP_FUNCTION(pdf_fit_pdi_page)
 PHP_FUNCTION(pdf_fit_table)
 {
     PDF *pdf;
-    int table;
+    long table;
     double llx;
     double lly;
     double urx;
@@ -3600,7 +3600,7 @@ PHP_FUNCTION(pdf_fit_table)
 PHP_FUNCTION(pdf_fit_textflow)
 {
     PDF *pdf;
-    int textflow;
+    long textflow;
     double llx;
     double lly;
     double urx;
@@ -3947,9 +3947,9 @@ PHP_FUNCTION(pdf_get_pdi_parameter)
     PDF *pdf;
     const char * key;
     int key_len;
-    int doc;
-    int page;
-    int reserved;
+    long doc;
+    long page;
+    long reserved;
     int len;
     const char *_result = NULL;
 
@@ -4000,9 +4000,9 @@ PHP_FUNCTION(pdf_get_pdi_value)
     PDF *pdf;
     const char * key;
     int key_len;
-    int doc;
-    int page;
-    int reserved;
+    long doc;
+    long page;
+    long reserved;
     double _result = 0;
 
 
@@ -4100,7 +4100,7 @@ PHP_FUNCTION(pdf_get_value)
 PHP_FUNCTION(pdf_info_font)
 {
     PDF *pdf;
-    int font;
+    long font;
     const char * keyword;
     int keyword_len;
     const char * optlist;
@@ -4154,7 +4154,7 @@ PHP_FUNCTION(pdf_info_matchbox)
     PDF *pdf;
     const char * boxname;
     int boxname_len;
-    int num;
+    long num;
     const char * keyword;
     int keyword_len;
     double _result = 0;
@@ -4204,7 +4204,7 @@ PHP_FUNCTION(pdf_info_matchbox)
 PHP_FUNCTION(pdf_info_table)
 {
     PDF *pdf;
-    int table;
+    long table;
     const char * keyword;
     int keyword_len;
     double _result = 0;
@@ -4254,7 +4254,7 @@ PHP_FUNCTION(pdf_info_table)
 PHP_FUNCTION(pdf_info_textflow)
 {
     PDF *pdf;
-    int textflow;
+    long textflow;
     const char * keyword;
     int keyword_len;
     double _result = 0;
@@ -4707,11 +4707,11 @@ PHP_FUNCTION(pdf_open_ccitt)
     PDF *pdf;
     const char * filename;
     int filename_len;
-    int width;
-    int height;
-    int BitReverse;
-    int K;
-    int BlackIs1;
+    long width;
+    long height;
+    long BitReverse;
+    long K;
+    long BlackIs1;
     int _result = 0;
 
 
@@ -4814,7 +4814,7 @@ PHP_FUNCTION(pdf_open_image_file)
     int filename_len;
     const char * stringparam;
     int stringparam_len;
-    int intparam;
+    long intparam;
     int _result = 0;
 
 
@@ -4913,8 +4913,8 @@ PHP_FUNCTION(pdf_open_pdi_document)
 PHP_FUNCTION(pdf_open_pdi_page)
 {
     PDF *pdf;
-    int doc;
-    int pagenumber;
+    long doc;
+    long pagenumber;
     const char * optlist;
     int optlist_len;
     int _result = 0;
@@ -4964,7 +4964,7 @@ PHP_FUNCTION(pdf_open_pdi_page)
 PHP_FUNCTION(pdf_pcos_get_number)
 {
     PDF *pdf;
-    int doc;
+    long doc;
     const char * path;
     int path_len;
     double _result = 0;
@@ -5014,7 +5014,7 @@ PHP_FUNCTION(pdf_pcos_get_number)
 PHP_FUNCTION(pdf_pcos_get_string)
 {
     PDF *pdf;
-    int doc;
+    long doc;
     const char * path;
     int path_len;
     const char *_result = NULL;
@@ -5064,7 +5064,7 @@ PHP_FUNCTION(pdf_pcos_get_string)
 PHP_FUNCTION(pdf_pcos_get_stream)
 {
     PDF *pdf;
-    int doc;
+    long doc;
     int length;
     const char * optlist;
     int optlist_len;
@@ -5117,7 +5117,7 @@ PHP_FUNCTION(pdf_pcos_get_stream)
 PHP_FUNCTION(pdf_place_image)
 {
     PDF *pdf;
-    int image;
+    long image;
     double x;
     double y;
     double scale;
@@ -5167,7 +5167,7 @@ PHP_FUNCTION(pdf_place_image)
 PHP_FUNCTION(pdf_place_pdi_page)
 {
     PDF *pdf;
-    int page;
+    long page;
     double x;
     double y;
     double sx;
@@ -5218,8 +5218,8 @@ PHP_FUNCTION(pdf_place_pdi_page)
 PHP_FUNCTION(pdf_process_pdi)
 {
     PDF *pdf;
-    int doc;
-    int page;
+    long doc;
+    long page;
     const char * optlist;
     int optlist_len;
     int _result = 0;
@@ -5700,7 +5700,7 @@ PHP_FUNCTION(pdf_set_border_style)
 PHP_FUNCTION(pdf_set_gstate)
 {
     PDF *pdf;
-    int gstate;
+    long gstate;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -6191,7 +6191,7 @@ PHP_FUNCTION(pdf_setflat)
 PHP_FUNCTION(pdf_setfont)
 {
     PDF *pdf;
-    int font;
+    long font;
     double fontsize;
 
 
@@ -6380,7 +6380,7 @@ PHP_FUNCTION(pdf_setgray_stroke)
 PHP_FUNCTION(pdf_setlinecap)
 {
     PDF *pdf;
-    int linecap;
+    long linecap;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -6427,7 +6427,7 @@ PHP_FUNCTION(pdf_setlinecap)
 PHP_FUNCTION(pdf_setlinejoin)
 {
     PDF *pdf;
-    int linejoin;
+    long linejoin;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -6826,7 +6826,7 @@ PHP_FUNCTION(pdf_shading)
 PHP_FUNCTION(pdf_shading_pattern)
 {
     PDF *pdf;
-    int shading;
+    long shading;
     const char * optlist;
     int optlist_len;
     int _result = 0;
@@ -6876,7 +6876,7 @@ PHP_FUNCTION(pdf_shading_pattern)
 PHP_FUNCTION(pdf_shfill)
 {
     PDF *pdf;
-    int shading;
+    long shading;
 
 
     #if PHP_MAJOR_VERSION >= 5
@@ -7128,7 +7128,7 @@ PHP_FUNCTION(pdf_stringwidth)
     PDF *pdf;
     const char * text;
     int text_len;
-    int font;
+    long font;
     double fontsize;
     double _result = 0;
 
