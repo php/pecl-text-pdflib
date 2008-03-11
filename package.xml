@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0">
-  <name>pdflib</name>
-  <summary>Creating PDF on the fly with the PDFlib library</summary>
-  <description>
-This extension wraps the PDFlib programming library
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.6.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+ <name>pdflib</name>
+ <channel>pecl.php.net</channel>
+ <summary>Creating PDF on the fly with the PDFlib library</summary>
+ <description>This extension wraps the PDFlib programming library
 for processing PDF on the fly, created by Thomas Merz. 
 
 PDFlib is available for commercial licensing and under the PDFlib Lite License
@@ -12,47 +14,62 @@ PDFlib is available for commercial licensing and under the PDFlib Lite License
 
 More info on how to use PDFlib with PHP can be found at
 http://www.pdflib.com/developer-center/technical-documentation/php-howto
-</description>
-  <maintainers>
-    <maintainer>
-      <user>rjs</user>
-      <name>Rainer Schaaf</name>
-      <email>rjs@php.net</email>
-      <role>lead</role>
-    </maintainer>
-    <maintainer>
-      <user>steinm</user>
-      <name>Uwe Steinmann</name>
-      <email>steinm@php.net</email>
-      <role>lead</role>
-    </maintainer>
-  </maintainers>
-  <release>
-    <version>2.1.4</version>
-    <date>2007-09-25</date>
-    <license>PHP</license>
-    <state>stable</state>
-    <notes>
-- fixed wrong handling of int parameters which on some 64bit platforms caused problems.
-    </notes>
-    <deps>
-      <dep type="php" rel="ge" version="4.1"/>
-    </deps>
-    <configureoptions>
-      <configureoption name="with-pdflib" prompt="path to pdflib installation?"/>
-    </configureoptions>
-    <filelist>
-      <file role="doc" name="CREDITS"/>
-      <file role="src" name="config.m4"/>
-      <file role="src" name="config.w32"/>
-      <file role="src" name="pdflib.dsp"/>
-      <file role="src" name="pdf.c"/>
-      <file role="src" name="php_pdf.h"/>
-      <file role="src" name="pdf4.c"/>
-      <file role="src" name="php_pdf4.h"/>
-      <file role="src" name="pdf7.c"/>
-      <file role="src" name="php_pdf7.h"/>
-      <file role="src" name="php_wrapped.c"/>
-    </filelist>
-  </release>
+
+ </description>
+ <lead>
+  <name>Rainer Schaaf</name>
+  <user>rjs</user>
+  <email>rjs@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Uwe Steinmann</name>
+  <user>steinm</user>
+  <email>steinm@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2008-03-10</date>
+ <time>22:49:32</time>
+ <version>
+  <release>2.1.5</release>
+  <api>2.1.5</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP</license>
+ <notes>- switched to package.xml 2.0 Format
+- improved exception handling
+    
+ </notes>
+ <contents>
+  <dir name="/">
+   <file name="config.m4" role="src" />
+   <file name="config.w32" role="src" />
+   <file name="CREDITS" role="doc" />
+   <file name="pdf.c" role="src" />
+   <file name="pdf4.c" role="src" />
+   <file name="pdf7.c" role="src" />
+   <file name="pdflib.dsp" role="src" />
+   <file name="php_pdf.h" role="src" />
+   <file name="php_pdf4.h" role="src" />
+   <file name="php_pdf7.h" role="src" />
+   <file name="php_wrapped.c" role="src" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.1</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <providesextension>pdflib</providesextension>
+ <extsrcrelease>
+  <configureoption name="with-pdflib" prompt="path to pdflib installation?" />
+ </extsrcrelease>
 </package>
