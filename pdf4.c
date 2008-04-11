@@ -238,7 +238,7 @@ zend_module_entry pdf_module_entry = {
 	NULL, 
 	NULL, 
 	PHP_MINFO(pdf), 
-    NO_VERSION_YET,
+	PHP_PDFLIB_VERSION, 
 	STANDARD_MODULE_PROPERTIES 
 };
 /* }}} */
@@ -332,12 +332,13 @@ PHP_MINFO_FUNCTION(pdf)
 	tmp[31]=0;
 
 	php_info_print_table_start();
-	php_info_print_table_row(2, "PDF Support", "enabled" );
+	php_info_print_table_header(2, "PDF Support", "enabled" );
 #if (PDFLIB_MAJORVERSION >= 4)
 	php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_VERSIONSTRING );
 #else
 	php_info_print_table_row(2, "PDFlib GmbH Version", tmp );
 #endif
+	php_info_print_table_row(2, "PECL Version", PHP_PDFLIB_VERSION);
 	php_info_print_table_row(2, "Revision", "$Revision$" );
 	php_info_print_table_end();
 
