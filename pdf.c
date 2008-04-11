@@ -63,7 +63,9 @@
 
 /* Bootstrap of PDFlib Feature setup */
 #define PDF_FEATURE_INTERNAL
-#define   PDFLIB_PECL_VERSIONSTRING "2.1.5"
+
+/* Extension version */
+#include "php_pdflib.h"
 
 /* set this define if you want to include GD support
  * this adds the (unofficial) function pdf_open_memory_image()
@@ -541,14 +543,14 @@ zend_module_entry pdf_module_entry = {
     NULL,
     NULL,
     PHP_MINFO(pdf),
-    PDFLIB_PECL_VERSIONSTRING,
+    PHP_PDFLIB_VERSION,
     STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
 
-#ifdef COMPILE_DL_PDF
+#ifdef COMPILE_DL_PDFLIB
 ZEND_GET_MODULE(pdf)
-#endif /* COMPILE_DL_PDF */
+#endif /* COMPILE_DL_PDFLIB */
 
 /* exception handling */
 /* {{{ pdf_try/pdf_catch _pdfexception */
@@ -813,9 +815,9 @@ PHP_MINFO_FUNCTION(pdf)
     tmp[31]=0;
 
     php_info_print_table_start();
-    php_info_print_table_row(2, "PDF Support", "enabled" );
+    php_info_print_table_header(2, "PDF Support", "enabled" );
     php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_VERSIONSTRING );
-    php_info_print_table_row(2, "PECL Version", PDFLIB_PECL_VERSIONSTRING);
+    php_info_print_table_row(2, "PECL Version", PHP_PDFLIB_VERSION);
     php_info_print_table_row(2, "Revision", "$Revision$" );
     php_info_print_table_end();
 

@@ -243,7 +243,7 @@ zend_module_entry pdf_module_entry = {
 };
 /* }}} */
 
-#ifdef COMPILE_DL_PDF
+#ifdef COMPILE_DL_PDFLIB
 ZEND_GET_MODULE(pdf)
 #endif
 
