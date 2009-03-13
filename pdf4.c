@@ -238,12 +238,12 @@ zend_module_entry pdf_module_entry = {
 	NULL, 
 	NULL, 
 	PHP_MINFO(pdf), 
-	PHP_PDFLIB_VERSION, 
+    PHP_PDFLIB_VERSION,
 	STANDARD_MODULE_PROPERTIES 
 };
 /* }}} */
 
-#ifdef COMPILE_DL_PDFLIB
+#if defined(COMPILE_DL_PDF) || defined(COMPILE_DL_PDFLIB)
 ZEND_GET_MODULE(pdf)
 #endif
 

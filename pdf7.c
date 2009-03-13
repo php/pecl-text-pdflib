@@ -22,7 +22,9 @@ function_entry pdf_functions[] = {
 #define _WRAP_FUNCTION_ENTRY
 #include "php_wrapped.c"
 #undef _WRAP_FUNCTION_ENTRY
+    PHP_FE(pdf_show_boxed, NULL)
     PHP_FE(pdf_utf16_to_utf8, NULL)
+    PHP_FE(pdf_utf32_to_utf16, NULL)
     PHP_FE(pdf_utf8_to_utf16, NULL)
     {NULL, NULL, NULL}
 };
@@ -39,6 +41,9 @@ zend_class_entry *pdflib_exception_class;
 /* allow to be compiled with various PHP Versions allthough
    the API of the PHP_ME_MAPPING() Macro changed */
 #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2
+    /* use this to make the PDFlib class extendable
+    #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
+    */
     #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c, 0)
 #else /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
     #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c)
@@ -55,10 +60,18 @@ function_entry pdflib_funcs[] = {
 #define _WRAP_FUNCTION_ENTRY2
 #include "php_wrapped.c"
 #undef _WRAP_FUNCTION_ENTRY2
+#if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2
+    /* if we make the class PDFlib extendable, the constructor should
+     * not become final */
+    PHP_ME_MAPPING(__construct, pdf_new, NULL, 0)
+#else /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
+    PHP_ME_MAPPING(__construct, pdf_new, NULL)
+#endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
     PDF_ME_MAPPING(open_pdi, pdf_open_pdi, NULL)
-    PDF_ME_MAPPING(__construct, pdf_new, NULL)
     PDF_ME_MAPPING(delete, pdf_delete, NULL)
+    PDF_ME_MAPPING(show_boxed, pdf_show_boxed, NULL)
     PDF_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
+    PDF_ME_MAPPING(utf32_to_utf16, pdf_utf32_to_utf16, NULL)
     PDF_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
     {NULL, NULL, NULL}
 };
@@ -83,9 +96,9 @@ zend_module_entry pdf_module_entry = {
 };
 /* }}} */
 
-#ifdef COMPILE_DL_PDFLIB
+#if defined(COMPILE_DL_PDF) || defined(COMPILE_DL_PDFLIB)
 ZEND_GET_MODULE(pdf)
-#endif /* COMPILE_DL_PDFLIB */
+#endif /* COMPILE_DL_PDF */
 
 /* exception handling */
 /* {{{ pdf_try/pdf_catch _pdfexception */
@@ -326,17 +339,6 @@ pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
 }
 /* }}} */
 
-/* {{{ proto bool pdf::__construct()
- * Constructs a new PDFlib object. */
-PHP_METHOD(dir, __construct)
-{
-    zval *object = getThis();
-    pdflib_object *intern;
-
-    intern = (pdflib_object *)zend_object_store_get_object(object TSRMLS_CC);
-    intern->p = PDF_new();
-}
-
 #endif /* PHP_MAJOR_VERSION >= 5 */
 /* }}} */
 
@@ -404,7 +406,10 @@ PHP_MINIT_FUNCTION(pdf)
     memcpy(&pdflib_handlers,
             zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     pdflib_handlers.clone_obj = NULL;
-    pdflib_class->ce_flags |= ZEND_ACC_FINAL_CLASS;
+    /* use this to make the PDFlib class extendable
+    pdflib_class->ce_flags |= ZEND_ACC_FINAL;
+    */
+    pdflib_class->ce_flags |= ZEND_ACC_FINAL_CLASS;;
     pdflib_class->constructor->common.fn_flags |= ZEND_ACC_PROTECTED;
     }
 #endif /* PHP_MAJOR_VERSION >= 5 */
@@ -582,6 +587,7 @@ PHP_FUNCTION(pdf_new)
     pdflib_object *intern;
 #endif /* PHP_MAJOR_VERSION >= 5 */
 
+
     pdf = PDF_new2(NULL, pdf_emalloc, pdf_realloc, pdf_efree, NULL);
 
     if (pdf != NULL) {
@@ -716,6 +722,62 @@ PHP_FUNCTION(pdf_setpolydash)
 }
 /* }}} */
 
+/* {{{ proto int PDF_show_boxed(resource p, string text, double left, double top, double width, double height, string hmode, string feature)
+ * Deprecated, use PDF_fit_textline() or PDF_fit_textflow(). */
+PHP_FUNCTION(pdf_show_boxed)
+{
+    PDF *pdf;
+    const char * text;
+    int text_len;
+    double left;
+    double top;
+    double width;
+    double height;
+    const char * hmode;
+    int hmode_len;
+    const char * feature;
+    int feature_len;
+    int _result = 0;
+
+
+    #if PHP_MAJOR_VERSION >= 5
+    zval *object = getThis();
+
+    if (object) {
+        php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "sddddss", &text, &text_len, &left, &top, &width, &height, &hmode, &hmode_len, &feature, &feature_len)) {
+            php_std_error_handling();
+            return;
+        }
+        P_FROM_OBJECT(pdf, object);
+    } else {
+        php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+    #endif /* PHP_MAJOR_VERSION >= 5 */
+        {
+            zval *p;
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "rsddddss", &p, &text, &text_len, &left, &top, &width, &height, &hmode, &hmode_len, &feature, &feature_len)) {
+    #if PHP_MAJOR_VERSION >= 5
+                php_std_error_handling();
+    #endif /* PHP_MAJOR_VERSION >= 5 */
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+        }
+    #if PHP_MAJOR_VERSION >= 5
+    }
+    php_std_error_handling();
+    #endif /* PHP_MAJOR_VERSION >= 5 */
+
+    pdf_try {
+	_result = PDF_show_boxed(pdf, text, left, top, width, height, hmode, feature);
+    } pdf_catch;
+
+    
+    RETURN_LONG(_result);
+} /* }}} */
+    
 /* {{{ proto string PDF_utf16_to_utf8(resource p, string utf16string);
  * Convert a string from UTF-16 format to UTF-8. */
 PHP_FUNCTION(pdf_utf16_to_utf8)
@@ -763,6 +825,56 @@ PHP_FUNCTION(pdf_utf16_to_utf8)
     RETURN_STRINGL((char *)retbuf, size, 1);
 }
 /* }}} */
+
+/* {{{ proto string PDF_utf32_to_utf16(
+resource pdf, string utf32string, string ordering)
+ * Convert a string from UTF-32 format to UTF-16. */
+PHP_FUNCTION(pdf_utf32_to_utf16)
+{
+    PDF *pdf;
+    const char * utf32string;
+    int len;
+    const char * ordering;
+    int ordering_len;
+    int size;
+    const char *_result = NULL;
+
+
+    #if PHP_MAJOR_VERSION >= 5
+    zval *object = getThis();
+
+    php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
+    if (object) {
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"ss", &utf32string, &len, &ordering, &ordering_len)) {
+            php_std_error_handling();
+            return;
+        }
+        P_FROM_OBJECT(pdf, object);
+    } else {
+    #endif /* PHP_MAJOR_VERSION >= 5 */
+        {
+            zval *p;
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"rss", &p, &utf32string, &len, &ordering, &ordering_len)) {
+    #if PHP_MAJOR_VERSION >= 5
+                php_std_error_handling();
+    #endif /* PHP_MAJOR_VERSION >= 5 */
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+        }
+    #if PHP_MAJOR_VERSION >= 5
+    }
+    php_std_error_handling();
+    #endif /* PHP_MAJOR_VERSION >= 5 */
+
+    pdf_try {
+        _result = PDF_utf32_to_utf16(pdf, utf32string, len, ordering, &size);
+    } pdf_catch;
+
+    RETURN_STRINGL((char *)_result, size, 1);
+} /* }}} */
 
 /* {{{ proto string PDF_utf8_to_utf16(resource p, string utf8string,
  * string ordering);

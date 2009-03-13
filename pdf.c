@@ -69,7 +69,7 @@
 
 /* set this define if you want to include GD support
  * this adds the (unofficial) function pdf_open_memory_image()
-#define PDFLIB_WITH_GD_SUPPORT
+#define PDFLIB_WITH_GD_SUPPORT 1
 */
 
 /* }}} */
@@ -548,7 +548,7 @@ zend_module_entry pdf_module_entry = {
 };
 /* }}} */
 
-#ifdef COMPILE_DL_PDFLIB
+#if defined(COMPILE_DL_PDF) || defined(COMPILE_DL_PDFLIB)
 ZEND_GET_MODULE(pdf)
 #endif /* COMPILE_DL_PDFLIB */
 
@@ -6931,7 +6931,7 @@ PHP_FUNCTION(pdf_show_boxed)
     #endif /* PHP_MAJOR_VERSION >= 5 */
 
     pdf_try {
-        retval = PDF_show_boxed2(pdf, text, tlen, left, top, width, height,
+        retval = PDF_show_boxed(pdf, text, left, top, width, height,
                     hmode, feature);
     } pdf_catch;
 

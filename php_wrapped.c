@@ -6966,63 +6966,6 @@ PHP_FUNCTION(pdf_show)
 } /* }}} */
 
     
-/* {{{ proto int PDF_show_boxed(resource p, string text, double left, double top, double width, double height, string hmode, string feature)
- * Deprecated, use PDF_fit_textline() or PDF_fit_textflow(). */
-PHP_FUNCTION(pdf_show_boxed)
-{
-    PDF *pdf;
-    const char * text;
-    int text_len;
-    double left;
-    double top;
-    double width;
-    double height;
-    const char * hmode;
-    int hmode_len;
-    const char * feature;
-    int feature_len;
-    int _result = 0;
-
-
-    #if PHP_MAJOR_VERSION >= 5
-    zval *object = getThis();
-
-    if (object) {
-        php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-                        "sddddss", &text, &text_len, &left, &top, &width, &height, &hmode, &hmode_len, &feature, &feature_len)) {
-            php_std_error_handling();
-            return;
-        }
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        php_set_error_handling(EH_THROW, pdflib_exception_class TSRMLS_CC);
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-        {
-            zval *p;
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-                        "rsddddss", &p, &text, &text_len, &left, &top, &width, &height, &hmode, &hmode_len, &feature, &feature_len)) {
-    #if PHP_MAJOR_VERSION >= 5
-                php_std_error_handling();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-        }
-    #if PHP_MAJOR_VERSION >= 5
-    }
-    php_std_error_handling();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-
-    pdf_try {
-	_result = PDF_show_boxed2(pdf, text, text_len, left, top, width, height, hmode, feature);
-    } pdf_catch;
-
-    
-    RETURN_LONG(_result);
-} /* }}} */
-
-    
 /* {{{ proto bool PDF_show_xy(resource p, string text, double x, double y)
  * Same as PDF_show_xy() but with explicit string length. */
 PHP_FUNCTION(pdf_show_xy)
@@ -7459,7 +7402,6 @@ PHP_FUNCTION(pdf_translate)
     PHP_FE(pdf_shading_pattern, NULL)
     PHP_FE(pdf_shfill, NULL)
     PHP_FE(pdf_show, NULL)
-    PHP_FE(pdf_show_boxed, NULL)
     PHP_FE(pdf_show_xy, NULL)
     PHP_FE(pdf_skew, NULL)
     PHP_FE(pdf_stringwidth, NULL)
@@ -7583,7 +7525,6 @@ PHP_FUNCTION(pdf_translate)
     PDF_ME_MAPPING(shading_pattern, pdf_shading_pattern, NULL)
     PDF_ME_MAPPING(shfill, pdf_shfill, NULL)
     PDF_ME_MAPPING(show, pdf_show, NULL)
-    PDF_ME_MAPPING(show_boxed, pdf_show_boxed, NULL)
     PDF_ME_MAPPING(show_xy, pdf_show_xy, NULL)
     PDF_ME_MAPPING(skew, pdf_skew, NULL)
     PDF_ME_MAPPING(stringwidth, pdf_stringwidth, NULL)
@@ -7737,7 +7678,6 @@ PHP_FUNCTION(pdf_shading);
 PHP_FUNCTION(pdf_shading_pattern);
 PHP_FUNCTION(pdf_shfill);
 PHP_FUNCTION(pdf_show);
-PHP_FUNCTION(pdf_show_boxed);
 PHP_FUNCTION(pdf_show_xy);
 PHP_FUNCTION(pdf_skew);
 PHP_FUNCTION(pdf_stringwidth);

@@ -28,19 +28,20 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto
   <email>steinm@php.net</email>
   <active>yes</active>
  </lead>
- <date>2008-03-10</date>
- <time>22:49:32</time>
+ <date>2009-03-13</date>
+ <time>12:49:32</time>
  <version>
-  <release>2.1.5</release>
-  <api>2.1.5</api>
+  <release>2.1.6</release>
+  <api>2.1.6</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
- <notes>- switched to package.xml 2.0 Format
-- improved exception handling
+ <notes>- added PDF_utf32_to_utf16()
+ - improved show_boxed() function
+ - fixed GD_SUPPORT (not supported)
     
  </notes>
  <contents>
