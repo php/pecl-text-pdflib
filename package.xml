@@ -35,6 +35,7 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>- fixed [PECL-BUG] Bug #16066 [NEW]: Missing php_pdflib.h in archive.
+ </notes>
  <contents>
   <dir name="/">
    <file md5sum="c6258fc3a9b86c0bda3fb583a764f469" name="config.m4" role="src" />
