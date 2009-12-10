@@ -38,12 +38,19 @@ PHP_MSHUTDOWN_FUNCTION(pdf);
 #include "php_wrapped.c"
 #undef _WRAP_FUNCTION_ENTRY3
 
+PHP_FUNCTION(pdf_new);
+PHP_FUNCTION(pdf_delete);
+PHP_FUNCTION(pdf_get_pdi_parameter);
 PHP_FUNCTION(pdf_open_pdi);
-PHP_FUNCTION(pdf_open_ccitt);
+PHP_FUNCTION(pdf_open_image);
 PHP_FUNCTION(pdf_show_boxed);
+PHP_FUNCTION(pdf_setpolydash);
 PHP_FUNCTION(pdf_utf16_to_utf8);
 PHP_FUNCTION(pdf_utf32_to_utf16);
 PHP_FUNCTION(pdf_utf8_to_utf16);
+PHP_FUNCTION(pdf_utf32_to_utf8);
+PHP_FUNCTION(pdf_utf8_to_utf32);
+PHP_FUNCTION(pdf_utf16_to_utf32);
 
 #ifdef ZTS
 #define PDFG(v) TSRMG(pdf_globals_id, php_pdf_globals *, v)

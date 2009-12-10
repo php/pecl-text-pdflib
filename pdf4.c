@@ -2348,6 +2348,9 @@ PHP_FUNCTION(pdf_open_file)
 		if (php_check_open_basedir(filename TSRMLS_CC) || (PG(safe_mode) && !php_checkuid(filename, "wb+", CHECKUID_CHECK_MODE_PARAM))) {
 			RETURN_FALSE;
 		}
+		if (php_check_open_basedir(filename TSRMLS_CC)) {
+		    RETURN_FALSE;
+		}
 
 		pdf_file = PDF_open_file(pdf, filename);
 	} else {
