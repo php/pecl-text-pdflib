@@ -83,7 +83,7 @@ static int le_pdf;
 
 /* {{{ pdf_functions[]
  */
-function_entry pdf_functions[] = {
+zend_function_entry pdf_functions[] = {
 	PHP_FE(pdf_new, NULL)		/* new function */
 	PHP_FE(pdf_delete, NULL)	/* new function */
 	PHP_FE(pdf_open_file, NULL)	/* new function */

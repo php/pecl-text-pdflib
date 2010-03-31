@@ -18,7 +18,7 @@
 
 static int le_pdf;
 
-function_entry pdf_functions[] = {
+zend_function_entry pdf_functions[] = {
 #define _WRAP_FUNCTION_ENTRY
 #include "php_wrapped.c"
 #undef _WRAP_FUNCTION_ENTRY
@@ -63,7 +63,7 @@ typedef struct _pdflib_object {
     PDF *p;
 } pdflib_object;
 
-function_entry pdflib_funcs[] = {
+zend_function_entry pdflib_funcs[] = {
 #define _WRAP_FUNCTION_ENTRY2
 #include "php_wrapped.c"
 #undef _WRAP_FUNCTION_ENTRY2

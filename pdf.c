@@ -132,7 +132,7 @@
 
 static int le_pdf;
 
-function_entry pdf_functions[] = {
+zend_function_entry pdf_functions[] = {
 #if PDFLIB_MAJORVERSION >= 6
     PHP_FE(pdf_activate_item, NULL)
 #endif /* PDFlib >= 6.0.0 */
@@ -335,7 +335,7 @@ typedef struct _pdflib_object {
     PDF *p;
 } pdflib_object;
 
-function_entry pdflib_funcs[] = {
+zend_function_entry pdflib_funcs[] = {
 #if PDFLIB_MAJORVERSION >= 6
     PDF_ME_MAPPING(activate_item, pdf_activate_item, NULL)
 #endif /* PDFlib >= 6.0.0 */
