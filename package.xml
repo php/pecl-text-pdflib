@@ -7,12 +7,13 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <channel>pecl.php.net</channel>
  <summary>Creating PDF on the fly with the PDFlib library</summary>
  <description>This extension wraps the PDFlib programming library
-for processing PDF on the fly, available from PDFlib at
-GmbH http://www.pdflib.com. 
+for processing PDF on the fly, created by Thomas Merz. 
 
+PDFlib is available for commercial licensing and under the PDFlib Lite License
+(see http://www.pdflib.com/fileadmin/pdflib/pdf/license/PDFlib-Lite-license.pdf)
 
 More info on how to use PDFlib with PHP can be found at
-http://www.pdflib.com/developer-center/technical-documentation/php-howto
+http://www.pdflib.com/fileadmin/pdflib/pdf/support/PDFlib-in-PHP-HowTo.pdf
 
  </description>
  <lead>
@@ -27,18 +28,21 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto
   <email>steinm@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-12-10</date>
- <time>17:00:00</time>
+ <date>2010-04-26</date>
+ <time>12:49:32</time>
  <version>
-  <release>2.2.0</release>
-  <api>2.2.0</api>
+  <release>2.1.8</release>
+  <api>2.1.8</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
- <notes>- added support for PDFlib 8
+ <notes>PDFlib 7.0.5
+ - support PHP 5.3 (don't use deprecated functions)
+ - added php_check_open_basedir
+ - added missing functions to oo php wrapper
  </notes>
  <contents>
   <dir name="/">

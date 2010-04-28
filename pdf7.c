@@ -21,20 +21,9 @@ static int le_pdf;
 zend_function_entry pdf_functions[] = {
 #define _WRAP_FUNCTION_ENTRY
 #include "php_wrapped.c"
-#undef _WRAP_FUNCTION_ENTRY
     PHP_FE(pdf_new, NULL)
     PHP_FE(pdf_delete, NULL)
-    PHP_FE(pdf_get_pdi_parameter, NULL)
-    PHP_FE(pdf_open_image, NULL)
-    PHP_FE(pdf_open_pdi, NULL)
-    PHP_FE(pdf_setpolydash, NULL)
-    PHP_FE(pdf_show_boxed, NULL)
-    PHP_FE(pdf_utf16_to_utf8, NULL)
-    PHP_FE(pdf_utf32_to_utf16, NULL)
-    PHP_FE(pdf_utf8_to_utf16, NULL)
-    PHP_FE(pdf_utf32_to_utf8, NULL)
-    PHP_FE(pdf_utf8_to_utf32, NULL)
-    PHP_FE(pdf_utf16_to_utf32, NULL)
+#undef _WRAP_FUNCTION_ENTRY
     {NULL, NULL, NULL}
 };
 /* }}} */
@@ -51,7 +40,10 @@ zend_class_entry *pdflib_exception_class;
 /* allow to be compiled with various PHP Versions allthough
    the API of the PHP_ME_MAPPING() Macro changed */
 #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2
+    /* use this to make the PDFlib class extendable
     #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
+    */
+    #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c, 0)
 #else /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
     #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c)
 #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
@@ -75,17 +67,6 @@ zend_function_entry pdflib_funcs[] = {
     PHP_ME_MAPPING(__construct, pdf_new, NULL)
 #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 2 */
     PDF_ME_MAPPING(delete, pdf_delete, NULL)
-    PDF_ME_MAPPING(get_pdi_parameter, pdf_get_pdi_parameter, NULL)
-    PDF_ME_MAPPING(open_pdi, pdf_open_pdi, NULL)
-    PDF_ME_MAPPING(open_image, pdf_open_image, NULL)
-    PDF_ME_MAPPING(setpolydash, pdf_setpolydash, NULL)
-    PDF_ME_MAPPING(show_boxed, pdf_show_boxed, NULL)
-    PDF_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
-    PDF_ME_MAPPING(utf32_to_utf16, pdf_utf32_to_utf16, NULL)
-    PDF_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
-    PDF_ME_MAPPING(utf32_to_utf8, pdf_utf32_to_utf8, NULL)
-    PDF_ME_MAPPING(utf8_to_utf32, pdf_utf8_to_utf32, NULL)
-    PDF_ME_MAPPING(utf16_to_utf32, pdf_utf16_to_utf32, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -390,7 +371,7 @@ PHP_MINFO_FUNCTION(pdf)
 
     php_info_print_table_start();
     php_info_print_table_header(2, "PDF Support", "enabled" );
-    php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_LONG_VERSIONSTRING );
+    php_info_print_table_row(2, "PDFlib GmbH Version", PDFLIB_VERSIONSTRING );
     php_info_print_table_row(2, "PECL Version", PHP_PDFLIB_VERSION);
     php_info_print_table_row(2, "Revision", "$Revision$" );
     php_info_print_table_end();
@@ -442,7 +423,10 @@ PHP_MINIT_FUNCTION(pdf)
     memcpy(&pdflib_handlers,
             zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     pdflib_handlers.clone_obj = NULL;
+    /* use this to make the PDFlib class extendable
     pdflib_class->ce_flags |= ZEND_ACC_FINAL;
+    */
+    pdflib_class->ce_flags |= ZEND_ACC_FINAL_CLASS;;
     pdflib_class->constructor->common.fn_flags |= ZEND_ACC_PROTECTED;
     }
 #endif /* PHP_MAJOR_VERSION >= 5 */
@@ -506,64 +490,6 @@ PHP_METHOD(PDFlibException, get_errnum)
 #include "php_wrapped.c"
 #undef _WRAP_CODE
 
-/* {{{ proto string PDF_get_pdi_parameter(
-resource p, string key, int doc, int page, int reserved)
- * Deprecated, use PDF_pcos_get_string(). */
-PHP_FUNCTION(pdf_get_pdi_parameter)
-{
-    PDF *pdf;
-    const char * key;
-    int key_len;
-    long doc;
-    long page;
-    long reserved;
-    int len;
-    const char *_result = NULL;
-
-
-    #if PHP_MAJOR_VERSION >= 5
-    zval *object = getThis();
-    DEFINE_ERROR_HANDLER
-
-    if (object) {
-        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"slll",&key, &key_len,&doc,&page,&reserved)) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-        {
-            zval *p;
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rslll", &p,&key, &key_len,&doc,&page,&reserved)) {
-    #if PHP_MAJOR_VERSION >= 5
-                RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-        }
-    #if PHP_MAJOR_VERSION >= 5
-    }
-    RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
-    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_string().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
-
-    pdf_try {
-	_result =  (const char *)PDF_get_pdi_parameter(pdf, key, doc, page, reserved, &len);
-    } pdf_catch;
-
-    
-    RETURN_STRINGL(_result ? (char *)_result : "", len, 1);
-} /* }}} */
-
 /* {{{ proto int pdf_open_pdi(resource p, string filename, string optlist,
  * int reserved);
  * Open a disk-based or virtual PDF document and prepare it for later use. */
@@ -614,15 +540,13 @@ PHP_FUNCTION(pdf_open_pdi)
 #endif /* VIRTUAL_DIR */
 
 #ifdef PDFLIB_CHECK_OPEN_BASEDIR
-    if (php_check_open_basedir(vfilename TSRMLS_CC) || (PG(safe_mode) &&
-            !php_checkuid(vfilename, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
-        RETURN_FALSE;
+    if (vfilename && *vfilename) {
+	if (php_check_open_basedir(vfilename TSRMLS_CC) || (PG(safe_mode) &&
+		!php_checkuid(vfilename, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
+	    RETURN_FALSE;
+    }
     }
 #endif /* PDFLIB_CHECK_OPEN_BASEDIR */
-
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
-    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_open_pdi_document().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
 
     pdf_try {
         retval = PDF_open_pdi(pdf, vfilename, optlist, (int)len);
@@ -763,10 +687,6 @@ PHP_FUNCTION(pdf_open_image)
     RESTORE_ERROR_HANDLING();
     #endif /* PHP_MAJOR_VERSION >= 5 */
 
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
-    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image() with virtual files.");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
-
     pdf_try {
         retval = PDF_open_image(pdf, imagetype, source, data, length,
             (int)width, (int)height, (int)components, (int)bpc, params);
@@ -829,10 +749,6 @@ PHP_FUNCTION(pdf_setpolydash)
         zend_hash_move_forward(array);
     }
 
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
-    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setdashpattern().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
-
     pdf_try {
         PDF_setpolydash(pdf, xarray, len);
     } pdf_catch;
@@ -891,10 +807,6 @@ PHP_FUNCTION(pdf_show_boxed)
     }
     RESTORE_ERROR_HANDLING();
     #endif /* PHP_MAJOR_VERSION >= 5 */
-
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
-    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_textline() or PDF_fit_textflow().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
 
     pdf_try {
 	_result = PDF_show_boxed(pdf, text, left, top, width, height, hmode, feature);
@@ -1057,166 +969,6 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
 }
 /* }}} */
 
-
-    
-/* {{{ proto string PDF_utf32_to_utf8(
-resource p, string utf32string)
- * Convert a string from UTF-32 format to UTF-8. */
-PHP_FUNCTION(pdf_utf32_to_utf8)
-{
-    PDF *pdf;
-    const char * utf32string;
-    int utf32string_len;
-    int size;
-    const char *_result = NULL;
-
-
-    #if PHP_MAJOR_VERSION >= 5
-    zval *object = getThis();
-    DEFINE_ERROR_HANDLER
-
-    if (object) {
-        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"s",&utf32string, &utf32string_len)) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-        {
-            zval *p;
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rs", &p,&utf32string, &utf32string_len)) {
-    #if PHP_MAJOR_VERSION >= 5
-		RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-        }
-    #if PHP_MAJOR_VERSION >= 5
-    }
-    RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-
-    pdf_try {
-	_result =  (const char *)PDF_utf32_to_utf8(pdf, utf32string, utf32string_len, &size);
-    } pdf_catch;
-
-    
-    RETURN_STRINGL(_result ? (char *)_result : "", size, 1);
-} /* }}} */
-
-    
-/* {{{ proto string PDF_utf8_to_utf32(
-resource p, string utf8string, string ordering)
- * Convert a string from UTF-8 format to UTF-32. */
-PHP_FUNCTION(pdf_utf8_to_utf32)
-{
-    PDF *pdf;
-    const char * utf8string;
-    int utf8string_len;
-    const char * ordering;
-    int ordering_len;
-    int size;
-    const char *_result = NULL;
-
-
-    #if PHP_MAJOR_VERSION >= 5
-    zval *object = getThis();
-    DEFINE_ERROR_HANDLER
-
-    if (object) {
-        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"ss",&utf8string, &utf8string_len,&ordering, &ordering_len)) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-        {
-            zval *p;
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rss", &p,&utf8string, &utf8string_len,&ordering, &ordering_len)) {
-    #if PHP_MAJOR_VERSION >= 5
-		RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-        }
-    #if PHP_MAJOR_VERSION >= 5
-    }
-    RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-
-    pdf_try {
-	_result =  (const char *)PDF_utf8_to_utf32(pdf, utf8string, ordering, &size);
-    } pdf_catch;
-
-    
-    RETURN_STRINGL(_result ? (char *)_result : "", size, 1);
-} /* }}} */
-
-    
-/* {{{ proto string PDF_utf16_to_utf32(
-resource p, string utf16string, string ordering)
- * Convert a string from UTF-16 format to UTF-32. */
-PHP_FUNCTION(pdf_utf16_to_utf32)
-{
-    PDF *pdf;
-    const char * utf16string;
-    int utf16string_len;
-    const char * ordering;
-    int ordering_len;
-    int size;
-    const char *_result = NULL;
-
-
-    #if PHP_MAJOR_VERSION >= 5
-    zval *object = getThis();
-    DEFINE_ERROR_HANDLER
-
-    if (object) {
-        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"ss",&utf16string, &utf16string_len,&ordering, &ordering_len)) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-        {
-            zval *p;
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rss", &p,&utf16string, &utf16string_len,&ordering, &ordering_len)) {
-    #if PHP_MAJOR_VERSION >= 5
-		RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-        }
-    #if PHP_MAJOR_VERSION >= 5
-    }
-    RESTORE_ERROR_HANDLING();
-    #endif /* PHP_MAJOR_VERSION >= 5 */
-
-    pdf_try {
-	_result =  (const char *)PDF_utf16_to_utf32(pdf, utf16string, utf16string_len, ordering, &size);
-    } pdf_catch;
-
-    
-    RETURN_STRINGL(_result ? (char *)_result : "", size, 1);
-} /* }}} */
 /*
  * Local variables:
  * tab-width: 8

@@ -25,10 +25,24 @@
    $Id$
    synced with pdflib.h 1.237 */
 
-/* Copyright (C) 1997-1999 Thomas Merz. 2000-2009 PDFlib GmbH */
+/* PDFlib 2.02 ... 4.0.x is subject to the ALADDIN FREE PUBLIC LICENSE.
+   PDFlib 5.0.x ... 6.0.x is subject to the  PDFlib Lite License Agreement
+   Copyright (C) 1997-1999 Thomas Merz. 2000-2004 PDFlib GmbH */
 /* Note that there is no code from the pdflib package in this file */
 
 /*
+    This PDFlib Wrapper Code works with PDFlib 5 and higher.
+
+    A new module was introduced, as PDFlib 5 supports a method to
+    handle the special returnvalues needed for PHP in the PDFlib core now.
+
+    This is necesarry, as the new concept of optionlists in PDFlib allows
+    to pass handles to PDFlib objects and filenames inside of optionlists.
+
+    Before the wrapper added some offset to handles returned by PDFlib
+    to fit into scheme used by php to return 0 in case of errors, whereas
+    in PDFlib the errorcode is -1 and "0" is a valid handle.
+
     As the optionlist may contain filenames on various places the
     VIRTUAL_DIR support and the CHECK_OPEN_BASEDIR checks implemented
     in the wrapper will not work reliable too. So VIRTUAL_DIR support
@@ -39,7 +53,7 @@
     - supports PDFlib 5 and PDFlib 6
     - adds an Object Oriented API to PDFlib (for PHP 5 only)
     - uses PHP exceptions (for PHP 5 only)
-    - only official PDFlib APIs are included (plus pdf_open_memory_image)
+    - only official PDFlib API's are included (plus pdf_open_memory_image)
     - builds with older PHP Version too
       (tested with PHP 4.1.0, 4.2.1, 4.3.0, and 5.0.0RC2.)
     - disables VIRTUAL_DIR support (use SerachPath instead)
