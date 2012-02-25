@@ -322,8 +322,9 @@ pdflib_object_new_ex(zend_class_entry *class_type, pdflib_object**obj TSRMLS_DC)
 {
     zend_object_value retval;
     pdflib_object *intern;
+#if PHP_VERSION_ID < 50399
     zval *tmp;
-
+#endif
 
     intern = emalloc(sizeof(pdflib_object));
     memset(intern, 0, sizeof(pdflib_object));
