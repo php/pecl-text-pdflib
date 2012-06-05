@@ -339,7 +339,7 @@ pdflib_object_new_ex(zend_class_entry *class_type, pdflib_object**obj TSRMLS_DC)
             (copy_ctor_func_t) zval_add_ref,
             (void *) &tmp, sizeof(zval *));
 #else
-    object_properties_init( (zend_object*)intern, class_type );
+    object_properties_init(&(intern->std), class_type);
 #endif
 
     retval.handle = zend_objects_store_put(intern,  NULL,
