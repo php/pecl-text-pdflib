@@ -1,3 +1,3 @@
 /* $Id$ */
 
-#define PHP_PDFLIB_VERSION "2.1.9"
+#define PHP_PDFLIB_VERSION "3.0.0"
