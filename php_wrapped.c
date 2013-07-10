@@ -1082,7 +1082,6 @@ PHP_FUNCTION(pdf_begin_font)
 /* {{{ proto bool PDF_begin_glyph(
 resource p, string glyphname, double wx, double llx, double lly, double urx, double ury)
  * Deprecated, use PDF_begin_glyph_ext(). */
-#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_begin_glyph)
 {
     PDF *pdf;
@@ -1131,13 +1130,13 @@ PHP_FUNCTION(pdf_begin_glyph)
     
     RETURN_TRUE;
 }
-#endif /* PDFLIB_MAJORVERSION >= 9 */
 /* }}} */
 
     
 /* {{{ proto bool PDF_begin_glyph_ext(
 resource p, int uv, string optlist)
  * Start a glyph definition for a Type 3 font. */
+#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_begin_glyph_ext)
 {
     PDF *pdf;
@@ -1178,6 +1177,7 @@ PHP_FUNCTION(pdf_begin_glyph_ext)
     
     RETURN_TRUE;
 }
+#endif /* PDFLIB_MAJORVERSION >= 9 */
 /* }}} */
 
     
@@ -3016,6 +3016,7 @@ PHP_FUNCTION(pdf_delete_textflow)
 /* {{{ proto bool PDF_draw_path(
 resource p, int path, double x, double y, string optlist)
  * Draw a path object. */
+#if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_draw_path)
 {
     PDF *pdf;
@@ -3058,6 +3059,7 @@ PHP_FUNCTION(pdf_draw_path)
     
     RETURN_TRUE;
 }
+#endif /* PDFLIB_MAJORVERSION >= 8 */
 /* }}} */
 
     
@@ -5351,7 +5353,6 @@ PHP_FUNCTION(pdf_info_textline)
 /* {{{ proto bool PDF_initgraphics(
 resource p)
  * Deprecated, use PDF_set_graphics_option(). */
-#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_initgraphics)
 {
     PDF *pdf;
@@ -5389,7 +5390,6 @@ PHP_FUNCTION(pdf_initgraphics)
     
     RETURN_TRUE;
 }
-#endif /* PDFLIB_MAJORVERSION >= 9 */
 /* }}} */
 
     
@@ -7044,6 +7044,7 @@ PHP_FUNCTION(pdf_set_border_style)
 /* {{{ proto bool PDF_set_graphics_option(
 resource p, string optlist)
  * Set one or more graphics appearance options. */
+#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_set_graphics_option)
 {
     PDF *pdf;
@@ -7083,6 +7084,7 @@ PHP_FUNCTION(pdf_set_graphics_option)
     
     RETURN_TRUE;
 }
+#endif /* PDFLIB_MAJORVERSION >= 9 */
 /* }}} */
 
     
@@ -9031,10 +9033,10 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PHP_FE(pdf_begin_dpart, NULL)
 #endif /* (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9 */
     PHP_FE(pdf_begin_font, NULL)
-#if PDFLIB_MAJORVERSION >= 9
     PHP_FE(pdf_begin_glyph, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 9 */
+#if PDFLIB_MAJORVERSION >= 9
     PHP_FE(pdf_begin_glyph_ext, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 9 */
     PHP_FE(pdf_begin_item, NULL)
     PHP_FE(pdf_begin_layer, NULL)
     PHP_FE(pdf_begin_mc, NULL)
@@ -9084,7 +9086,9 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PHP_FE(pdf_delete_pvf, NULL)
     PHP_FE(pdf_delete_table, NULL)
     PHP_FE(pdf_delete_textflow, NULL)
+#if PDFLIB_MAJORVERSION >= 8
     PHP_FE(pdf_draw_path, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 8 */
 #if PDFLIB_MAJORVERSION >= 8
     PHP_FE(pdf_ellipse, NULL)
 #endif /* PDFLIB_MAJORVERSION >= 8 */
@@ -9159,9 +9163,7 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PHP_FE(pdf_info_table, NULL)
     PHP_FE(pdf_info_textflow, NULL)
     PHP_FE(pdf_info_textline, NULL)
-#if PDFLIB_MAJORVERSION >= 9
     PHP_FE(pdf_initgraphics, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 9 */
     PHP_FE(pdf_lineto, NULL)
     PHP_FE(pdf_load_3ddata, NULL)
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
@@ -9208,7 +9210,9 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PHP_FE(pdf_set_border_color, NULL)
     PHP_FE(pdf_set_border_dash, NULL)
     PHP_FE(pdf_set_border_style, NULL)
+#if PDFLIB_MAJORVERSION >= 9
     PHP_FE(pdf_set_graphics_option, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 9 */
     PHP_FE(pdf_set_gstate, NULL)
     PHP_FE(pdf_set_info, NULL)
     PHP_FE(pdf_set_layer_dependency, NULL)
@@ -9287,10 +9291,10 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PDF_ME_MAPPING(begin_dpart, pdf_begin_dpart, NULL)
 #endif /* (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9 */
     PDF_ME_MAPPING(begin_font, pdf_begin_font, NULL)
-#if PDFLIB_MAJORVERSION >= 9
     PDF_ME_MAPPING(begin_glyph, pdf_begin_glyph, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 9 */
+#if PDFLIB_MAJORVERSION >= 9
     PDF_ME_MAPPING(begin_glyph_ext, pdf_begin_glyph_ext, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 9 */
     PDF_ME_MAPPING(begin_item, pdf_begin_item, NULL)
     PDF_ME_MAPPING(begin_layer, pdf_begin_layer, NULL)
     PDF_ME_MAPPING(begin_mc, pdf_begin_mc, NULL)
@@ -9338,7 +9342,9 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PDF_ME_MAPPING(delete_pvf, pdf_delete_pvf, NULL)
     PDF_ME_MAPPING(delete_table, pdf_delete_table, NULL)
     PDF_ME_MAPPING(delete_textflow, pdf_delete_textflow, NULL)
+#if PDFLIB_MAJORVERSION >= 8
     PDF_ME_MAPPING(draw_path, pdf_draw_path, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 8 */
 #if PDFLIB_MAJORVERSION >= 8
     PDF_ME_MAPPING(ellipse, pdf_ellipse, NULL)
 #endif /* PDFLIB_MAJORVERSION >= 8 */
@@ -9411,9 +9417,7 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PDF_ME_MAPPING(info_table, pdf_info_table, NULL)
     PDF_ME_MAPPING(info_textflow, pdf_info_textflow, NULL)
     PDF_ME_MAPPING(info_textline, pdf_info_textline, NULL)
-#if PDFLIB_MAJORVERSION >= 9
     PDF_ME_MAPPING(initgraphics, pdf_initgraphics, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 9 */
     PDF_ME_MAPPING(lineto, pdf_lineto, NULL)
     PDF_ME_MAPPING(load_3ddata, pdf_load_3ddata, NULL)
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
@@ -9452,7 +9456,9 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PDF_ME_MAPPING(rotate, pdf_rotate, NULL)
     PDF_ME_MAPPING(save, pdf_save, NULL)
     PDF_ME_MAPPING(scale, pdf_scale, NULL)
+#if PDFLIB_MAJORVERSION >= 9
     PDF_ME_MAPPING(set_graphics_option, pdf_set_graphics_option, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 9 */
     PDF_ME_MAPPING(set_gstate, pdf_set_gstate, NULL)
     PDF_ME_MAPPING(set_info, pdf_set_info, NULL)
     PDF_ME_MAPPING(set_layer_dependency, pdf_set_layer_dependency, NULL)
@@ -9532,10 +9538,10 @@ PHP_FUNCTION(pdf_begin_document);
 PHP_FUNCTION(pdf_begin_dpart);
 #endif /* (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9 */
 PHP_FUNCTION(pdf_begin_font);
-#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_begin_glyph);
-#endif /* PDFLIB_MAJORVERSION >= 9 */
+#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_begin_glyph_ext);
+#endif /* PDFLIB_MAJORVERSION >= 9 */
 PHP_FUNCTION(pdf_begin_item);
 PHP_FUNCTION(pdf_begin_layer);
 PHP_FUNCTION(pdf_begin_mc);
@@ -9585,7 +9591,9 @@ PHP_FUNCTION(pdf_delete_path);
 PHP_FUNCTION(pdf_delete_pvf);
 PHP_FUNCTION(pdf_delete_table);
 PHP_FUNCTION(pdf_delete_textflow);
+#if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_draw_path);
+#endif /* PDFLIB_MAJORVERSION >= 8 */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_ellipse);
 #endif /* PDFLIB_MAJORVERSION >= 8 */
@@ -9660,9 +9668,7 @@ PHP_FUNCTION(pdf_info_pvf);
 PHP_FUNCTION(pdf_info_table);
 PHP_FUNCTION(pdf_info_textflow);
 PHP_FUNCTION(pdf_info_textline);
-#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_initgraphics);
-#endif /* PDFLIB_MAJORVERSION >= 9 */
 PHP_FUNCTION(pdf_lineto);
 PHP_FUNCTION(pdf_load_3ddata);
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
@@ -9709,7 +9715,9 @@ PHP_FUNCTION(pdf_scale);
 PHP_FUNCTION(pdf_set_border_color);
 PHP_FUNCTION(pdf_set_border_dash);
 PHP_FUNCTION(pdf_set_border_style);
+#if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_set_graphics_option);
+#endif /* PDFLIB_MAJORVERSION >= 9 */
 PHP_FUNCTION(pdf_set_gstate);
 PHP_FUNCTION(pdf_set_info);
 PHP_FUNCTION(pdf_set_layer_dependency);
