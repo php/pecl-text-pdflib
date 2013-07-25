@@ -15,11 +15,11 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
   <email>rjs@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-07-10</date>
- <time>12:00:00</time>
+ <date>2013-07-25</date>
+ <time>13:14:33</time>
  <version>
-  <release>3.0.0</release>
-  <api>3.0.0</api>
+  <release>3.0.1</release>
+  <api>3.0.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -27,19 +27,21 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-- support PDFlib 9
+- support PDFlib 9.0.1
 - fix bug https://bugs.php.net/bug.php?id=64455
+- support for PDFlib 7/8/9 and PDFlib Light
+- dropped support for PDFlib 6 and earlier
  </notes>
  <contents>
   <dir name="/">
-   <file name="config.m4" role="src" />
-   <file name="config.w32" role="src" />
-   <file name="CREDITS" role="doc" />
-   <file name="pdf.c" role="src" />
-   <file name="pdflib.dsp" role="src" />
-   <file name="php_pdflib.h" role="src" />
-   <file name="php_pdf.h" role="src" />
-   <file name="php_wrapped.c" role="src" />
+   <file md5sum="5612fd25ad0d9edb29a0857ffdfeccdd" name="config.m4" role="src" />
+   <file md5sum="5ac2d9ec1c9b34e7e32322b2bed12ff2" name="config.w32" role="src" />
+   <file md5sum="000f2db5a0795df72b7d3d34dc9f4d93" name="CREDITS" role="doc" />
+   <file md5sum="fa0393d5daccf664593fbc8d68eb6900" name="pdf.c" role="src" />
+   <file md5sum="c3b41dac0b91ebd6a27257b9227c47bc" name="pdflib.dsp" role="src" />
+   <file md5sum="9c0d65d490d53667bed88d83b4267653" name="php_pdflib.h" role="src" />
+   <file md5sum="25e9128323059ce1ddd8321918f0a58e" name="php_pdf.h" role="src" />
+   <file md5sum="f1b1c5c1e84a5ff8e5072f9a4e5c2af5" name="php_wrapped.c" role="src" />
   </dir>
  </contents>
  <dependencies>
