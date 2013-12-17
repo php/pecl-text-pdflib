@@ -1418,7 +1418,7 @@ PHP_FUNCTION(pdf_begin_page_ext)
     
 /* {{{ proto int PDF_begin_pattern(
 resource p, double width, double height, double xstep, double ystep, int painttype)
- * Start a pattern definition. */
+ * Deprecated, use PDF_begin_pattern_ext(). */
 PHP_FUNCTION(pdf_begin_pattern)
 {
     PDF *pdf;
@@ -1455,8 +1455,60 @@ PHP_FUNCTION(pdf_begin_pattern)
     }
     RESTORE_ERROR_HANDLING();
 
+    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_pattern_ext().");
+    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+
     pdf_try {
 	_result = PDF_begin_pattern(pdf, width, height, xstep, ystep, painttype);
+    } pdf_catch;
+
+    
+    RETURN_LONG(_result);
+}
+/* }}} */
+
+    
+/* {{{ proto int PDF_begin_pattern_ext(
+resource p, double width, double height, string optlist)
+ * Start a pattern definition with options. */
+PHP_FUNCTION(pdf_begin_pattern_ext)
+{
+    PDF *pdf;
+    double width;
+    double height;
+    const char * optlist;
+    int optlist_len;
+    int _result = 0;
+
+
+    zval *object = getThis();
+    DEFINE_ERROR_HANDLER
+
+    if (object) {
+        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"dds",&width,&height,&optlist, &optlist_len)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+        P_FROM_OBJECT(pdf, object);
+    } else {
+        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
+        {
+            zval *p;
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"rdds", &p,&width,&height,&optlist, &optlist_len)) {
+		RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+        }
+    }
+    RESTORE_ERROR_HANDLING();
+
+    pdf_try {
+	_result = PDF_begin_pattern_ext(pdf, width, height, optlist);
     } pdf_catch;
 
     
@@ -1610,16 +1662,16 @@ PHP_FUNCTION(pdf_circle)
 
     
 /* {{{ proto bool PDF_circular_arc(
-resource p, double x_1, double y_1, double x_2, double y_2)
+resource p, double x1, double y1, double x2, double y2)
  * Draw a circular arc segment defined by three points. */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_circular_arc)
 {
     PDF *pdf;
-    double x_1;
-    double y_1;
-    double x_2;
-    double y_2;
+    double x1;
+    double y1;
+    double x2;
+    double y2;
 
 
     zval *object = getThis();
@@ -1628,7 +1680,7 @@ PHP_FUNCTION(pdf_circular_arc)
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"dddd",&x_1,&y_1,&x_2,&y_2)) {
+"dddd",&x1,&y1,&x2,&y2)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
@@ -1638,7 +1690,7 @@ PHP_FUNCTION(pdf_circular_arc)
         {
             zval *p;
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rdddd", &p,&x_1,&y_1,&x_2,&y_2)) {
+"rdddd", &p,&x1,&y1,&x2,&y2)) {
 		RESTORE_ERROR_HANDLING();
                 return;
             }
@@ -1648,7 +1700,7 @@ PHP_FUNCTION(pdf_circular_arc)
     RESTORE_ERROR_HANDLING();
 
     pdf_try {
-	PDF_circular_arc(pdf, x_1, y_1, x_2, y_2);
+	PDF_circular_arc(pdf, x1, y1, x2, y2);
     } pdf_catch;
 
     
@@ -2735,17 +2787,17 @@ PHP_FUNCTION(pdf_create_textflow)
 
     
 /* {{{ proto bool PDF_curveto(
-resource p, double x_1, double y_1, double x_2, double y_2, double x_3, double y_3)
+resource p, double x1, double y1, double x2, double y2, double x3, double y3)
  * Draw a Bezier curve from the current point, using 3 more control points. */
 PHP_FUNCTION(pdf_curveto)
 {
     PDF *pdf;
-    double x_1;
-    double y_1;
-    double x_2;
-    double y_2;
-    double x_3;
-    double y_3;
+    double x1;
+    double y1;
+    double x2;
+    double y2;
+    double x3;
+    double y3;
 
 
     zval *object = getThis();
@@ -2754,7 +2806,7 @@ PHP_FUNCTION(pdf_curveto)
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"dddddd",&x_1,&y_1,&x_2,&y_2,&x_3,&y_3)) {
+"dddddd",&x1,&y1,&x2,&y2,&x3,&y3)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
@@ -2764,7 +2816,7 @@ PHP_FUNCTION(pdf_curveto)
         {
             zval *p;
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rdddddd", &p,&x_1,&y_1,&x_2,&y_2,&x_3,&y_3)) {
+"rdddddd", &p,&x1,&y1,&x2,&y2,&x3,&y3)) {
 		RESTORE_ERROR_HANDLING();
                 return;
             }
@@ -2774,7 +2826,7 @@ PHP_FUNCTION(pdf_curveto)
     RESTORE_ERROR_HANDLING();
 
     pdf_try {
-	PDF_curveto(pdf, x_1, y_1, x_2, y_2, x_3, y_3);
+	PDF_curveto(pdf, x1, y1, x2, y2, x3, y3);
     } pdf_catch;
 
     
@@ -8216,21 +8268,21 @@ PHP_FUNCTION(pdf_setrgbcolor_stroke)
 
     
 /* {{{ proto int PDF_shading(
-resource p, string shtype, double x_0, double y_0, double x_1, double y_1, double c_1, double c_2, double c_3, double c_4, string optlist)
+resource p, string shtype, double x0, double y0, double x1, double y1, double c1, double c2, double c3, double c4, string optlist)
  * Define a blend from the current fill color to another color. */
 PHP_FUNCTION(pdf_shading)
 {
     PDF *pdf;
     const char * shtype;
     int shtype_len;
-    double x_0;
-    double y_0;
-    double x_1;
-    double y_1;
-    double c_1;
-    double c_2;
-    double c_3;
-    double c_4;
+    double x0;
+    double y0;
+    double x1;
+    double y1;
+    double c1;
+    double c2;
+    double c3;
+    double c4;
     const char * optlist;
     int optlist_len;
     int _result = 0;
@@ -8242,7 +8294,7 @@ PHP_FUNCTION(pdf_shading)
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"sdddddddds",&shtype, &shtype_len,&x_0,&y_0,&x_1,&y_1,&c_1,&c_2,&c_3,&c_4,&optlist, &optlist_len)) {
+"sdddddddds",&shtype, &shtype_len,&x0,&y0,&x1,&y1,&c1,&c2,&c3,&c4,&optlist, &optlist_len)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
@@ -8252,7 +8304,7 @@ PHP_FUNCTION(pdf_shading)
         {
             zval *p;
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rsdddddddds", &p,&shtype, &shtype_len,&x_0,&y_0,&x_1,&y_1,&c_1,&c_2,&c_3,&c_4,&optlist, &optlist_len)) {
+"rsdddddddds", &p,&shtype, &shtype_len,&x0,&y0,&x1,&y1,&c1,&c2,&c3,&c4,&optlist, &optlist_len)) {
 		RESTORE_ERROR_HANDLING();
                 return;
             }
@@ -8262,7 +8314,7 @@ PHP_FUNCTION(pdf_shading)
     RESTORE_ERROR_HANDLING();
 
     pdf_try {
-	_result = PDF_shading(pdf, shtype, x_0, y_0, x_1, y_1, c_1, c_2, c_3, c_4, optlist);
+	_result = PDF_shading(pdf, shtype, x0, y0, x1, y1, c1, c2, c3, c4, optlist);
     } pdf_catch;
 
     
@@ -9043,6 +9095,7 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PHP_FE(pdf_begin_page, NULL)
     PHP_FE(pdf_begin_page_ext, NULL)
     PHP_FE(pdf_begin_pattern, NULL)
+    PHP_FE(pdf_begin_pattern_ext, NULL)
     PHP_FE(pdf_begin_template, NULL)
     PHP_FE(pdf_begin_template_ext, NULL)
     PHP_FE(pdf_circle, NULL)
@@ -9300,6 +9353,7 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
     PDF_ME_MAPPING(begin_mc, pdf_begin_mc, NULL)
     PDF_ME_MAPPING(begin_page_ext, pdf_begin_page_ext, NULL)
     PDF_ME_MAPPING(begin_pattern, pdf_begin_pattern, NULL)
+    PDF_ME_MAPPING(begin_pattern_ext, pdf_begin_pattern_ext, NULL)
     PDF_ME_MAPPING(begin_template, pdf_begin_template, NULL)
     PDF_ME_MAPPING(begin_template_ext, pdf_begin_template_ext, NULL)
     PDF_ME_MAPPING(circle, pdf_circle, NULL)
@@ -9548,6 +9602,7 @@ PHP_FUNCTION(pdf_begin_mc);
 PHP_FUNCTION(pdf_begin_page);
 PHP_FUNCTION(pdf_begin_page_ext);
 PHP_FUNCTION(pdf_begin_pattern);
+PHP_FUNCTION(pdf_begin_pattern_ext);
 PHP_FUNCTION(pdf_begin_template);
 PHP_FUNCTION(pdf_begin_template_ext);
 PHP_FUNCTION(pdf_circle);
