@@ -18,8 +18,8 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
  <date>2013-12-30</date>
  <time>13:23:35</time>
  <version>
-  <release>3.0.3</release>
-  <api>3.0.3</api>
+  <release>3.0.4</release>
+  <api>3.0.4</api>
  </version>
  <stability>
   <release>stable</release>
@@ -27,7 +27,8 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-- fixed bug #66346 (undefined reference to `pdf_begin_pattern_ext')
+- avoid deprecated warnings for API's which are not yet deprecated
+  when building against an older PDFlib Version.
  </notes>
  <contents>
   <dir name="/">

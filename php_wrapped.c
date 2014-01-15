@@ -82,7 +82,6 @@ PHP_FUNCTION(pdf_add_bookmark)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_bookmark().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -135,7 +134,6 @@ PHP_FUNCTION(pdf_add_launchlink)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -189,7 +187,6 @@ PHP_FUNCTION(pdf_add_locallink)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -294,7 +291,6 @@ PHP_FUNCTION(pdf_add_note)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -403,7 +399,6 @@ PHP_FUNCTION(pdf_add_pdflink)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -653,10 +648,11 @@ PHP_FUNCTION(pdf_add_thumbnail)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 9
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, is obsolete as Acrobat generates thumbnails on the fly since a long time.");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
 	PDF_add_thumbnail(pdf, image);
@@ -706,7 +702,6 @@ PHP_FUNCTION(pdf_add_weblink)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -910,7 +905,6 @@ PHP_FUNCTION(pdf_attach_file)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -1118,10 +1112,11 @@ PHP_FUNCTION(pdf_begin_glyph)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 9
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_glyph_ext().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
 	PDF_begin_glyph(pdf, glyphname, wx, llx, lly, urx, ury);
@@ -1354,7 +1349,6 @@ PHP_FUNCTION(pdf_begin_page)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_page_ext().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -1454,10 +1448,11 @@ PHP_FUNCTION(pdf_begin_pattern)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_pattern_ext().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 */
 
     pdf_try {
 	_result = PDF_begin_pattern(pdf, width, height, xstep, ystep, painttype);
@@ -1554,7 +1549,6 @@ PHP_FUNCTION(pdf_begin_template)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_template_ext().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -1787,7 +1781,6 @@ PHP_FUNCTION(pdf_close)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_document().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -1971,7 +1964,6 @@ PHP_FUNCTION(pdf_close_pdi)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_close_pdi_document().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -3606,7 +3598,6 @@ PHP_FUNCTION(pdf_end_page)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_page_ext().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -3741,10 +3732,11 @@ PHP_FUNCTION(pdf_end_template)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_template_ext().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 */
 
     pdf_try {
 	PDF_end_template(pdf);
@@ -4173,7 +4165,6 @@ PHP_FUNCTION(pdf_findfont)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_load_font().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -4797,7 +4788,6 @@ PHP_FUNCTION(pdf_get_pdi_value)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_number().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -5970,7 +5960,6 @@ PHP_FUNCTION(pdf_open_ccitt)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -6020,7 +6009,6 @@ PHP_FUNCTION(pdf_open_file)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_document().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -6081,7 +6069,6 @@ PHP_FUNCTION(pdf_open_image_file)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -6372,7 +6359,6 @@ PHP_FUNCTION(pdf_place_image)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_image().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -6424,7 +6410,6 @@ PHP_FUNCTION(pdf_place_pdi_page)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_pdi_page().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -6981,7 +6966,6 @@ PHP_FUNCTION(pdf_set_border_color)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -7030,7 +7014,6 @@ PHP_FUNCTION(pdf_set_border_dash)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -7080,7 +7063,6 @@ PHP_FUNCTION(pdf_set_border_style)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -7363,10 +7345,11 @@ PHP_FUNCTION(pdf_set_parameter)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 9
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
 	PDF_set_parameter(pdf, key, value);
@@ -7505,10 +7488,11 @@ PHP_FUNCTION(pdf_set_value)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 9
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option()..");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
 	PDF_set_value(pdf, key, value);
@@ -7783,7 +7767,6 @@ PHP_FUNCTION(pdf_setgray)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -7831,7 +7814,6 @@ PHP_FUNCTION(pdf_setgray_fill)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -7879,7 +7861,6 @@ PHP_FUNCTION(pdf_setgray_stroke)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -8154,7 +8135,6 @@ PHP_FUNCTION(pdf_setrgbcolor)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -8204,7 +8184,6 @@ PHP_FUNCTION(pdf_setrgbcolor_fill)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -8254,7 +8233,6 @@ PHP_FUNCTION(pdf_setrgbcolor_stroke)
         }
     }
     RESTORE_ERROR_HANDLING();
-
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
@@ -8770,10 +8748,11 @@ PHP_FUNCTION(pdf_utf16_to_utf8)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
 	_result =  (const char *)PDF_utf16_to_utf8(pdf, utf16string, utf16string_len, &outputlen);
@@ -8822,10 +8801,11 @@ PHP_FUNCTION(pdf_utf32_to_utf8)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
 	_result =  (const char *)PDF_utf32_to_utf8(pdf, utf32string, utf32string_len, &outputlen);
@@ -8877,10 +8857,11 @@ PHP_FUNCTION(pdf_utf8_to_utf32)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
 	_result =  (const char *)PDF_utf8_to_utf32(pdf, utf8string, ordering, &outputlen);
@@ -8932,10 +8913,11 @@ PHP_FUNCTION(pdf_utf16_to_utf32)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
 	_result =  (const char *)PDF_utf16_to_utf32(pdf, utf16string, utf16string_len, ordering, &outputlen);
@@ -8986,10 +8968,11 @@ PHP_FUNCTION(pdf_utf32_to_utf16)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
 	_result =  (const char *)PDF_utf32_to_utf16(pdf, utf32string, utf32string_len, ordering, &outputlen);
@@ -9040,10 +9023,11 @@ PHP_FUNCTION(pdf_utf8_to_utf16)
         }
     }
     RESTORE_ERROR_HANDLING();
-
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
     #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
     #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
 	_result =  (const char *)PDF_utf8_to_utf16(pdf, utf8string, ordering, &outputlen);

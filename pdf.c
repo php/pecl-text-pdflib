@@ -341,6 +341,7 @@ pdflib_object_new_ex(zend_class_entry *class_type, pdflib_object**obj TSRMLS_DC)
 {
     zend_object_value retval;
     pdflib_object *intern;
+    zval *tmp;
 
     intern = emalloc(sizeof(pdflib_object));
     memset(intern, 0, sizeof(pdflib_object));
@@ -349,13 +350,10 @@ pdflib_object_new_ex(zend_class_entry *class_type, pdflib_object**obj TSRMLS_DC)
     zend_object_std_init(&intern->std, class_type TSRMLS_CC);
 
 #if PHP_VERSION_ID < 50399
-    {
-    zval *tmp;
     zend_hash_copy(intern->std.properties,
             &class_type->default_properties,
             (copy_ctor_func_t) zval_add_ref,
             (void *) &tmp, sizeof(zval *));
-    }
 #else /* PHP_VERSION_ID < 50399 */
     object_properties_init(&(intern->std), class_type);
 #endif /* PHP_VERSION_ID < 50399 */
@@ -661,6 +659,7 @@ PHP_FUNCTION(pdf_new)
 {
     PDF *pdf;
     zval *object = getThis();
+    DEFINE_ERROR_HANDLER
     pdflib_object *intern;
 
 
