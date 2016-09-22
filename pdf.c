@@ -40,6 +40,11 @@
 
 /* Bootstrap of PDFlib Feature setup */
 
+#if _MSC_VER >= 1310    /* VS .NET 2003 and later */
+#pragma warning(disable: 4995)  /* ignore deprecated warnings */
+#pragma warning(disable: 4101)  /* ignore unused variables */
+#endif
+
 /* Extension version */
 #include "php_pdflib.h"
 
@@ -122,8 +127,13 @@ zend_class_entry *pdflib_exception_class;
 static zend_object_handlers pdflib_handlers;
 
 typedef struct _pdflib_object {
-    zend_object std;
+#if PHP_MAJOR_VERSION >= 7
     PDF *p;
+    zend_object zobj;
+#else
+    zend_object zobj;
+    PDF *p;
+#endif
 } pdflib_object;
 
 zend_function_entry pdflib_funcs[] = {
@@ -132,13 +142,16 @@ zend_function_entry pdflib_funcs[] = {
 #undef _WRAP_FUNCTION_ENTRY2
     /* if we make the class PDFlib extendable, the constructor should
      * not become final */
-    PHP_ME_MAPPING(__construct, pdf_new, NULL, 0)
+    PHP_ME_MAPPING(__construct, pdf_new, NULL, ZEND_ACC_CTOR|ZEND_ACC_PUBLIC)
     PDF_ME_MAPPING(delete, pdf_delete, NULL)
     PDF_ME_MAPPING(get_pdi_parameter, pdf_get_pdi_parameter, NULL)
     PDF_ME_MAPPING(open_pdi, pdf_open_pdi, NULL)
     PDF_ME_MAPPING(open_image, pdf_open_image, NULL)
     PDF_ME_MAPPING(setpolydash, pdf_setpolydash, NULL)
     PDF_ME_MAPPING(show_boxed, pdf_show_boxed, NULL)
+#if PHP_MAJOR_VERSION >= 7
+    PDF_ME_MAPPING(__destruct, _free_pdf_doc, NULL)
+#endif
     {NULL, NULL, NULL}
 };
 
@@ -189,7 +202,7 @@ static zend_function_entry PDFlibException_functions[] = {
 /* use our own version of WRONG_PARAM_COUNT and ZEND_FETCH_RESOURCE
  * to change error handling to exceptions in case of problems. */
 
-#if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
 /* PHP-5.3 makes php_std_error_handling() and php_set_error_handling()
  * deprecated, so we have to change it to use the new zend functions now
  */
@@ -198,12 +211,12 @@ static zend_function_entry PDFlibException_functions[] = {
     zend_replace_error_handling(type, handler, &error_handling TSRMLS_CC)
 #define RESTORE_ERROR_HANDLING() \
     zend_restore_error_handling(&error_handling TSRMLS_CC)
-#else /* !PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+#else /* !((PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5) */
 #define DEFINE_ERROR_HANDLER
 #define SET_ERROR_HANDLING(type, handler) \
     php_set_error_handling(type, handler  TSRMLS_CC)
 #define RESTORE_ERROR_HANDLING()  php_std_error_handling()
-#endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
 
 #undef WRONG_PARAM_COUNT
@@ -227,6 +240,34 @@ static zend_function_entry PDFlibException_functions[] = {
 }
 
 #undef ZEND_FETCH_RESOURCE
+#if PHP_MAJOR_VERSION >= 7
+#define ZEND_FETCH_RESOURCE(rsrc, rsrc_type, passed_id, \
+                default_id, resource_type_name, resource_type)  \
+{\
+    DEFINE_ERROR_HANDLER \
+    SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class); \
+    if ((rsrc = (rsrc_type) zend_fetch_resource(Z_RES_P(passed_id), resource_type_name, resource_type)) == NULL) { \
+        RESTORE_ERROR_HANDLING(); \
+        RETURN_FALSE; \
+    } \
+    RESTORE_ERROR_HANDLING(); \
+}
+
+#define P_FROM_OBJECT(pdf, object) \
+    { \
+	DEFINE_ERROR_HANDLER \
+        zend_object *zobj = Z_OBJ_P(object); \
+        pdflib_object *pobj = (pdflib_object *) \
+          ((char *)zobj - offsetof(pdflib_object, zobj)); \
+        pdf = pobj->p; \
+        if (!pdf) { \
+            php_error_docref(NULL TSRMLS_CC, E_WARNING, \
+                "No PDFlib object available"); \
+            RESTORE_ERROR_HANDLING(); \
+            RETURN_NULL(); \
+        } \
+    }
+#else /* PHP_MAJOR_VERSION >= 7 */
 #define ZEND_FETCH_RESOURCE(rsrc, rsrc_type, passed_id, \
                 default_id, resource_type_name, resource_type)  \
 {\
@@ -251,6 +292,7 @@ static zend_function_entry PDFlibException_functions[] = {
             RETURN_NULL(); \
         } \
     }
+#endif /* PHP_MAJOR_VERSION >= 7 */
 
 zend_class_entry *default_exception_ce;
 
@@ -262,6 +304,24 @@ static void _pdf_exception(int errnum, const char *apiname,
     snprintf(msgbuf, sizeof(msgbuf), "[%d] %s: %s", errnum, apiname, errmsg);
 
     {
+#if PHP_MAJOR_VERSION >= 7
+        zval ex;
+        zend_class_entry *def_ex;
+        def_ex = zend_exception_get_default(TSRMLS_C);
+        object_init_ex(&ex, pdflib_exception_class);
+
+        if (apiname) {
+           zend_update_property_string(def_ex, &ex, "apiname",
+                            sizeof("apiname")-1, (char *)apiname TSRMLS_CC);
+        }
+        if (errmsg) {
+           zend_update_property_string(def_ex, &ex, "message",
+                            sizeof("message")-1, (char *)errmsg TSRMLS_CC);
+        }
+        zend_update_property_long(def_ex, &ex, "code", sizeof("code")-1,
+            errnum TSRMLS_CC);
+        zend_throw_exception_object(&ex TSRMLS_CC);
+#else /* PHP_MAJOR_VERSION >= 7 */
         zval *ex;
         zend_class_entry *def_ex;
         def_ex = zend_exception_get_default(TSRMLS_C);
@@ -279,7 +339,7 @@ static void _pdf_exception(int errnum, const char *apiname,
         zend_update_property_long(def_ex, ex, "code", sizeof("code")-1,
             errnum TSRMLS_CC);
         zend_throw_exception_object(ex TSRMLS_CC);
-
+#endif /* PHP_MAJOR_VERSION >= 7 */
     }
 }
 /* }}} */
@@ -287,11 +347,31 @@ static void _pdf_exception(int errnum, const char *apiname,
 /* PHP/PDFlib internal functions */
 /* {{{ _free_pdf_doc
  */
+#if PHP_MAJOR_VERSION >= 7
+PHP_FUNCTION(_free_pdf_doc)
+{
+    PDF *pdf;
+    zval *object = getThis();
+
+    if (object) {
+        P_FROM_OBJECT(pdf, object);
+        PDF_delete(pdf);
+    }
+}
+static void _free_pdf_doc(zend_resource *rsrc);
+static void _free_pdf_doc(zend_resource *rsrc)
+{
+    PDF *pdf = (PDF *)rsrc->ptr;
+    PDF_delete(pdf);
+}
+#else /* PHP_MAJOR_VERSION >= 7 */
+static void _free_pdf_doc(zend_rsrc_list_entry *rsrc TSRMLS_DC);
 static void _free_pdf_doc(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {
     PDF *pdf = (PDF *)rsrc->ptr;
     PDF_delete(pdf);
 }
+#endif /* PHP_MAJOR_VERSION >= 7 */
 /* }}} */
 
 /* {{{ pdf_emalloc
@@ -324,7 +404,7 @@ pdflib_object_dtor(void *object TSRMLS_DC)
 {
     pdflib_object *intern = (pdflib_object *)object;
 
-    zend_object_std_dtor(&intern->std TSRMLS_CC);
+    zend_object_std_dtor(&intern->zobj TSRMLS_CC);
 
     if (intern->p) {
         PDF_delete(intern->p);
@@ -334,49 +414,46 @@ pdflib_object_dtor(void *object TSRMLS_DC)
 }
 /* }}} */
 
-/* {{{ pdflib_object_new_ex
- */
-static zend_object_value
-pdflib_object_new_ex(zend_class_entry *class_type, pdflib_object**obj TSRMLS_DC)
-{
-    zend_object_value retval;
-    pdflib_object *intern;
-    zval *tmp;
-
-    intern = emalloc(sizeof(pdflib_object));
-    memset(intern, 0, sizeof(pdflib_object));
-    intern->std.ce = class_type;
-    *obj = intern;
-    zend_object_std_init(&intern->std, class_type TSRMLS_CC);
-
-#if PHP_VERSION_ID < 50399
-    zend_hash_copy(intern->std.properties,
-            &class_type->default_properties,
-            (copy_ctor_func_t) zval_add_ref,
-            (void *) &tmp, sizeof(zval *));
-#else /* PHP_VERSION_ID < 50399 */
-    object_properties_init(&(intern->std), class_type);
-#endif /* PHP_VERSION_ID < 50399 */
-
-    retval.handle = zend_objects_store_put(intern,  NULL,
-            (zend_objects_free_object_storage_t)pdflib_object_dtor,
-            NULL TSRMLS_CC);
-    retval.handlers = &pdflib_handlers;
-    return retval;
-}
-/* }}} */
-
 /* {{{ pdflib_object_new
  */
+#if PHP_MAJOR_VERSION >= 7
+static zend_object*
+pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
+{
+#else /* PHP_MAJOR_VERSION >= 7 */
 static zend_object_value
 pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
 {
-    pdflib_object *tmp;
+    zend_object_value retval;
+#endif /* PHP_MAJOR_VERSION >= 7 */
+    pdflib_object *object = (pdflib_object*)emalloc(sizeof(pdflib_object));
+    memset(object, 0, sizeof(pdflib_object));
+    object->zobj.ce = class_type;
+    zend_object_std_init(&object->zobj, class_type TSRMLS_CC);
 
-    return pdflib_object_new_ex(class_type, &tmp TSRMLS_CC);
+#if PHP_VERSION_ID < 50399
+    {
+    zval *tmp;
+    zend_hash_copy(object->zobj.properties,
+            &class_type->default_properties,
+            (copy_ctor_func_t) zval_add_ref,
+            (void *) &tmp, sizeof(zval *));
+    }
+#else /* PHP_VERSION_ID < 50399 */
+    object_properties_init(&(object->zobj), class_type);
+#endif /* PHP_VERSION_ID < 50399 */
+
+#if PHP_MAJOR_VERSION >= 7
+    object->zobj.handlers = &pdflib_handlers;
+    return &object->zobj;
+#else /* PHP_MAJOR_VERSION >= 7 */
+    retval.handlers = &pdflib_handlers;
+    retval.handle = zend_objects_store_put(object,  NULL,
+            (zend_objects_free_object_storage_t)pdflib_object_dtor,
+            NULL TSRMLS_CC);
+    return retval;
+#endif /* PHP_MAJOR_VERSION >= 7 */
 }
-/* }}} */
-
 /* }}} */
 
 /* {{{ PHP_MINFO_FUNCTION
@@ -414,33 +491,41 @@ PHP_MINIT_FUNCTION(pdf)
         php_error_docref(NULL TSRMLS_CC, E_ERROR,
             "PDFlib error: Version mismatch in wrapper code");
     }
+#if PHP_MAJOR_VERSION >= 7
     le_pdf = zend_register_list_destructors_ex(_free_pdf_doc, NULL,
 		"pdf object", module_number);
+#else /* PHP_MAJOR_VERSION >= 7 */
+    le_pdf = zend_register_list_destructors_ex(_free_pdf_doc, NULL,
+		"pdf object", module_number);
+#endif /* PHP_MAJOR_VERSION >= 7 */
 
     /* this does something like setlocale("C", ...) in PDFlib 3.x */
     PDF_boot();
 
-    /* add PDFlibException class */
     {
+    /* add PDFlibException class */
     zend_class_entry ce;
     INIT_CLASS_ENTRY(ce, "PDFlibException", PDFlibException_functions);
+#if PHP_MAJOR_VERSION >= 7
     pdflib_exception_class = zend_register_internal_class_ex(&ce,
-            zend_exception_get_default(TSRMLS_C),
-             NULL TSRMLS_CC);
+            zend_exception_get_default(TSRMLS_C) TSRMLS_CC);
+#else /* PHP_MAJOR_VERSION >= 7 */
+    pdflib_exception_class = zend_register_internal_class_ex(&ce,
+            zend_exception_get_default(TSRMLS_C), NULL TSRMLS_CC);
+#endif /* PHP_MAJOR_VERSION >= 7 */
 
     zend_declare_property_string(pdflib_exception_class, "apiname",
             sizeof("apiname")-1, "", ZEND_ACC_PROTECTED TSRMLS_CC);
-    pdflib_exception_class->ce_flags |= ZEND_ACC_FINAL;
     pdflib_exception_class->constructor->common.fn_flags
             |= ZEND_ACC_PROTECTED;
 
+    /* add PDFlib class */
     INIT_CLASS_ENTRY(ce, "PDFlib", pdflib_funcs);
     ce.create_object = pdflib_object_new;
     pdflib_class = zend_register_internal_class(&ce TSRMLS_CC);
     memcpy(&pdflib_handlers,
             zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     pdflib_handlers.clone_obj = NULL;
-    pdflib_class->ce_flags |= ZEND_ACC_FINAL;
     pdflib_class->constructor->common.fn_flags |= ZEND_ACC_PROTECTED;
     }
 
@@ -461,6 +546,14 @@ PHP_MSHUTDOWN_FUNCTION(pdf)
 /* The PDFlibException Methods */
 PHP_METHOD(PDFlibException, get_apiname)
 {
+#if PHP_MAJOR_VERSION >= 7
+    zval rv, *this_ptr = getThis();
+    zend_string *apiname;
+
+    apiname = zval_get_string(zend_read_property(pdflib_exception_class,
+                        this_ptr, "apiname", sizeof("apiname")-1, 1, &rv));
+    RETURN_STR(apiname)
+#else /* PHP_MAJOR_VERSION >= 7 */
     zval *apiname;
     char *retbuf;
 
@@ -469,10 +562,19 @@ PHP_METHOD(PDFlibException, get_apiname)
     retbuf = Z_STRVAL_P(apiname);
 
     RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
+#endif /* PHP_MAJOR_VERSION >= 7 */
 }
 
 PHP_METHOD(PDFlibException, get_errmsg)
 {
+#if PHP_MAJOR_VERSION >= 7
+    zval rv, *this_ptr = getThis();
+    zend_string *message;
+
+    message = zval_get_string(zend_read_property(pdflib_exception_class, this_ptr, "message",
+                sizeof("message")-1, 1, &rv));
+    RETURN_STR(message)
+#else /* PHP_MAJOR_VERSION >= 7 */
     zval *message;
     char *retbuf;
 
@@ -481,10 +583,22 @@ PHP_METHOD(PDFlibException, get_errmsg)
     retbuf = Z_STRVAL_P(message);
 
     RETURN_STRING(retbuf ? (char *)retbuf : "", 1);
+#endif /* PHP_MAJOR_VERSION >= 7 */
 }
 
 PHP_METHOD(PDFlibException, get_errnum)
 {
+#if PHP_MAJOR_VERSION >= 7
+    zval *code, rv;
+    zval *this_ptr = getThis();
+    long retval;
+
+    code = zend_read_property(pdflib_exception_class, this_ptr, "code",
+                sizeof("code")-1, 1, &rv);
+    retval = Z_LVAL_P(code);
+
+    RETURN_LONG(retval);
+#else /* PHP_MAJOR_VERSION >= 7 */
     zval *code;
     long retval;
 
@@ -493,6 +607,7 @@ PHP_METHOD(PDFlibException, get_errnum)
     retval = Z_LVAL_P(code);
 
     RETURN_LONG(retval);
+#endif /* PHP_MAJOR_VERSION >= 7 */
 }
 
 /* The PDFlib API */
@@ -507,8 +622,14 @@ resource p, string key, int doc, int page, int reserved)
 PHP_FUNCTION(pdf_get_pdi_parameter)
 {
     PDF *pdf;
+#if PHP_MAJOR_VERSION >= 7
+    zend_string * z_key;
     const char * key;
     int key_len;
+#else /* PHP_MAJOR_VERSION >= 7 */
+    const char * key;
+    int key_len;
+#endif /* PHP_MAJOR_VERSION >= 7 */
     long doc;
     long page;
     long reserved;
@@ -521,36 +642,63 @@ PHP_FUNCTION(pdf_get_pdi_parameter)
 
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"slll",&key, &key_len,&doc,&page,&reserved)) {
+#if PHP_MAJOR_VERSION >= 7
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "Slll",&z_key, &doc, &page, &reserved)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
+        key = ZSTR_VAL(z_key);
+#else /* PHP_MAJOR_VERSION >= 7 */
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "slll",&key, &key_len,&doc,&page,&reserved)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+#endif /* PHP_MAJOR_VERSION >= 7 */
         P_FROM_OBJECT(pdf, object);
     } else {
         SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
         {
             zval *p;
+#if PHP_MAJOR_VERSION >= 7
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "zSlll", &p,&z_key, &doc,&page,&reserved)) {
+                RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
+            key = ZSTR_VAL(z_key);
+#else /* PHP_MAJOR_VERSION >= 7 */
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
 "rslll", &p,&key, &key_len,&doc,&page,&reserved)) {
                 RESTORE_ERROR_HANDLING();
                 return;
             }
             ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
         }
     }
     RESTORE_ERROR_HANDLING();
 
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_string().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
 	_result =  (const char *)PDF_get_pdi_parameter(pdf, key, doc, page, reserved, &len);
     } pdf_catch;
 
-    
+#if PHP_MAJOR_VERSION >= 7
+    {
+        zend_string *z_result;
+        if (_result) {
+            z_result = zend_string_init(_result, len, 0);
+        } else {
+            z_result = zend_string_init("", 1, 0);
+        }
+        RETURN_STR(z_result);
+    }
+#else /* PHP_MAJOR_VERSION >= 7 */
     RETURN_STRINGL(_result ? (char *)_result : "", len, 1);
+#endif /* PHP_MAJOR_VERSION >= 7 */
 } /* }}} */
 
 /* {{{ proto int pdf_open_pdi(resource p, string filename, string optlist,
@@ -559,7 +707,12 @@ PHP_FUNCTION(pdf_get_pdi_parameter)
 PHP_FUNCTION(pdf_open_pdi)
 {
     PDF *pdf;
+#if PHP_MAJOR_VERSION >= 7
+    zend_string *z_filename, *z_optlist;
     char *filename, *optlist;
+#else /* PHP_MAJOR_VERSION >= 7 */
+    char *filename, *optlist;
+#endif /* PHP_MAJOR_VERSION >= 7 */
     int flen, olen;
     long len;
     char *vfilename;
@@ -570,22 +723,43 @@ PHP_FUNCTION(pdf_open_pdi)
 
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
+#if PHP_MAJOR_VERSION >= 7
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "SSl", &z_filename, &z_optlist, &len)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+        filename = ZSTR_VAL(z_filename);
+        optlist =  ZSTR_VAL(z_optlist);
+#else /* PHP_MAJOR_VERSION >= 7 */
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
                         "ssl", &filename, &flen, &optlist, &olen, &len)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
+#endif /* PHP_MAJOR_VERSION >= 7 */
         P_FROM_OBJECT(pdf, object);
     } else {
         SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
         {
             zval *p;
+#if PHP_MAJOR_VERSION >= 7
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "zSSl", &p, &z_filename, &z_optlist, &len)) {
+                RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
+            filename = ZSTR_VAL(z_filename);
+            optlist =  ZSTR_VAL(z_optlist);
+#else /* PHP_MAJOR_VERSION >= 7 */
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
                         "rssl", &p, &filename, &flen, &optlist, &olen, &len)) {
                 RESTORE_ERROR_HANDLING();
                 return;
             }
             ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
         }
     }
     RESTORE_ERROR_HANDLING();
@@ -605,9 +779,9 @@ PHP_FUNCTION(pdf_open_pdi)
     }
 #endif /* PDFLIB_CHECK_OPEN_BASEDIR */
 
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_open_pdi_document().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
         retval = PDF_open_pdi(pdf, vfilename, optlist, (int)len);
@@ -621,35 +795,7 @@ PHP_FUNCTION(pdf_open_pdi)
  * Delete a PDFlib object and free all internal resources. */
 PHP_FUNCTION(pdf_delete)
 {
-    PDF *pdf;
-
-    zval *object = getThis();
-    DEFINE_ERROR_HANDLER
-
-    if (object) {
-        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-                        "")) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
-        {
-            zval *p;
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-                        "r", &p)) {
-                RESTORE_ERROR_HANDLING();
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-            zend_list_delete(Z_RESVAL_PP(&p));
-        }
-    }
-    RESTORE_ERROR_HANDLING();
-
-    RETURN_TRUE;
+    RETURN_TRUE; /* This is done in the destructor */
 }
 /* }}} */
 
@@ -662,27 +808,42 @@ PHP_FUNCTION(pdf_new)
     DEFINE_ERROR_HANDLER
     pdflib_object *intern;
 
-
     pdf = PDF_new2(NULL, pdf_emalloc, pdf_realloc, pdf_efree, NULL);
 
     if (pdf != NULL) {
         pdf_try {
             /* Trigger special handling of PDFlib-handles for PHP */
             PDF_set_parameter(pdf, "hastobepos", "true");
+#if PHP_MAJOR_VERSION >= 7
+            PDF_set_parameter(pdf, "binding", "PHP7");
+#else /* PHP_MAJOR_VERSION >= 7 */
             PDF_set_parameter(pdf, "binding", "PHP5");
+#endif /* PHP_MAJOR_VERSION >= 7 */
         } pdf_catch;
     } else {
         _pdf_exception(99, "PDF_new", "PDF_new: internal error" TSRMLS_CC);
     }
 
     if (object) {
-	pdf_try {
-	    PDF_set_parameter(pdf, "objorient", "true");
-	} pdf_catch;
+        pdf_try {
+            PDF_set_parameter(pdf, "objorient", "true");
+        } pdf_catch;
+#if PHP_MAJOR_VERSION >= 7
+        zend_object *zobj = Z_OBJ_P(getThis());
+        pdflib_object *pobj = (pdflib_object *)
+          ((char *)zobj - offsetof(pdflib_object, zobj));
+        pobj->p = pdf;
+#else /* PHP_MAJOR_VERSION >= 7 */
         intern =(pdflib_object *)zend_object_store_get_object(object TSRMLS_CC);
         intern->p = pdf;
+#endif /* PHP_MAJOR_VERSION >= 7 */
     } else {
+#if PHP_MAJOR_VERSION >= 7
+        zend_resource *ret = zend_register_resource(pdf, le_pdf);
+        RETURN_RES(ret);
+#else /* PHP_MAJOR_VERSION >= 7 */
         ZEND_REGISTER_RESOURCE(return_value, pdf, le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
     }
 }
 /* }}} */
@@ -694,8 +855,13 @@ PHP_FUNCTION(pdf_new)
 PHP_FUNCTION(pdf_open_image)
 {
     PDF *pdf;
+#if PHP_MAJOR_VERSION >= 7
+    char *imagetype, *source, *data, *params;
+    zend_string *z_imagetype, *z_source, *z_data, *z_params;
+#else /* PHP_MAJOR_VERSION >= 7 */
     char *imagetype, *source, *data, *params;
     int ilen, dlen, slen, plen;
+#endif /* PHP_MAJOR_VERSION >= 7 */
     long length, width, height, components, bpc;
     long retval = 0;
 
@@ -704,6 +870,19 @@ PHP_FUNCTION(pdf_open_image)
 
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
+#if PHP_MAJOR_VERSION >= 7
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "SSSlllllS", &z_imagetype, &z_source,
+                        z_data, &length, &width, &height, &components,
+                        &bpc, &z_params)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+        imagetype = ZSTR_VAL(z_imagetype);
+        source = ZSTR_VAL(z_source);
+        data = ZSTR_VAL(z_data);
+        params = ZSTR_VAL(z_params);
+#else /* PHP_MAJOR_VERSION >= 7 */
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
                         "sssllllls", &imagetype, &ilen, &source, &slen,
                         &data, &dlen, &length, &width, &height, &components,
@@ -711,11 +890,26 @@ PHP_FUNCTION(pdf_open_image)
             RESTORE_ERROR_HANDLING();
             return;
         }
+#endif /* PHP_MAJOR_VERSION >= 7 */
         P_FROM_OBJECT(pdf, object);
     } else {
         SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
         {
             zval *p;
+#if PHP_MAJOR_VERSION >= 7
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "zSSSlllllS", &p, &z_imagetype, &z_source,
+                        &z_data, &length, &width, &height, &components,
+                        &bpc, &z_params)) {
+                RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
+            imagetype = ZSTR_VAL(z_imagetype);
+            source = ZSTR_VAL(z_source);
+            data = ZSTR_VAL(z_data);
+            params = ZSTR_VAL(z_params);
+#else /* PHP_MAJOR_VERSION >= 7 */
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
                         "rsssllllls", &p, &imagetype, &ilen, &source, &slen,
                         &data, &dlen, &length, &width, &height, &components,
@@ -724,13 +918,14 @@ PHP_FUNCTION(pdf_open_image)
                 return;
             }
             ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
         }
     }
     RESTORE_ERROR_HANDLING();
 
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image() with virtual files.");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
         retval = PDF_open_image(pdf, imagetype, source, data, length,
@@ -758,16 +953,25 @@ PHP_FUNCTION(pdf_setpolydash)
 PHP_FUNCTION(pdf_show_boxed)
 {
     PDF *pdf;
+#if PHP_MAJOR_VERSION >= 7
     const char * text;
+    const char * hmode;
+    const char * feature;
+    zend_string * z_text;
+    zend_string * z_hmode;
+    zend_string * z_feature;
+#else /* PHP_MAJOR_VERSION >= 7 */
+    const char * text;
+    const char * hmode;
+    const char * feature;
     int text_len;
+    int hmode_len;
+    int feature_len;
+#endif /* PHP_MAJOR_VERSION >= 7 */
     double left;
     double top;
     double width;
     double height;
-    const char * hmode;
-    int hmode_len;
-    const char * feature;
-    int feature_len;
     int _result = 0;
 
 
@@ -776,29 +980,52 @@ PHP_FUNCTION(pdf_show_boxed)
 
     if (object) {
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
+#if PHP_MAJOR_VERSION >= 7
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "SddddSS", &z_text, &left, &top, &width, &height, &z_hmode, &z_feature)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+        text = ZSTR_VAL(z_text);
+        hmode = ZSTR_VAL(z_hmode);
+        feature = ZSTR_VAL(z_feature);
+#else /* PHP_MAJOR_VERSION >= 7 */
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
                         "sddddss", &text, &text_len, &left, &top, &width, &height, &hmode, &hmode_len, &feature, &feature_len)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
+#endif /* PHP_MAJOR_VERSION >= 7 */
         P_FROM_OBJECT(pdf, object);
     } else {
         SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
         {
             zval *p;
+#if PHP_MAJOR_VERSION >= 7
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+                        "zSddddSS", &p, &z_text, &left, &top, &width, &height, &z_hmode, &z_feature)) {
+                RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
+            text = ZSTR_VAL(z_text);
+            hmode = ZSTR_VAL(z_hmode);
+            feature = ZSTR_VAL(z_feature);
+#else /* PHP_MAJOR_VERSION >= 7 */
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
                         "rsddddss", &p, &text, &text_len, &left, &top, &width, &height, &hmode, &hmode_len, &feature, &feature_len)) {
                 RESTORE_ERROR_HANDLING();
                 return;
             }
             ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
         }
     }
     RESTORE_ERROR_HANDLING();
 
-    #if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_textline() or PDF_fit_textflow().");
-    #endif /* PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3 */
+#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
 	_result = PDF_show_boxed(pdf, text, left, top, width, height, hmode, feature);
@@ -818,12 +1045,3 @@ PHP_FUNCTION(pdf_show_boxed)
  */
 
 #endif /* HAVE_PDFLIB */
-
-/*
- * Local variables:
- * tab-width: 8
- * c-basic-offset: 4
- * End:
- * vim600: sw=4 ts=8 fdm=marker
- * vim<600: sw=4 ts=8
- */

@@ -34,6 +34,9 @@ PHP_FUNCTION(pdf_utf8_to_utf16);
 PHP_FUNCTION(pdf_utf32_to_utf8);
 PHP_FUNCTION(pdf_utf8_to_utf32);
 PHP_FUNCTION(pdf_utf16_to_utf32);
+#if PHP_MAJOR_VERSION >= 7
+PHP_FUNCTION(_free_pdf_doc);
+#endif
 
 #ifdef ZTS
 #define PDFG(v) TSRMG(pdf_globals_id, php_pdf_globals *, v)
