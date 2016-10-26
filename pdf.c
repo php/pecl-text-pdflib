@@ -22,22 +22,6 @@
 /* Copyright (C) 1997-1999 Thomas Merz. 2000-2013 PDFlib GmbH */
 /* Note that there is no code from the pdflib package in this file */
 
-/*
-    As the optionlist may contain filenames on various places the
-    VIRTUAL_DIR support and the CHECK_OPEN_BASEDIR checks implemented
-    in the wrapper will not work reliable too. So VIRTUAL_DIR support
-    and the CHECK_OPEN_BASEDIR checking is disabled here too, as it would
-    only work for some of the files used with PDFlib.
-
-    The main changes:
-    - adds an Object Oriented API to PDFlib
-    - uses PHP exceptions
-    - only official PDFlib APIs are included (plus pdf_open_memory_image)
-    - disables VIRTUAL_DIR support (use SerachPath instead)
-    - disables CHECK_OPEN_BASEDIR checks
-    - changed old API's with varargs to only accept all args
-*/
-
 /* Bootstrap of PDFlib Feature setup */
 
 #if _MSC_VER >= 1310    /* VS .NET 2003 and later */
@@ -54,49 +38,35 @@
 
 #include "php.h"
 #include "php_ini.h"
-#include "php_globals.h"
-#include "php_streams.h"
-#include "zend_list.h"
-#include "ext/standard/head.h"
 #include "ext/standard/info.h"
-#include "ext/standard/file.h"
-#include "Zend/zend_exceptions.h"
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
-#ifdef PHP_WIN32
-# include <io.h>
-# include <fcntl.h>
-#endif /* PHP_WIN32 */
-
-
-#if HAVE_PDFLIB
+#include "zend_exceptions.h"
 #include "pdflib.h"
+#include "php_pdf.h"
 
 #if PDFLIB_MAJORVERSION <= 6
 #error PDFlib 6 and earlier are no longer supported (use pdflib-2.x.x pecl package instead)
 #endif /* PDFLIB_MAJORVERSION <= 6 */
 
-
-/* With PDFlib 7 we start a new wrapper source as most of the code will be
- * created automatically.
- */
-
-#include "php_pdf.h"
-
-#undef VIRTUAL_DIR
-#undef PDFLIB_CHECK_OPEN_BASEDIR
-
-#ifndef safe_emalloc        /* to be compatible with older PHP versions */
-#define safe_emalloc(a,b,c) emalloc((a) * (b))
-#endif
-
 /* {{{ pdf_functions[]
  */
 
 static int le_pdf;
+
+typedef struct _pdflib_object {
+#if PHP_MAJOR_VERSION >= 7
+    PDF *p;
+    zend_object zobj;
+#else
+    zend_object zobj;
+    PDF *p;
+#endif
+} pdflib_object;
+
+static inline pdflib_object *php_pdflib_fetch_object(zend_object *obj) {
+    return (pdflib_object *)((char*)(obj) - XtOffsetOf(pdflib_object, zobj));
+}
+#define Z_PDFLIB_OBJ_P(zv) php_pdflib_fetch_object(Z_OBJ_P(zv));
+
 
 zend_function_entry pdf_functions[] = {
 #define _WRAP_FUNCTION_ENTRY
@@ -109,37 +79,22 @@ zend_function_entry pdf_functions[] = {
     PHP_FE(pdf_open_pdi, NULL)
     PHP_FE(pdf_setpolydash, NULL)
     PHP_FE(pdf_show_boxed, NULL)
-    {NULL, NULL, NULL}
+    PHP_FE_END
 };
 /* }}} */
 
-/* {{{ pdflib_funcs[] OO-Mapping
+/* {{{ pdflib_methods[] OO-Mapping
  */
 
 zend_class_entry *pdflib_class;
 zend_class_entry *pdflib_exception_class;
 
 
-/* allow to be compiled with various PHP Versions allthough
-   the API of the PHP_ME_MAPPING() Macro changed */
 #define PDF_ME_MAPPING(a, b, c) PHP_ME_MAPPING(a, b, c, ZEND_ACC_PUBLIC | ZEND_ACC_FINAL)
 
 static zend_object_handlers pdflib_handlers;
 
-typedef struct _pdflib_object {
-#if PHP_MAJOR_VERSION >= 7
-    PDF *p;
-    zend_object zobj;
-#else
-    zend_object zobj;
-    PDF *p;
-#endif
-} pdflib_object;
-
-zend_function_entry pdflib_funcs[] = {
-#define _WRAP_FUNCTION_ENTRY2
-#include "php_wrapped.c"
-#undef _WRAP_FUNCTION_ENTRY2
+zend_function_entry pdflib_methods[] = {
     /* if we make the class PDFlib extendable, the constructor should
      * not become final */
     PHP_ME_MAPPING(__construct, pdf_new, NULL, ZEND_ACC_CTOR|ZEND_ACC_PUBLIC)
@@ -149,32 +104,37 @@ zend_function_entry pdflib_funcs[] = {
     PDF_ME_MAPPING(open_image, pdf_open_image, NULL)
     PDF_ME_MAPPING(setpolydash, pdf_setpolydash, NULL)
     PDF_ME_MAPPING(show_boxed, pdf_show_boxed, NULL)
-#if PHP_MAJOR_VERSION >= 7
-    PDF_ME_MAPPING(__destruct, _free_pdf_doc, NULL)
-#endif
-    {NULL, NULL, NULL}
+
+#define _WRAP_FUNCTION_ENTRY2
+#include "php_wrapped.c"
+#undef _WRAP_FUNCTION_ENTRY2
+
+    PHP_FE_END
 };
 
 /* }}} */
 
-/* {{{ pdf_module_entry
+/* {{{ PDFlib_module_entry
  */
-zend_module_entry pdf_module_entry = {
+zend_module_entry PDFlib_module_entry = {
     STANDARD_MODULE_HEADER,
     "PDFlib",
     pdf_functions,
-    PHP_MINIT(pdf),
-    PHP_MSHUTDOWN(pdf),
+    PHP_MINIT(PDFlib),
+    PHP_MSHUTDOWN(PDFlib),
     NULL,
     NULL,
-    PHP_MINFO(pdf),
+    PHP_MINFO(PDFlib),
     PHP_PDFLIB_VERSION,
     STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
 
 #if defined(COMPILE_DL_PDF) || defined(COMPILE_DL_PDFLIB)
-ZEND_GET_MODULE(pdf)
+#ifdef ZTS
+ZEND_TSRMLS_CACHE_DEFINE();
+#endif
+ZEND_GET_MODULE(PDFlib)
 #endif /* COMPILE_DL_PDF */
 
 /* exception handling */
@@ -184,11 +144,11 @@ PHP_METHOD(PDFlibException, get_apiname);
 PHP_METHOD(PDFlibException, get_errmsg);
 PHP_METHOD(PDFlibException, get_errnum);
 
-static zend_function_entry PDFlibException_functions[] = {
+static zend_function_entry PDFlibException_methods[] = {
     PHP_ME(PDFlibException, get_apiname, NULL, 0)
     PHP_ME(PDFlibException, get_errmsg, NULL, 0)
     PHP_ME(PDFlibException, get_errnum, NULL, 0)
-    {NULL, NULL, NULL}
+    PHP_FE_END
 };
 
 #define pdf_try     PDF_TRY(pdf)
@@ -199,10 +159,6 @@ static zend_function_entry PDFlibException_functions[] = {
     RETURN_FALSE; \
     }
 
-/* use our own version of WRONG_PARAM_COUNT and ZEND_FETCH_RESOURCE
- * to change error handling to exceptions in case of problems. */
-
-#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
 /* PHP-5.3 makes php_std_error_handling() and php_set_error_handling()
  * deprecated, so we have to change it to use the new zend functions now
  */
@@ -211,58 +167,28 @@ static zend_function_entry PDFlibException_functions[] = {
     zend_replace_error_handling(type, handler, &error_handling TSRMLS_CC)
 #define RESTORE_ERROR_HANDLING() \
     zend_restore_error_handling(&error_handling TSRMLS_CC)
-#else /* !((PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5) */
-#define DEFINE_ERROR_HANDLER
-#define SET_ERROR_HANDLING(type, handler) \
-    php_set_error_handling(type, handler  TSRMLS_CC)
-#define RESTORE_ERROR_HANDLING()  php_std_error_handling()
-#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
-
-#undef WRONG_PARAM_COUNT
-#define WRONG_PARAM_COUNT \
-{\
-    DEFINE_ERROR_HANDLER \
-    SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class); \
-    zend_wrong_param_count(TSRMLS_C); \
-    RESTORE_ERROR_HANDLING(); \
-    return;\
-}
-
-#undef WRONG_PARAM_COUNT_WITH_RETVAL
-#define WRONG_PARAM_COUNT_WITH_RETVAL(ret) \
-{\
-    DEFINE_ERROR_HANDLER \
-    SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class); \
-    zend_wrong_param_count(TSRMLS_C); \
-    RESTORE_ERROR_HANDLING(); \
-    return ret;\
-}
+/* use our own version of ZEND_FETCH_RESOURCE
+ * to change error handling to exceptions in case of problems. */
 
 #undef ZEND_FETCH_RESOURCE
 #if PHP_MAJOR_VERSION >= 7
 #define ZEND_FETCH_RESOURCE(rsrc, rsrc_type, passed_id, \
                 default_id, resource_type_name, resource_type)  \
 {\
-    DEFINE_ERROR_HANDLER \
-    SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class); \
-    if ((rsrc = (rsrc_type) zend_fetch_resource(Z_RES_P(passed_id), resource_type_name, resource_type)) == NULL) { \
+    if ((rsrc = (rsrc_type) zend_fetch_resource(Z_RES_P(passed_id), \
+                            resource_type_name, resource_type)) == NULL) { \
         RESTORE_ERROR_HANDLING(); \
         RETURN_FALSE; \
     } \
-    RESTORE_ERROR_HANDLING(); \
 }
 
 #define P_FROM_OBJECT(pdf, object) \
     { \
-	DEFINE_ERROR_HANDLER \
-        zend_object *zobj = Z_OBJ_P(object); \
-        pdflib_object *pobj = (pdflib_object *) \
-          ((char *)zobj - offsetof(pdflib_object, zobj)); \
+        pdflib_object *pobj = Z_PDFLIB_OBJ_P(object); \
         pdf = pobj->p; \
         if (!pdf) { \
-            php_error_docref(NULL TSRMLS_CC, E_WARNING, \
-                "No PDFlib object available"); \
+            php_error_docref(NULL TSRMLS_CC, E_WARNING, "No PDFlib object available"); \
             RESTORE_ERROR_HANDLING(); \
             RETURN_NULL(); \
         } \
@@ -271,23 +197,17 @@ static zend_function_entry PDFlibException_functions[] = {
 #define ZEND_FETCH_RESOURCE(rsrc, rsrc_type, passed_id, \
                 default_id, resource_type_name, resource_type)  \
 {\
-    DEFINE_ERROR_HANDLER \
-    SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class); \
     rsrc = (rsrc_type) zend_fetch_resource(passed_id TSRMLS_CC, \
             default_id, resource_type_name, NULL, 1, resource_type);    \
-    RESTORE_ERROR_HANDLING(); \
     ZEND_VERIFY_RESOURCE(rsrc); \
 }
 
 #define P_FROM_OBJECT(pdf, object) \
     { \
-	DEFINE_ERROR_HANDLER \
-        pdflib_object *obj = (pdflib_object*) \
-            zend_object_store_get_object(object TSRMLS_CC); \
+        pdflib_object *obj = (pdflib_object*) zend_object_store_get_object(object TSRMLS_CC); \
         pdf = obj->p; \
         if (!pdf) { \
-            php_error_docref(NULL TSRMLS_CC, E_WARNING, \
-                "No PDFlib object available"); \
+            php_error_docref(NULL TSRMLS_CC, E_WARNING, "No PDFlib object available"); \
             RESTORE_ERROR_HANDLING(); \
             RETURN_NULL(); \
         } \
@@ -345,28 +265,27 @@ static void _pdf_exception(int errnum, const char *apiname,
 /* }}} */
 
 /* PHP/PDFlib internal functions */
-/* {{{ _free_pdf_doc
+/* {{{ free_pdf_reource / free_pdf_obj
  */
 #if PHP_MAJOR_VERSION >= 7
-PHP_FUNCTION(_free_pdf_doc)
+static void free_pdf_obj(zend_object *object)
 {
-    PDF *pdf;
-    zval *object = getThis();
+    pdflib_object *pobj = php_pdflib_fetch_object(object);
 
-    if (object) {
-        P_FROM_OBJECT(pdf, object);
-        PDF_delete(pdf);
+    if (!pobj) {
+        return;
     }
+    PDF_delete(pobj->p);
+    zend_object_std_dtor(&pobj->zobj);
 }
-static void _free_pdf_doc(zend_resource *rsrc);
-static void _free_pdf_doc(zend_resource *rsrc)
+
+static void free_pdf_resource(zend_resource *rsrc TSRMLS_DC)
 {
     PDF *pdf = (PDF *)rsrc->ptr;
     PDF_delete(pdf);
 }
 #else /* PHP_MAJOR_VERSION >= 7 */
-static void _free_pdf_doc(zend_rsrc_list_entry *rsrc TSRMLS_DC);
-static void _free_pdf_doc(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+static void free_pdf_resource(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 {
     PDF *pdf = (PDF *)rsrc->ptr;
     PDF_delete(pdf);
@@ -420,12 +339,22 @@ pdflib_object_dtor(void *object TSRMLS_DC)
 static zend_object*
 pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
 {
+    pdflib_object *object;
+
+    object = (pdflib_object*)ecalloc(1, sizeof(pdflib_object) +
+                                        zend_object_properties_size(class_type));
+    object_properties_init(&(object->zobj), class_type);
+
+    zend_object_std_init(&object->zobj, class_type TSRMLS_CC);
+    object->zobj.handlers = &pdflib_handlers;
+
+    return &object->zobj;
+}
 #else /* PHP_MAJOR_VERSION >= 7 */
 static zend_object_value
 pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
 {
     zend_object_value retval;
-#endif /* PHP_MAJOR_VERSION >= 7 */
     pdflib_object *object = (pdflib_object*)emalloc(sizeof(pdflib_object));
     memset(object, 0, sizeof(pdflib_object));
     object->zobj.ce = class_type;
@@ -443,90 +372,80 @@ pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
     object_properties_init(&(object->zobj), class_type);
 #endif /* PHP_VERSION_ID < 50399 */
 
-#if PHP_MAJOR_VERSION >= 7
-    object->zobj.handlers = &pdflib_handlers;
-    return &object->zobj;
-#else /* PHP_MAJOR_VERSION >= 7 */
     retval.handlers = &pdflib_handlers;
     retval.handle = zend_objects_store_put(object,  NULL,
-            (zend_objects_free_object_storage_t)pdflib_object_dtor,
-            NULL TSRMLS_CC);
+            (zend_objects_free_object_storage_t)pdflib_object_dtor, NULL TSRMLS_CC);
     return retval;
-#endif /* PHP_MAJOR_VERSION >= 7 */
 }
+#endif /* PHP_MAJOR_VERSION >= 7 */
 /* }}} */
 
 /* {{{ PHP_MINFO_FUNCTION
  */
-PHP_MINFO_FUNCTION(pdf)
+#if PDFLIB_MAJORVERSION >= 8
+#   define PDFLIB_VSTRING PDFLIB_LONG_VERSIONSTRING
+#else
+#   define PDFLIB_VSTRING PDFLIB_VERSIONSTRING
+#endif
+PHP_MINFO_FUNCTION(PDFlib)
 {
-    char tmp[32];
-
-    snprintf(tmp, 31, "%d.%02d", PDF_get_majorversion(),
-		PDF_get_minorversion() );
-    tmp[31]=0;
-
     php_info_print_table_start();
     php_info_print_table_header(2, "PDFlib Support", "enabled" );
-    php_info_print_table_row(2, "PDFlib GmbH Version", 
-#if PDFLIB_MAJORVERSION >= 8
-        PDFLIB_LONG_VERSIONSTRING
-#else
-        PDFLIB_VERSIONSTRING
-#endif
-	);
+    php_info_print_table_row(2, "PDFlib GmbH Version",  PDFLIB_VSTRING);
     php_info_print_table_row(2, "PECL Version", PHP_PDFLIB_VERSION);
     php_info_print_table_row(2, "Revision", "$Revision$" );
     php_info_print_table_end();
-
 }
 /* }}} */
 
 /* {{{ PHP_MINIT_FUNCTION
  */
-PHP_MINIT_FUNCTION(pdf)
+PHP_MINIT_FUNCTION(PDFlib)
 {
+    zend_class_entry ce_ex, ce;
+
+
     if ((PDF_get_majorversion() != PDFLIB_MAJORVERSION) ||
             (PDF_get_minorversion() != PDFLIB_MINORVERSION)) {
         php_error_docref(NULL TSRMLS_CC, E_ERROR,
             "PDFlib error: Version mismatch in wrapper code");
     }
-#if PHP_MAJOR_VERSION >= 7
-    le_pdf = zend_register_list_destructors_ex(_free_pdf_doc, NULL,
-		"pdf object", module_number);
-#else /* PHP_MAJOR_VERSION >= 7 */
-    le_pdf = zend_register_list_destructors_ex(_free_pdf_doc, NULL,
-		"pdf object", module_number);
-#endif /* PHP_MAJOR_VERSION >= 7 */
+
+    /* destructor for non-OO case */
+    le_pdf = zend_register_list_destructors_ex(free_pdf_resource,
+                                   NULL, "pdf object", module_number);
 
     /* this does something like setlocale("C", ...) in PDFlib 3.x */
     PDF_boot();
 
-    {
     /* add PDFlibException class */
-    zend_class_entry ce;
-    INIT_CLASS_ENTRY(ce, "PDFlibException", PDFlibException_functions);
+    {
+        INIT_CLASS_ENTRY(ce_ex, "PDFlibException", PDFlibException_methods);
 #if PHP_MAJOR_VERSION >= 7
-    pdflib_exception_class = zend_register_internal_class_ex(&ce,
-            zend_exception_get_default(TSRMLS_C) TSRMLS_CC);
+        pdflib_exception_class = zend_register_internal_class_ex(&ce_ex,
+                zend_exception_get_default(TSRMLS_C) TSRMLS_CC);
 #else /* PHP_MAJOR_VERSION >= 7 */
-    pdflib_exception_class = zend_register_internal_class_ex(&ce,
-            zend_exception_get_default(TSRMLS_C), NULL TSRMLS_CC);
+        pdflib_exception_class = zend_register_internal_class_ex(&ce_ex,
+                zend_exception_get_default(TSRMLS_C), NULL TSRMLS_CC);
 #endif /* PHP_MAJOR_VERSION >= 7 */
 
-    zend_declare_property_string(pdflib_exception_class, "apiname",
-            sizeof("apiname")-1, "", ZEND_ACC_PROTECTED TSRMLS_CC);
-    pdflib_exception_class->constructor->common.fn_flags
-            |= ZEND_ACC_PROTECTED;
+        zend_declare_property_string(pdflib_exception_class, "apiname",
+                sizeof("apiname")-1, "", ZEND_ACC_PROTECTED TSRMLS_CC);
+    }
 
     /* add PDFlib class */
-    INIT_CLASS_ENTRY(ce, "PDFlib", pdflib_funcs);
-    ce.create_object = pdflib_object_new;
-    pdflib_class = zend_register_internal_class(&ce TSRMLS_CC);
-    memcpy(&pdflib_handlers,
-            zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    pdflib_handlers.clone_obj = NULL;
-    pdflib_class->constructor->common.fn_flags |= ZEND_ACC_PROTECTED;
+    {
+        memcpy(&pdflib_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+
+        INIT_CLASS_ENTRY(ce, "PDFlib", pdflib_methods);
+        ce.create_object = pdflib_object_new;
+        pdflib_handlers.clone_obj = NULL;
+#if PHP_MAJOR_VERSION >= 7
+        pdflib_handlers.offset = XtOffsetOf(pdflib_object, zobj);
+        pdflib_handlers.free_obj = free_pdf_obj;
+#endif /* PHP_MAJOR_VERSION >= 7 */
+
+        pdflib_class = zend_register_internal_class(&ce TSRMLS_CC);
     }
 
     return SUCCESS;
@@ -535,7 +454,7 @@ PHP_MINIT_FUNCTION(pdf)
 
 /* {{{ PHP_MSHUTDOWN_FUNCTION
  */
-PHP_MSHUTDOWN_FUNCTION(pdf)
+PHP_MSHUTDOWN_FUNCTION(PDFlib)
 {
     PDF_shutdown();
     return SUCCESS;
@@ -678,9 +597,7 @@ PHP_FUNCTION(pdf_get_pdi_parameter)
     }
     RESTORE_ERROR_HANDLING();
 
-#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_string().");
-#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
 	_result =  (const char *)PDF_get_pdi_parameter(pdf, key, doc, page, reserved, &len);
@@ -764,24 +681,9 @@ PHP_FUNCTION(pdf_open_pdi)
     }
     RESTORE_ERROR_HANDLING();
 
-#ifdef VIRTUAL_DIR
-    virtual_filepath(filename, &vfilename TSRMLS_CC);
-#else /* !VIRTUAL_DIR */
     vfilename = filename;
-#endif /* VIRTUAL_DIR */
 
-#ifdef PDFLIB_CHECK_OPEN_BASEDIR
-    if (vfilname && *vfilename) {
-	if (php_check_open_basedir(vfilename TSRMLS_CC) || (PG(safe_mode) &&
-		!php_checkuid(vfilename, "rb+", CHECKUID_CHECK_MODE_PARAM))) {
-	    RETURN_FALSE;
-	}
-    }
-#endif /* PDFLIB_CHECK_OPEN_BASEDIR */
-
-#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_open_pdi_document().");
-#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
         retval = PDF_open_pdi(pdf, vfilename, optlist, (int)len);
@@ -806,7 +708,7 @@ PHP_FUNCTION(pdf_new)
     PDF *pdf;
     zval *object = getThis();
     DEFINE_ERROR_HANDLER
-    pdflib_object *intern;
+    pdflib_object *pobj;
 
     pdf = PDF_new2(NULL, pdf_emalloc, pdf_realloc, pdf_efree, NULL);
 
@@ -830,13 +732,11 @@ PHP_FUNCTION(pdf_new)
         } pdf_catch;
 #if PHP_MAJOR_VERSION >= 7
         zend_object *zobj = Z_OBJ_P(getThis());
-        pdflib_object *pobj = (pdflib_object *)
-          ((char *)zobj - offsetof(pdflib_object, zobj));
-        pobj->p = pdf;
+        pobj = (pdflib_object *) ((char *)zobj - offsetof(pdflib_object, zobj));
 #else /* PHP_MAJOR_VERSION >= 7 */
-        intern =(pdflib_object *)zend_object_store_get_object(object TSRMLS_CC);
-        intern->p = pdf;
+        pobj =(pdflib_object *)zend_object_store_get_object(object TSRMLS_CC);
 #endif /* PHP_MAJOR_VERSION >= 7 */
+        pobj->p = pdf;
     } else {
 #if PHP_MAJOR_VERSION >= 7
         zend_resource *ret = zend_register_resource(pdf, le_pdf);
@@ -923,9 +823,7 @@ PHP_FUNCTION(pdf_open_image)
     }
     RESTORE_ERROR_HANDLING();
 
-#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image() with virtual files.");
-#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
         retval = PDF_open_image(pdf, imagetype, source, data, length,
@@ -1023,9 +921,7 @@ PHP_FUNCTION(pdf_show_boxed)
     }
     RESTORE_ERROR_HANDLING();
 
-#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5
     php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_textline() or PDF_fit_textflow().");
-#endif /* (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3) || PHP_MAJOR_VERSION > 5 */
 
     pdf_try {
 	_result = PDF_show_boxed(pdf, text, left, top, width, height, hmode, feature);
@@ -1043,5 +939,3 @@ PHP_FUNCTION(pdf_show_boxed)
  * vim600: sw=4 ts=4 fdm=marker
  * vim<600: sw=4 ts=8
  */
-
-#endif /* HAVE_PDFLIB */
