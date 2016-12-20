@@ -1020,7 +1020,7 @@ PHP_FUNCTION(pdf_add_textflow)
     
 /* {{{ proto bool PDF_add_thumbnail(
 resource p, int image)
- * Deprecated, is obsolete as Acrobat generates thumbnails on the fly since a long time. */
+ * Deprecated */
 PHP_FUNCTION(pdf_add_thumbnail)
 {
     PDF *pdf;
@@ -1075,7 +1075,7 @@ PHP_FUNCTION(pdf_add_thumbnail)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, is obsolete as Acrobat generates thumbnails on the fly since a long time.");
+    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, is obsolete as Acrobat generates thumbnails on the fly since a long time.");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -2296,7 +2296,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_patter
 /* {{{ proto int PDF_begin_pattern_ext(
 resource p, double width, double height, string optlist)
  * Start a pattern definition with options. */
-#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2
+#if PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2)
 PHP_FUNCTION(pdf_begin_pattern_ext)
 {
     PDF *pdf;
@@ -2363,7 +2363,7 @@ PHP_FUNCTION(pdf_begin_pattern_ext)
     
     RETURN_LONG(_result);
 }
-#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 */
+#endif /* PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2) */
 /* }}} */
 
     
@@ -3824,6 +3824,78 @@ PHP_FUNCTION(pdf_create_annotation)
     
     RETURN_TRUE;
 }
+/* }}} */
+
+    
+/* {{{ proto int PDF_create_devicen(
+resource p, string optlist)
+ * Create a DeviceN colorspace with an arbitrary number of color components. */
+#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1
+PHP_FUNCTION(pdf_create_devicen)
+{
+    PDF *pdf;
+
+#if PHP_MAJOR_VERSION >= 7
+    zend_string * z_optlist;
+#endif /* PHP_MAJOR_VERSION >= 7 */
+    const char * optlist;
+    size_t optlist_len;
+    int _result = 0;
+
+
+    zval *object = getThis();
+    DEFINE_ERROR_HANDLER
+
+    if (object) {
+        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
+#if PHP_MAJOR_VERSION >= 7
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"S", &z_optlist)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+        optlist = ZSTR_VAL(z_optlist);
+#else /* PHP_MAJOR_VERSION >= 7 */
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"s", &optlist, &optlist_len)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+#endif /* PHP_MAJOR_VERSION >= 7 */
+        P_FROM_OBJECT(pdf, object);
+    } else {
+        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
+        {
+            zval *p;
+#if PHP_MAJOR_VERSION >= 7
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"zS", &p, &z_optlist)) {
+		RESTORE_ERROR_HANDLING();
+                return;
+            }
+        optlist = ZSTR_VAL(z_optlist);
+
+            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
+#else /* PHP_MAJOR_VERSION >= 7 */
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"rs", &p, &optlist, &optlist_len)) {
+		RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
+        }
+    }
+    RESTORE_ERROR_HANDLING();
+
+    pdf_try {
+	_result = PDF_create_devicen(pdf, optlist);
+    } pdf_catch;
+
+    
+    RETURN_LONG(_result);
+}
+#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1 */
 /* }}} */
 
     
@@ -11352,7 +11424,7 @@ PHP_FUNCTION(pdf_set_info)
     
 /* {{{ proto bool PDF_set_layer_dependency(
 resource p, string type, string optlist)
- * Define layer relationships and variants (requires PDF 1.5). */
+ * Define layer relationships (requires PDF 1.5). */
 PHP_FUNCTION(pdf_set_layer_dependency)
 {
     PDF *pdf;
@@ -12853,17 +12925,17 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
 
     
 /* {{{ proto int PDF_shading(
-resource p, string shtype, double x0, double y0, double x1, double y1, double c1, double c2, double c3, double c4, string optlist)
- * Define a blend from the current fill color to another color. */
+resource p, string type, double x0, double y0, double x1, double y1, double c1, double c2, double c3, double c4, string optlist)
+ * Define a shading (color gradient) between two or more colors. */
 PHP_FUNCTION(pdf_shading)
 {
     PDF *pdf;
 
 #if PHP_MAJOR_VERSION >= 7
-    zend_string * z_shtype;
+    zend_string * z_type;
 #endif /* PHP_MAJOR_VERSION >= 7 */
-    const char * shtype;
-    size_t shtype_len;
+    const char * type;
+    size_t type_len;
     double x0;
     double y0;
     double x1;
@@ -12888,15 +12960,15 @@ PHP_FUNCTION(pdf_shading)
         SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
 #if PHP_MAJOR_VERSION >= 7
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"SddddddddS", &z_shtype, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &z_optlist)) {
+"SddddddddS", &z_type, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &z_optlist)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
-        shtype = ZSTR_VAL(z_shtype);
+        type = ZSTR_VAL(z_type);
         optlist = ZSTR_VAL(z_optlist);
 #else /* PHP_MAJOR_VERSION >= 7 */
         if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"sdddddddds", &shtype, &shtype_len, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &optlist, &optlist_len)) {
+"sdddddddds", &type, &type_len, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &optlist, &optlist_len)) {
             RESTORE_ERROR_HANDLING();
             return;
         }
@@ -12908,17 +12980,17 @@ PHP_FUNCTION(pdf_shading)
             zval *p;
 #if PHP_MAJOR_VERSION >= 7
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"zSddddddddS", &p, &z_shtype, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &z_optlist)) {
+"zSddddddddS", &p, &z_type, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &z_optlist)) {
 		RESTORE_ERROR_HANDLING();
                 return;
             }
-        shtype = ZSTR_VAL(z_shtype);
+        type = ZSTR_VAL(z_type);
         optlist = ZSTR_VAL(z_optlist);
 
             ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
 #else /* PHP_MAJOR_VERSION >= 7 */
             if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rsdddddddds", &p, &shtype, &shtype_len, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &optlist, &optlist_len)) {
+"rsdddddddds", &p, &type, &type_len, &x0, &y0, &x1, &y1, &c1, &c2, &c3, &c4, &optlist, &optlist_len)) {
 		RESTORE_ERROR_HANDLING();
                 return;
             }
@@ -12929,7 +13001,7 @@ PHP_FUNCTION(pdf_shading)
     RESTORE_ERROR_HANDLING();
 
     pdf_try {
-	_result = PDF_shading(pdf, shtype, x0, y0, x1, y1, c1, c2, c3, c4, optlist);
+	_result = PDF_shading(pdf, type, x0, y0, x1, y1, c1, c2, c3, c4, optlist);
     } pdf_catch;
 
     
@@ -14171,9 +14243,9 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PHP_FE(pdf_begin_page, NULL)
     PHP_FE(pdf_begin_page_ext, NULL)
     PHP_FE(pdf_begin_pattern, NULL)
-#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2
+#if PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2)
     PHP_FE(pdf_begin_pattern_ext, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 */
+#endif /* PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2) */
     PHP_FE(pdf_begin_template, NULL)
     PHP_FE(pdf_begin_template_ext, NULL)
     PHP_FE(pdf_circle, NULL)
@@ -14203,6 +14275,9 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PHP_FE(pdf_create_3dview, NULL)
     PHP_FE(pdf_create_action, NULL)
     PHP_FE(pdf_create_annotation, NULL)
+#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1
+    PHP_FE(pdf_create_devicen, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1 */
     PHP_FE(pdf_create_bookmark, NULL)
     PHP_FE(pdf_create_field, NULL)
     PHP_FE(pdf_create_fieldgroup, NULL)
@@ -14431,9 +14506,9 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PDF_ME_MAPPING(begin_mc, pdf_begin_mc, NULL)
     PDF_ME_MAPPING(begin_page_ext, pdf_begin_page_ext, NULL)
     PDF_ME_MAPPING(begin_pattern, pdf_begin_pattern, NULL)
-#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2
+#if PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2)
     PDF_ME_MAPPING(begin_pattern_ext, pdf_begin_pattern_ext, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 */
+#endif /* PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2) */
     PDF_ME_MAPPING(begin_template, pdf_begin_template, NULL)
     PDF_ME_MAPPING(begin_template_ext, pdf_begin_template_ext, NULL)
     PDF_ME_MAPPING(circle, pdf_circle, NULL)
@@ -14462,6 +14537,9 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PDF_ME_MAPPING(create_3dview, pdf_create_3dview, NULL)
     PDF_ME_MAPPING(create_action, pdf_create_action, NULL)
     PDF_ME_MAPPING(create_annotation, pdf_create_annotation, NULL)
+#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1
+    PDF_ME_MAPPING(create_devicen, pdf_create_devicen, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1 */
     PDF_ME_MAPPING(create_bookmark, pdf_create_bookmark, NULL)
     PDF_ME_MAPPING(create_field, pdf_create_field, NULL)
     PDF_ME_MAPPING(create_fieldgroup, pdf_create_fieldgroup, NULL)
@@ -14682,9 +14760,9 @@ PHP_FUNCTION(pdf_begin_mc);
 PHP_FUNCTION(pdf_begin_page);
 PHP_FUNCTION(pdf_begin_page_ext);
 PHP_FUNCTION(pdf_begin_pattern);
-#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2
+#if PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2)
 PHP_FUNCTION(pdf_begin_pattern_ext);
-#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 */
+#endif /* PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2) */
 PHP_FUNCTION(pdf_begin_template);
 PHP_FUNCTION(pdf_begin_template_ext);
 PHP_FUNCTION(pdf_circle);
@@ -14714,6 +14792,9 @@ PHP_FUNCTION(pdf_convert_to_unicode);
 PHP_FUNCTION(pdf_create_3dview);
 PHP_FUNCTION(pdf_create_action);
 PHP_FUNCTION(pdf_create_annotation);
+#if PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1
+PHP_FUNCTION(pdf_create_devicen);
+#endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1 */
 PHP_FUNCTION(pdf_create_bookmark);
 PHP_FUNCTION(pdf_create_field);
 PHP_FUNCTION(pdf_create_fieldgroup);
