@@ -15,11 +15,11 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
   <email>rjs@php.net</email>
   <active>yes</active>
  </lead>
- <date>2016-10-26</date>
+ <date>2016-12-28</date>
  <time>13:23:35</time>
  <version>
-  <release>4.1.0</release>
-  <api>4.1.0</api>
+  <release>4.1.1</release>
+  <api>4.1.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -27,7 +27,7 @@ http://www.pdflib.com/developer-center/technical-documentation/php-howto</descri
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-- add support for PDFlib 9.1
+- fix build problem when compiling statically into PHP
  </notes>
  <contents>
   <dir name="/">

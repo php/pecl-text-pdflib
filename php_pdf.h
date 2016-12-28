@@ -7,7 +7,7 @@
 #define PHP_PDF_H
 
 extern zend_module_entry PDFlib_module_entry;
-#define phpext_PDFlib_ptr &PDFlib_module_entry
+#define phpext_pdf_ptr &PDFlib_module_entry
 
 #ifdef PHP_WIN32
 #   define PHP_PDFLIB_API __declspec(dllexport)
