@@ -3,7 +3,7 @@
     
 /* {{{ proto bool PDF_activate_item(
 resource p, int id)
- * Activate a previously created structure element or other content item. */
+ * Activate a previously created structure element or other content item */
 PHP_FUNCTION(pdf_activate_item)
 {
     PDF *pdf;
@@ -70,7 +70,7 @@ PHP_FUNCTION(pdf_activate_item)
     
 /* {{{ proto int PDF_add_bookmark(
 resource p, string text, int parent, int open)
- * Deprecated, use  PDF_create_bookmark(). */
+ * Deprecated, use  PDF_create_bookmark() */
 PHP_FUNCTION(pdf_add_bookmark)
 {
     PDF *pdf;
@@ -141,7 +141,7 @@ PHP_FUNCTION(pdf_add_bookmark)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_bookmark().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_bookmark()");
 
     pdf_try {
 	_result = PDF_add_bookmark2(pdf, text, (int)text_len, (int)parent, (int)open);
@@ -155,7 +155,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_book
     
 /* {{{ proto bool PDF_add_launchlink(
 resource p, double llx, double lly, double urx, double ury, string filename)
- * Deprecated, use PDF_create_action() and PDF_create_annotation(). */
+ * Deprecated, use PDF_create_action() and PDF_create_annotation() */
 PHP_FUNCTION(pdf_add_launchlink)
 {
     PDF *pdf;
@@ -215,7 +215,7 @@ PHP_FUNCTION(pdf_add_launchlink)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation()");
 
     pdf_try {
 	PDF_add_launchlink(pdf, llx, lly, urx, ury, filename);
@@ -229,7 +229,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_actio
     
 /* {{{ proto bool PDF_add_locallink(
 resource p, double llx, double lly, double urx, double ury, int page, string optlist)
- * Deprecated, use PDF_create_action() and PDF_create_annotation(). */
+ * Deprecated, use PDF_create_action() and PDF_create_annotation() */
 PHP_FUNCTION(pdf_add_locallink)
 {
     PDF *pdf;
@@ -295,7 +295,7 @@ PHP_FUNCTION(pdf_add_locallink)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation()");
 
     pdf_try {
 	PDF_add_locallink(pdf, llx, lly, urx, ury, (int)page, optlist);
@@ -309,7 +309,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_actio
     
 /* {{{ proto bool PDF_add_nameddest(
 resource p, string name, string optlist)
- * Create a named destination on a page in the document. */
+ * Create a named destination on a page in the document */
 PHP_FUNCTION(pdf_add_nameddest)
 {
     PDF *pdf;
@@ -388,7 +388,7 @@ PHP_FUNCTION(pdf_add_nameddest)
     
 /* {{{ proto bool PDF_add_note(
 resource p, double llx, double lly, double urx, double ury, string contents, string title, string icon, int open)
- * Deprecated, use PDF_create_annotation(). */
+ * Deprecated, use PDF_create_annotation() */
 PHP_FUNCTION(pdf_add_note)
 {
     PDF *pdf;
@@ -474,7 +474,7 @@ PHP_FUNCTION(pdf_add_note)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation()");
 
     pdf_try {
 	PDF_add_note2(pdf, llx, lly, urx, ury, contents, (int)contents_len, title, (int)title_len, icon, (int)open);
@@ -488,7 +488,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annot
     
 /* {{{ proto int PDF_add_path_point(
 resource p, int path, double x, double y, string type, string optlist)
- * Add a point to a new or existing path object. */
+ * Add a point to a new or existing path object */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_add_path_point)
 {
@@ -576,7 +576,7 @@ PHP_FUNCTION(pdf_add_path_point)
     
 /* {{{ proto bool PDF_add_pdflink(
 resource p, double llx, double lly, double urx, double ury, string filename, int page, string optlist)
- * Deprecated, use PDF_create_action() and PDF_create_annotation(). */
+ * Deprecated, use PDF_create_action() and PDF_create_annotation() */
 PHP_FUNCTION(pdf_add_pdflink)
 {
     PDF *pdf;
@@ -650,7 +650,7 @@ PHP_FUNCTION(pdf_add_pdflink)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation()");
 
     pdf_try {
 	PDF_add_pdflink(pdf, llx, lly, urx, ury, filename, (int)page, optlist);
@@ -664,7 +664,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_actio
     
 /* {{{ proto int PDF_add_portfolio_file(
 resource p, int folder, string filename, string optlist)
- * Add a file to a portfolio folder or a package (requires PDF 1.7). */
+ * Add a file to a portfolio folder or a package (requires PDF 1.7) */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_add_portfolio_file)
 {
@@ -750,7 +750,7 @@ PHP_FUNCTION(pdf_add_portfolio_file)
     
 /* {{{ proto int PDF_add_portfolio_folder(
 resource p, int parent, string foldername, string optlist)
- * Add a folder to a new or existing portfolio (requires PDF 1.7ext3). */
+ * Add a folder to a new or existing portfolio (requires PDF 1.7ext3) */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_add_portfolio_folder)
 {
@@ -836,7 +836,7 @@ PHP_FUNCTION(pdf_add_portfolio_folder)
     
 /* {{{ proto int PDF_add_table_cell(
 resource p, int table, int column, int row, string text, string optlist)
- * Add a cell to a new or existing table. */
+ * Add a cell to a new or existing table */
 PHP_FUNCTION(pdf_add_table_cell)
 {
     PDF *pdf;
@@ -934,7 +934,7 @@ PHP_FUNCTION(pdf_add_table_cell)
     
 /* {{{ proto int PDF_add_textflow(
 resource p, int textflow, string text, string optlist)
- * Create a Textflow object, or add text and explicit options to an existing Textflow. */
+ * Create a Textflow object, or add text and explicit options to an existing Textflow */
 PHP_FUNCTION(pdf_add_textflow)
 {
     PDF *pdf;
@@ -1075,7 +1075,7 @@ PHP_FUNCTION(pdf_add_thumbnail)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, is obsolete as Acrobat generates thumbnails on the fly since a long time.");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -1090,7 +1090,7 @@ PHP_FUNCTION(pdf_add_thumbnail)
     
 /* {{{ proto bool PDF_add_weblink(
 resource p, double llx, double lly, double urx, double ury, string url)
- * Deprecated, use PDF_create_action() and PDF_create_annotation(). */
+ * Deprecated, use PDF_create_action() and PDF_create_annotation() */
 PHP_FUNCTION(pdf_add_weblink)
 {
     PDF *pdf;
@@ -1150,7 +1150,7 @@ PHP_FUNCTION(pdf_add_weblink)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_action() and PDF_create_annotation()");
 
     pdf_try {
 	PDF_add_weblink(pdf, llx, lly, urx, ury, url);
@@ -1164,7 +1164,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_actio
     
 /* {{{ proto bool PDF_align(
 resource p, double dx, double dy)
- * Align the coordinate system with a relative vector. */
+ * Align the coordinate system with a relative vector */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_align)
 {
@@ -1229,7 +1229,7 @@ PHP_FUNCTION(pdf_align)
     
 /* {{{ proto bool PDF_arc(
 resource p, double x, double y, double r, double alpha, double beta)
- * Draw a counterclockwise circular arc segment. */
+ * Draw a counterclockwise circular arc segment */
 PHP_FUNCTION(pdf_arc)
 {
     PDF *pdf;
@@ -1295,7 +1295,7 @@ PHP_FUNCTION(pdf_arc)
     
 /* {{{ proto bool PDF_arcn(
 resource p, double x, double y, double r, double alpha, double beta)
- * Draw a clockwise circular arc segment. */
+ * Draw a clockwise circular arc segment */
 PHP_FUNCTION(pdf_arcn)
 {
     PDF *pdf;
@@ -1361,7 +1361,7 @@ PHP_FUNCTION(pdf_arcn)
     
 /* {{{ proto bool PDF_attach_file(
 resource p, double llx, double lly, double urx, double ury, string filename, string description, string author, string mimetype, string icon)
- * Deprecated, use  PDF_create_annotation(). */
+ * Deprecated, use  PDF_create_annotation() */
 PHP_FUNCTION(pdf_attach_file)
 {
     PDF *pdf;
@@ -1457,7 +1457,7 @@ PHP_FUNCTION(pdf_attach_file)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_annotation()");
 
     pdf_try {
 	PDF_attach_file2(pdf, llx, lly, urx, ury, filename, 0, description, (int)description_len, author, (int)author_len, mimetype, icon);
@@ -1471,7 +1471,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_create_anno
     
 /* {{{ proto int PDF_begin_document(
 resource p, string filename, string optlist)
- * Create a new PDF file subject to various options. */
+ * Create a new PDF file subject to various options */
 PHP_FUNCTION(pdf_begin_document)
 {
     PDF *pdf;
@@ -1555,7 +1555,7 @@ PHP_FUNCTION(pdf_begin_document)
     
 /* {{{ proto bool PDF_begin_dpart(
 resource p, string optlist)
- * Create a new node in the document part hierarchy (requires PDF/VT or   PDF 2.0). */
+ * Create a new node in the document part hierarchy (requires PDF/VT or   PDF 2.0) */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_begin_dpart)
 {
@@ -1626,7 +1626,7 @@ PHP_FUNCTION(pdf_begin_dpart)
     
 /* {{{ proto bool PDF_begin_font(
 resource p, string fontname, double a, double b, double c, double d, double e, double f, string optlist)
- * Start a Type 3 font definition. */
+ * Start a Type 3 font definition */
 PHP_FUNCTION(pdf_begin_font)
 {
     PDF *pdf;
@@ -1709,7 +1709,7 @@ PHP_FUNCTION(pdf_begin_font)
     
 /* {{{ proto bool PDF_begin_glyph(
 resource p, string glyphname, double wx, double llx, double lly, double urx, double ury)
- * Deprecated, use PDF_begin_glyph_ext(). */
+ * Deprecated, use PDF_begin_glyph_ext() */
 PHP_FUNCTION(pdf_begin_glyph)
 {
     PDF *pdf;
@@ -1771,7 +1771,7 @@ PHP_FUNCTION(pdf_begin_glyph)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_glyph_ext().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_glyph_ext()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -1786,7 +1786,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_glyph_
     
 /* {{{ proto bool PDF_begin_glyph_ext(
 resource p, int uv, string optlist)
- * Start a glyph definition for a Type 3 font. */
+ * Start a glyph definition for a Type 3 font */
 #if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_begin_glyph_ext)
 {
@@ -1863,7 +1863,7 @@ PHP_FUNCTION(pdf_begin_glyph_ext)
     
 /* {{{ proto int PDF_begin_item(
 resource p, string tagname, string optlist)
- * Open a structure element or other content item with attributes supplied as options. */
+ * Open a structure element or other content item with attributes supplied as options */
 PHP_FUNCTION(pdf_begin_item)
 {
     PDF *pdf;
@@ -1941,7 +1941,7 @@ PHP_FUNCTION(pdf_begin_item)
     
 /* {{{ proto bool PDF_begin_layer(
 resource p, int layer)
- * Start a layer for subsequent output on the page (requires PDF 1.5). */
+ * Start a layer for subsequent output on the page (requires PDF 1.5) */
 PHP_FUNCTION(pdf_begin_layer)
 {
     PDF *pdf;
@@ -2008,7 +2008,7 @@ PHP_FUNCTION(pdf_begin_layer)
     
 /* {{{ proto bool PDF_begin_mc(
 resource p, string tagname, string optlist)
- * Begin a marked content sequence with optional properties. */
+ * Begin a marked content sequence with optional properties */
 PHP_FUNCTION(pdf_begin_mc)
 {
     PDF *pdf;
@@ -2085,7 +2085,7 @@ PHP_FUNCTION(pdf_begin_mc)
     
 /* {{{ proto bool PDF_begin_page(
 resource p, double width, double height)
- * Deprecated, use PDF_begin_page_ext(). */
+ * Deprecated, use PDF_begin_page_ext() */
 PHP_FUNCTION(pdf_begin_page)
 {
     PDF *pdf;
@@ -2135,7 +2135,7 @@ PHP_FUNCTION(pdf_begin_page)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_page_ext().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_page_ext()");
 
     pdf_try {
 	PDF_begin_page(pdf, width, height);
@@ -2149,7 +2149,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_page_e
     
 /* {{{ proto bool PDF_begin_page_ext(
 resource p, double width, double height, string optlist)
- * Add a new page to the document, and specify various options. */
+ * Add a new page to the document, and specify various options */
 PHP_FUNCTION(pdf_begin_page_ext)
 {
     PDF *pdf;
@@ -2220,7 +2220,7 @@ PHP_FUNCTION(pdf_begin_page_ext)
     
 /* {{{ proto int PDF_begin_pattern(
 resource p, double width, double height, double xstep, double ystep, int painttype)
- * Deprecated, use PDF_begin_pattern_ext(). */
+ * Deprecated, use PDF_begin_pattern_ext() */
 PHP_FUNCTION(pdf_begin_pattern)
 {
     PDF *pdf;
@@ -2279,9 +2279,9 @@ PHP_FUNCTION(pdf_begin_pattern)
         }
     }
     RESTORE_ERROR_HANDLING();
-    #if PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_pattern_ext().");
-    #endif /* PDFLIB_MAJORVERSION >= 9 && PDFLIB_REVISION >= 2 */
+    #if PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2)
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_pattern_ext()");
+    #endif /* PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2) */
 
     pdf_try {
 	_result = PDF_begin_pattern(pdf, width, height, xstep, ystep, (int)painttype);
@@ -2295,7 +2295,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_patter
     
 /* {{{ proto int PDF_begin_pattern_ext(
 resource p, double width, double height, string optlist)
- * Start a pattern definition with options. */
+ * Start a pattern definition with options */
 #if PDFLIB_MAJORVERSION >= 9 && (PDFLIB_MINORVERSION >= 1 || PDFLIB_REVISION >= 2)
 PHP_FUNCTION(pdf_begin_pattern_ext)
 {
@@ -2369,7 +2369,7 @@ PHP_FUNCTION(pdf_begin_pattern_ext)
     
 /* {{{ proto int PDF_begin_template(
 resource p, double width, double height)
- * Deprecated, use PDF_begin_template_ext(). */
+ * Deprecated, use PDF_begin_template_ext() */
 PHP_FUNCTION(pdf_begin_template)
 {
     PDF *pdf;
@@ -2420,7 +2420,7 @@ PHP_FUNCTION(pdf_begin_template)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_template_ext().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_template_ext()");
 
     pdf_try {
 	_result = PDF_begin_template(pdf, width, height);
@@ -2434,7 +2434,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_templa
     
 /* {{{ proto int PDF_begin_template_ext(
 resource p, double width, double height, string optlist)
- * Start a template definition. */
+ * Start a template definition */
 PHP_FUNCTION(pdf_begin_template_ext)
 {
     PDF *pdf;
@@ -2506,7 +2506,7 @@ PHP_FUNCTION(pdf_begin_template_ext)
     
 /* {{{ proto bool PDF_circle(
 resource p, double x, double y, double r)
- * Draw a circle. */
+ * Draw a circle */
 PHP_FUNCTION(pdf_circle)
 {
     PDF *pdf;
@@ -2570,7 +2570,7 @@ PHP_FUNCTION(pdf_circle)
     
 /* {{{ proto bool PDF_circular_arc(
 resource p, double x1, double y1, double x2, double y2)
- * Draw a circular arc segment defined by three points. */
+ * Draw a circular arc segment defined by three points */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_circular_arc)
 {
@@ -2637,7 +2637,7 @@ PHP_FUNCTION(pdf_circular_arc)
     
 /* {{{ proto bool PDF_clip(
 resource p)
- * Use the current path as clipping path, and terminate the path. */
+ * Use the current path as clipping path, and terminate the path */
 PHP_FUNCTION(pdf_clip)
 {
     PDF *pdf;
@@ -2698,7 +2698,7 @@ PHP_FUNCTION(pdf_clip)
     
 /* {{{ proto bool PDF_close(
 resource p)
- * Deprecated, use PDF_end_document(). */
+ * Deprecated, use PDF_end_document() */
 PHP_FUNCTION(pdf_close)
 {
     PDF *pdf;
@@ -2746,7 +2746,7 @@ PHP_FUNCTION(pdf_close)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_document().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_document()");
 
     pdf_try {
 	PDF_close(pdf);
@@ -2760,7 +2760,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_document
     
 /* {{{ proto bool PDF_close_font(
 resource p, int font)
- * Close an open font handle which has not yet been used in the document. */
+ * Close an open font handle which has not yet been used in the document */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_close_font)
 {
@@ -2829,7 +2829,7 @@ PHP_FUNCTION(pdf_close_font)
     
 /* {{{ proto bool PDF_close_graphics(
 resource p, int graphics)
- * Close vector graphics. */
+ * Close vector graphics */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_close_graphics)
 {
@@ -2898,7 +2898,7 @@ PHP_FUNCTION(pdf_close_graphics)
     
 /* {{{ proto bool PDF_close_image(
 resource p, int image)
- * Close an image or template. */
+ * Close an image or template */
 PHP_FUNCTION(pdf_close_image)
 {
     PDF *pdf;
@@ -2965,7 +2965,7 @@ PHP_FUNCTION(pdf_close_image)
     
 /* {{{ proto bool PDF_close_pdi(
 resource p, int doc)
- * Deprecated, use PDF_close_pdi_document(). */
+ * Deprecated, use PDF_close_pdi_document() */
 PHP_FUNCTION(pdf_close_pdi)
 {
     PDF *pdf;
@@ -3019,7 +3019,7 @@ PHP_FUNCTION(pdf_close_pdi)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_close_pdi_document().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_close_pdi_document()");
 
     pdf_try {
 	PDF_close_pdi(pdf, (int)doc);
@@ -3033,7 +3033,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_close_pdi_do
     
 /* {{{ proto bool PDF_close_pdi_document(
 resource p, int doc)
- * Close all open PDI page handles, and close the input PDF document. */
+ * Close all open PDI page handles, and close the input PDF document */
 PHP_FUNCTION(pdf_close_pdi_document)
 {
     PDF *pdf;
@@ -3100,7 +3100,7 @@ PHP_FUNCTION(pdf_close_pdi_document)
     
 /* {{{ proto bool PDF_close_pdi_page(
 resource p, int page)
- * Close the page handle and free all page-related resources. */
+ * Close the page handle and free all page-related resources */
 PHP_FUNCTION(pdf_close_pdi_page)
 {
     PDF *pdf;
@@ -3167,7 +3167,7 @@ PHP_FUNCTION(pdf_close_pdi_page)
     
 /* {{{ proto bool PDF_closepath(
 resource p)
- * Close the current path. */
+ * Close the current path */
 PHP_FUNCTION(pdf_closepath)
 {
     PDF *pdf;
@@ -3228,7 +3228,7 @@ PHP_FUNCTION(pdf_closepath)
     
 /* {{{ proto bool PDF_closepath_fill_stroke(
 resource p)
- * Close the path, fill, and stroke it. */
+ * Close the path, fill, and stroke it */
 PHP_FUNCTION(pdf_closepath_fill_stroke)
 {
     PDF *pdf;
@@ -3289,7 +3289,7 @@ PHP_FUNCTION(pdf_closepath_fill_stroke)
     
 /* {{{ proto bool PDF_closepath_stroke(
 resource p)
- * Close the path, and stroke it. */
+ * Close the path, and stroke it */
 PHP_FUNCTION(pdf_closepath_stroke)
 {
     PDF *pdf;
@@ -3350,7 +3350,7 @@ PHP_FUNCTION(pdf_closepath_stroke)
     
 /* {{{ proto bool PDF_concat(
 resource p, double a, double b, double c, double d, double e, double f)
- * Apply a transformation matrix to the current coordinate system. */
+ * Apply a transformation matrix to the current coordinate system */
 PHP_FUNCTION(pdf_concat)
 {
     PDF *pdf;
@@ -3417,7 +3417,7 @@ PHP_FUNCTION(pdf_concat)
     
 /* {{{ proto bool PDF_continue_text(
 resource p, string text)
- * Same as PDF_continue_text(), but with explicit string length. */
+ * Same as PDF_continue_text(), but with explicit string length */
 PHP_FUNCTION(pdf_continue_text)
 {
     PDF *pdf;
@@ -3488,7 +3488,7 @@ PHP_FUNCTION(pdf_continue_text)
     
 /* {{{ proto string PDF_convert_to_unicode(
 resource p, string inputformat, string inputstring, string optlist)
- * Convert a string in an arbitrary encoding to a Unicode string in various formats. */
+ * Convert a string in an arbitrary encoding to a Unicode string in various formats */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_convert_to_unicode)
 {
@@ -3592,7 +3592,7 @@ PHP_FUNCTION(pdf_convert_to_unicode)
     
 /* {{{ proto int PDF_create_3dview(
 resource p, string username, string optlist)
- * Create a 3D view (requires PDF 1.6). */
+ * Create a 3D view (requires PDF 1.6) */
 PHP_FUNCTION(pdf_create_3dview)
 {
     PDF *pdf;
@@ -3670,7 +3670,7 @@ PHP_FUNCTION(pdf_create_3dview)
     
 /* {{{ proto int PDF_create_action(
 resource p, string type, string optlist)
- * Create an action which can be applied to various objects and events. */
+ * Create an action which can be applied to various objects and events */
 PHP_FUNCTION(pdf_create_action)
 {
     PDF *pdf;
@@ -3748,7 +3748,7 @@ PHP_FUNCTION(pdf_create_action)
     
 /* {{{ proto bool PDF_create_annotation(
 resource p, double llx, double lly, double urx, double ury, string type, string optlist)
- * Create an annotation on the current page. */
+ * Create an annotation on the current page */
 PHP_FUNCTION(pdf_create_annotation)
 {
     PDF *pdf;
@@ -3829,7 +3829,7 @@ PHP_FUNCTION(pdf_create_annotation)
     
 /* {{{ proto int PDF_create_devicen(
 resource p, string optlist)
- * Create a DeviceN colorspace with an arbitrary number of color components. */
+ * Create a DeviceN colorspace with an arbitrary number of color components */
 #if PDFLIB_MAJORVERSION >= 9 && PDFLIB_MINORVERSION >= 1
 PHP_FUNCTION(pdf_create_devicen)
 {
@@ -3901,7 +3901,7 @@ PHP_FUNCTION(pdf_create_devicen)
     
 /* {{{ proto int PDF_create_bookmark(
 resource p, string text, string optlist)
- * Create a bookmark subject to various options. */
+ * Create a bookmark subject to various options */
 PHP_FUNCTION(pdf_create_bookmark)
 {
     PDF *pdf;
@@ -3981,7 +3981,7 @@ PHP_FUNCTION(pdf_create_bookmark)
     
 /* {{{ proto bool PDF_create_field(
 resource p, double llx, double lly, double urx, double ury, string name, string type, string optlist)
- * Create a form field on the current page subject to various options. */
+ * Create a form field on the current page subject to various options */
 PHP_FUNCTION(pdf_create_field)
 {
     PDF *pdf;
@@ -4072,7 +4072,7 @@ PHP_FUNCTION(pdf_create_field)
     
 /* {{{ proto bool PDF_create_fieldgroup(
 resource p, string name, string optlist)
- * Create a form field group subject to various options. */
+ * Create a form field group subject to various options */
 PHP_FUNCTION(pdf_create_fieldgroup)
 {
     PDF *pdf;
@@ -4151,7 +4151,7 @@ PHP_FUNCTION(pdf_create_fieldgroup)
     
 /* {{{ proto int PDF_create_gstate(
 resource p, string optlist)
- * Create a graphics state object subject to various options. */
+ * Create a graphics state object subject to various options */
 PHP_FUNCTION(pdf_create_gstate)
 {
     PDF *pdf;
@@ -4221,7 +4221,7 @@ PHP_FUNCTION(pdf_create_gstate)
     
 /* {{{ proto bool PDF_create_pvf(
 resource p, string filename, string data, string optlist)
- * Create a named virtual read-only file from data provided in memory. */
+ * Create a named virtual read-only file from data provided in memory */
 PHP_FUNCTION(pdf_create_pvf)
 {
     PDF *pdf;
@@ -4308,7 +4308,7 @@ PHP_FUNCTION(pdf_create_pvf)
     
 /* {{{ proto int PDF_create_textflow(
 resource p, string text, string optlist)
- * Create a Textflow object from text contents, inline options, and explicit options. */
+ * Create a Textflow object from text contents, inline options, and explicit options */
 PHP_FUNCTION(pdf_create_textflow)
 {
     PDF *pdf;
@@ -4388,7 +4388,7 @@ PHP_FUNCTION(pdf_create_textflow)
     
 /* {{{ proto bool PDF_curveto(
 resource p, double x1, double y1, double x2, double y2, double x3, double y3)
- * Draw a Bezier curve from the current point, using 3 more control points. */
+ * Draw a Bezier curve from the current point, using 3 more control points */
 PHP_FUNCTION(pdf_curveto)
 {
     PDF *pdf;
@@ -4455,7 +4455,7 @@ PHP_FUNCTION(pdf_curveto)
     
 /* {{{ proto int PDF_define_layer(
 resource p, string name, string optlist)
- * Create a new layer definition (requires PDF 1.5). */
+ * Create a new layer definition (requires PDF 1.5) */
 PHP_FUNCTION(pdf_define_layer)
 {
     PDF *pdf;
@@ -4535,7 +4535,7 @@ PHP_FUNCTION(pdf_define_layer)
     
 /* {{{ proto bool PDF_delete_path(
 resource p, int path)
- * Delete a path object. */
+ * Delete a path object */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_delete_path)
 {
@@ -4604,7 +4604,7 @@ PHP_FUNCTION(pdf_delete_path)
     
 /* {{{ proto int PDF_delete_pvf(
 resource p, string filename)
- * Delete a named virtual file and free its data structures (but not the contents). */
+ * Delete a named virtual file and free its data structures (but not the contents) */
 PHP_FUNCTION(pdf_delete_pvf)
 {
     PDF *pdf;
@@ -4674,7 +4674,7 @@ PHP_FUNCTION(pdf_delete_pvf)
     
 /* {{{ proto bool PDF_delete_table(
 resource p, int table, string optlist)
- * Delete a table and all associated data structures. */
+ * Delete a table and all associated data structures */
 PHP_FUNCTION(pdf_delete_table)
 {
     PDF *pdf;
@@ -4749,7 +4749,7 @@ PHP_FUNCTION(pdf_delete_table)
     
 /* {{{ proto bool PDF_delete_textflow(
 resource p, int textflow)
- * Delete a textflow and all associated data structures. */
+ * Delete a textflow and all associated data structures */
 PHP_FUNCTION(pdf_delete_textflow)
 {
     PDF *pdf;
@@ -4816,7 +4816,7 @@ PHP_FUNCTION(pdf_delete_textflow)
     
 /* {{{ proto bool PDF_draw_path(
 resource p, int path, double x, double y, string optlist)
- * Draw a path object. */
+ * Draw a path object */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_draw_path)
 {
@@ -4895,7 +4895,7 @@ PHP_FUNCTION(pdf_draw_path)
     
 /* {{{ proto bool PDF_ellipse(
 resource p, double x, double y, double rx, double ry)
- * Draw an ellipse. */
+ * Draw an ellipse */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_ellipse)
 {
@@ -4962,7 +4962,7 @@ PHP_FUNCTION(pdf_ellipse)
     
 /* {{{ proto bool PDF_elliptical_arc(
 resource p, double x, double y, double rx, double ry, string optlist)
- * Draw an elliptical arc segment from the current point. */
+ * Draw an elliptical arc segment from the current point */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_elliptical_arc)
 {
@@ -5037,7 +5037,7 @@ PHP_FUNCTION(pdf_elliptical_arc)
     
 /* {{{ proto bool PDF_encoding_set_char(
 resource p, string encoding, int slot, string glyphname, int uv)
- * Add a glyph name and/or Unicode value to a custom 8-bit encoding. */
+ * Add a glyph name and/or Unicode value to a custom 8-bit encoding */
 PHP_FUNCTION(pdf_encoding_set_char)
 {
     PDF *pdf;
@@ -5126,7 +5126,7 @@ PHP_FUNCTION(pdf_encoding_set_char)
     
 /* {{{ proto bool PDF_end_document(
 resource p, string optlist)
- * Close the generated PDF document and apply various options. */
+ * Close the generated PDF document and apply various options */
 PHP_FUNCTION(pdf_end_document)
 {
     PDF *pdf;
@@ -5195,7 +5195,7 @@ PHP_FUNCTION(pdf_end_document)
     
 /* {{{ proto bool PDF_end_dpart(
 resource p, string optlist)
- * Close a node in the document part hierarchy (requires PDF/VT or PDF 2.0). */
+ * Close a node in the document part hierarchy (requires PDF/VT or PDF 2.0) */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_end_dpart)
 {
@@ -5266,7 +5266,7 @@ PHP_FUNCTION(pdf_end_dpart)
     
 /* {{{ proto bool PDF_end_font(
 resource p)
- * Terminate a Type 3 font definition. */
+ * Terminate a Type 3 font definition */
 PHP_FUNCTION(pdf_end_font)
 {
     PDF *pdf;
@@ -5327,7 +5327,7 @@ PHP_FUNCTION(pdf_end_font)
     
 /* {{{ proto bool PDF_end_glyph(
 resource p)
- * Terminate a glyph definition for a Type 3 font. */
+ * Terminate a glyph definition for a Type 3 font */
 PHP_FUNCTION(pdf_end_glyph)
 {
     PDF *pdf;
@@ -5388,7 +5388,7 @@ PHP_FUNCTION(pdf_end_glyph)
     
 /* {{{ proto bool PDF_end_item(
 resource p, int id)
- * Close a structure element or other content item. */
+ * Close a structure element or other content item */
 PHP_FUNCTION(pdf_end_item)
 {
     PDF *pdf;
@@ -5455,7 +5455,7 @@ PHP_FUNCTION(pdf_end_item)
     
 /* {{{ proto bool PDF_end_layer(
 resource p)
- * Deactivate all active layers (requires PDF 1.5). */
+ * Deactivate all active layers (requires PDF 1.5) */
 PHP_FUNCTION(pdf_end_layer)
 {
     PDF *pdf;
@@ -5516,7 +5516,7 @@ PHP_FUNCTION(pdf_end_layer)
     
 /* {{{ proto bool PDF_end_mc(
 resource p)
- * End the least recently opened marked content sequence. */
+ * End the least recently opened marked content sequence */
 PHP_FUNCTION(pdf_end_mc)
 {
     PDF *pdf;
@@ -5577,7 +5577,7 @@ PHP_FUNCTION(pdf_end_mc)
     
 /* {{{ proto bool PDF_end_page(
 resource p)
- * Deprecated, use PDF_end_page_ext(). */
+ * Deprecated, use PDF_end_page_ext() */
 PHP_FUNCTION(pdf_end_page)
 {
     PDF *pdf;
@@ -5625,7 +5625,7 @@ PHP_FUNCTION(pdf_end_page)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_page_ext().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_page_ext()");
 
     pdf_try {
 	PDF_end_page(pdf);
@@ -5639,7 +5639,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_page_ext
     
 /* {{{ proto bool PDF_end_page_ext(
 resource p, string optlist)
- * Finish a page, and apply various options. */
+ * Finish a page, and apply various options */
 PHP_FUNCTION(pdf_end_page_ext)
 {
     PDF *pdf;
@@ -5708,7 +5708,7 @@ PHP_FUNCTION(pdf_end_page_ext)
     
 /* {{{ proto bool PDF_end_pattern(
 resource p)
- * Finish a pattern definition. */
+ * Finish a pattern definition */
 PHP_FUNCTION(pdf_end_pattern)
 {
     PDF *pdf;
@@ -5769,7 +5769,7 @@ PHP_FUNCTION(pdf_end_pattern)
     
 /* {{{ proto bool PDF_end_template(
 resource p)
- * Deprecated, use PDF_end_template_ext(). */
+ * Deprecated, use PDF_end_template_ext() */
 PHP_FUNCTION(pdf_end_template)
 {
     PDF *pdf;
@@ -5818,7 +5818,7 @@ PHP_FUNCTION(pdf_end_template)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 8
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_template_ext().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_template_ext()");
     #endif /* PDFLIB_MAJORVERSION >= 8 */
 
     pdf_try {
@@ -5833,7 +5833,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_end_template
     
 /* {{{ proto bool PDF_end_template_ext(
 resource p, double width, double height)
- * Finish a template definition. */
+ * Finish a template definition */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_end_template_ext)
 {
@@ -5898,7 +5898,7 @@ PHP_FUNCTION(pdf_end_template_ext)
     
 /* {{{ proto bool PDF_endpath(
 resource p)
- * End the current path without filling or stroking it. */
+ * End the current path without filling or stroking it */
 PHP_FUNCTION(pdf_endpath)
 {
     PDF *pdf;
@@ -5959,7 +5959,7 @@ PHP_FUNCTION(pdf_endpath)
     
 /* {{{ proto bool PDF_fill(
 resource p)
- * Fill the interior of the path with the current fill color. */
+ * Fill the interior of the path with the current fill color */
 PHP_FUNCTION(pdf_fill)
 {
     PDF *pdf;
@@ -6020,7 +6020,7 @@ PHP_FUNCTION(pdf_fill)
     
 /* {{{ proto int PDF_fill_graphicsblock(
 resource p, int page, string blockname, int graphics, string optlist)
- * Fill a graphics block with variable data according to its properties. */
+ * Fill a graphics block with variable data according to its properties */
 #if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_fill_graphicsblock)
 {
@@ -6112,7 +6112,7 @@ PHP_FUNCTION(pdf_fill_graphicsblock)
     
 /* {{{ proto int PDF_fill_imageblock(
 resource p, int page, string blockname, int image, string optlist)
- * Fill an image block with variable data according to its properties. */
+ * Fill an image block with variable data according to its properties */
 PHP_FUNCTION(pdf_fill_imageblock)
 {
     PDF *pdf;
@@ -6202,7 +6202,7 @@ PHP_FUNCTION(pdf_fill_imageblock)
     
 /* {{{ proto int PDF_fill_pdfblock(
 resource p, int page, string blockname, int contents, string optlist)
- * Fill a PDF block with variable data according to its properties. */
+ * Fill a PDF block with variable data according to its properties */
 PHP_FUNCTION(pdf_fill_pdfblock)
 {
     PDF *pdf;
@@ -6292,7 +6292,7 @@ PHP_FUNCTION(pdf_fill_pdfblock)
     
 /* {{{ proto bool PDF_fill_stroke(
 resource p)
- * Fill a Textline or Textflow Block with variable data according to its properties. */
+ * Fill a Textline or Textflow Block with variable data according to its properties */
 PHP_FUNCTION(pdf_fill_stroke)
 {
     PDF *pdf;
@@ -6353,7 +6353,7 @@ PHP_FUNCTION(pdf_fill_stroke)
     
 /* {{{ proto int PDF_fill_textblock(
 resource p, int page, string blockname, string text, string optlist)
- * Fill a Textline or Textflow Block with variable data according to its properties. */
+ * Fill a Textline or Textflow Block with variable data according to its properties */
 PHP_FUNCTION(pdf_fill_textblock)
 {
     PDF *pdf;
@@ -6447,7 +6447,7 @@ PHP_FUNCTION(pdf_fill_textblock)
     
 /* {{{ proto int PDF_findfont(
 resource p, string fontname, string encoding, int embed)
- * Deprecated, use  PDF_load_font(). */
+ * Deprecated, use  PDF_load_font() */
 PHP_FUNCTION(pdf_findfont)
 {
     PDF *pdf;
@@ -6518,7 +6518,7 @@ PHP_FUNCTION(pdf_findfont)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_load_font().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_load_font()");
 
     pdf_try {
 	_result = PDF_findfont(pdf, fontname, encoding, (int)embed);
@@ -6532,7 +6532,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use  PDF_load_font()
     
 /* {{{ proto bool PDF_fit_graphics(
 resource p, int graphics, double x, double y, string optlist)
- * Place vector graphics on a content stream, subject to various options. */
+ * Place vector graphics on a content stream, subject to various options */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_fit_graphics)
 {
@@ -6611,7 +6611,7 @@ PHP_FUNCTION(pdf_fit_graphics)
     
 /* {{{ proto bool PDF_fit_image(
 resource p, int image, double x, double y, string optlist)
- * Place an image or template on the page, subject to various options. */
+ * Place an image or template on the page, subject to various options */
 PHP_FUNCTION(pdf_fit_image)
 {
     PDF *pdf;
@@ -6688,7 +6688,7 @@ PHP_FUNCTION(pdf_fit_image)
     
 /* {{{ proto bool PDF_fit_pdi_page(
 resource p, int page, double x, double y, string optlist)
- * Place an imported PDF page on the page subject to various options. */
+ * Place an imported PDF page on the page subject to various options */
 PHP_FUNCTION(pdf_fit_pdi_page)
 {
     PDF *pdf;
@@ -6765,7 +6765,7 @@ PHP_FUNCTION(pdf_fit_pdi_page)
     
 /* {{{ proto string PDF_fit_table(
 resource p, int table, double llx, double lly, double urx, double ury, string optlist)
- * Fully or partially place a table on the page. */
+ * Fully or partially place a table on the page */
 PHP_FUNCTION(pdf_fit_table)
 {
     PDF *pdf;
@@ -6857,7 +6857,7 @@ PHP_FUNCTION(pdf_fit_table)
     
 /* {{{ proto string PDF_fit_textflow(
 resource p, int textflow, double llx, double lly, double urx, double ury, string optlist)
- * Format the next portion of a Textflow. */
+ * Format the next portion of a Textflow */
 PHP_FUNCTION(pdf_fit_textflow)
 {
     PDF *pdf;
@@ -6949,7 +6949,7 @@ PHP_FUNCTION(pdf_fit_textflow)
     
 /* {{{ proto bool PDF_fit_textline(
 resource p, string text, double x, double y, string optlist)
- * Place a single line of text at position (x, y) subject to various options. */
+ * Place a single line of text at position (x, y) subject to various options */
 PHP_FUNCTION(pdf_fit_textline)
 {
     PDF *pdf;
@@ -7030,7 +7030,7 @@ PHP_FUNCTION(pdf_fit_textline)
     
 /* {{{ proto string PDF_get_apiname(
 resource p)
- * Get the name of the API function which threw the last exception or failed. */
+ * Get the name of the API function which threw the last exception or failed */
 PHP_FUNCTION(pdf_get_apiname)
 {
     PDF *pdf;
@@ -7104,7 +7104,7 @@ PHP_FUNCTION(pdf_get_apiname)
     
 /* {{{ proto string PDF_get_buffer(
 resource p)
- * Get the contents of the PDF output buffer. */
+ * Get the contents of the PDF output buffer */
 PHP_FUNCTION(pdf_get_buffer)
 {
     PDF *pdf;
@@ -7180,7 +7180,7 @@ PHP_FUNCTION(pdf_get_buffer)
     
 /* {{{ proto string PDF_get_errmsg(
 resource p)
- * Get the text of the last thrown exception or the reason of a failed function call. */
+ * Get the text of the last thrown exception or the reason of a failed function call */
 PHP_FUNCTION(pdf_get_errmsg)
 {
     PDF *pdf;
@@ -7254,7 +7254,7 @@ PHP_FUNCTION(pdf_get_errmsg)
     
 /* {{{ proto int PDF_get_errnum(
 resource p)
- * Get the number of the last thrown exception or the reason of a failed function call. */
+ * Get the number of the last thrown exception or the reason of a failed function call */
 PHP_FUNCTION(pdf_get_errnum)
 {
     PDF *pdf;
@@ -7316,7 +7316,7 @@ PHP_FUNCTION(pdf_get_errnum)
     
 /* {{{ proto double PDF_get_option(
 resource p, string keyword, string optlist)
- * Retrieve some option or other value. */
+ * Retrieve some option or other value */
 #if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_get_option)
 {
@@ -7396,7 +7396,7 @@ PHP_FUNCTION(pdf_get_option)
     
 /* {{{ proto string PDF_get_parameter(
 resource p, string key, double modifier)
- * Deprecated, use PDF_get_option() and PDF_get_string(). */
+ * Deprecated, use PDF_get_option() and PDF_get_string() */
 PHP_FUNCTION(pdf_get_parameter)
 {
     PDF *pdf;
@@ -7455,7 +7455,7 @@ PHP_FUNCTION(pdf_get_parameter)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_get_option() and PDF_get_string().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_get_option() and PDF_get_string()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -7482,7 +7482,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_get_option()
     
 /* {{{ proto double PDF_get_pdi_value(
 resource p, string key, int doc, int page, int reserved)
- * Deprecated, use PDF_pcos_get_number(). */
+ * Deprecated, use PDF_pcos_get_number() */
 PHP_FUNCTION(pdf_get_pdi_value)
 {
     PDF *pdf;
@@ -7557,7 +7557,7 @@ PHP_FUNCTION(pdf_get_pdi_value)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_number().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_number()");
 
     pdf_try {
 	_result = PDF_get_pdi_value(pdf, key, (int)doc, (int)page, (int)reserved);
@@ -7571,7 +7571,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_pcos_get_num
     
 /* {{{ proto string PDF_get_string(
 resource p, int idx, string optlist)
- * Retrieve a string value. */
+ * Retrieve a string value */
 #if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_get_string)
 {
@@ -7661,7 +7661,7 @@ PHP_FUNCTION(pdf_get_string)
     
 /* {{{ proto double PDF_get_value(
 resource p, string key, double modifier)
- * Get the value of some PDFlib parameter with numerical type. */
+ * Deprecated, use PDF_get_option() */
 PHP_FUNCTION(pdf_get_value)
 {
     PDF *pdf;
@@ -7719,6 +7719,9 @@ PHP_FUNCTION(pdf_get_value)
         }
     }
     RESTORE_ERROR_HANDLING();
+    #if PDFLIB_MAJORVERSION >= 9
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_get_option()");
+    #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
 	_result = PDF_get_value(pdf, key, modifier);
@@ -7732,7 +7735,7 @@ PHP_FUNCTION(pdf_get_value)
     
 /* {{{ proto double PDF_info_font(
 resource p, int font, string keyword, string optlist)
- * Query detailed information about a loaded font. */
+ * Query detailed information about a loaded font */
 PHP_FUNCTION(pdf_info_font)
 {
     PDF *pdf;
@@ -7816,7 +7819,7 @@ PHP_FUNCTION(pdf_info_font)
     
 /* {{{ proto double PDF_info_graphics(
 resource p, int graphics, string keyword, string optlist)
- * Format vector graphics and query metrics and other properties. */
+ * Format vector graphics and query metrics and other properties */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_info_graphics)
 {
@@ -7902,7 +7905,7 @@ PHP_FUNCTION(pdf_info_graphics)
     
 /* {{{ proto double PDF_info_image(
 resource p, int image, string keyword, string optlist)
- * Format an image and query metrics and other image properties. */
+ * Format an image and query metrics and other image properties */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_info_image)
 {
@@ -7988,7 +7991,7 @@ PHP_FUNCTION(pdf_info_image)
     
 /* {{{ proto double PDF_info_matchbox(
 resource p, string boxname, int num, string keyword)
- * Query information about a matchbox on the current page. */
+ * Query information about a matchbox on the current page */
 PHP_FUNCTION(pdf_info_matchbox)
 {
     PDF *pdf;
@@ -8072,7 +8075,7 @@ PHP_FUNCTION(pdf_info_matchbox)
     
 /* {{{ proto double PDF_info_path(
 resource p, int path, string keyword, string optlist)
- * Query the results of drawing a path object without actually drawing it. */
+ * Query the results of drawing a path object without actually drawing it */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_info_path)
 {
@@ -8158,7 +8161,7 @@ PHP_FUNCTION(pdf_info_path)
     
 /* {{{ proto double PDF_info_pdi_page(
 resource p, int page, string keyword, string optlist)
- * Perform formatting calculations for a PDI page and query the resulting metrics. */
+ * Perform formatting calculations for a PDI page and query the resulting metrics */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_info_pdi_page)
 {
@@ -8244,7 +8247,7 @@ PHP_FUNCTION(pdf_info_pdi_page)
     
 /* {{{ proto double PDF_info_pvf(
 resource p, string filename, string keyword)
- * Query properties of a virtual file or the PDFlib Virtual Filesystem (PVF). */
+ * Query properties of a virtual file or the PDFlib Virtual Filesystem (PVF) */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_info_pvf)
 {
@@ -8324,7 +8327,7 @@ PHP_FUNCTION(pdf_info_pvf)
     
 /* {{{ proto double PDF_info_table(
 resource p, int table, string keyword)
- * Query table information related to the most recently placed table instance. */
+ * Query table information related to the most recently placed table instance */
 PHP_FUNCTION(pdf_info_table)
 {
     PDF *pdf;
@@ -8400,7 +8403,7 @@ PHP_FUNCTION(pdf_info_table)
     
 /* {{{ proto double PDF_info_textflow(
 resource p, int textflow, string keyword)
- * Query the current state of a Textflow. */
+ * Query the current state of a Textflow */
 PHP_FUNCTION(pdf_info_textflow)
 {
     PDF *pdf;
@@ -8476,7 +8479,7 @@ PHP_FUNCTION(pdf_info_textflow)
     
 /* {{{ proto double PDF_info_textline(
 resource p, string text, string keyword, string optlist)
- * Perform textline formatting without creating output and query the resulting metrics. */
+ * Perform textline formatting without creating output and query the resulting metrics */
 PHP_FUNCTION(pdf_info_textline)
 {
     PDF *pdf;
@@ -8564,7 +8567,7 @@ PHP_FUNCTION(pdf_info_textline)
     
 /* {{{ proto bool PDF_initgraphics(
 resource p)
- * Deprecated, use PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_initgraphics)
 {
     PDF *pdf;
@@ -8613,7 +8616,7 @@ PHP_FUNCTION(pdf_initgraphics)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -8628,7 +8631,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics
     
 /* {{{ proto bool PDF_lineto(
 resource p, double x, double y)
- * Draw a line from the current point to another point. */
+ * Draw a line from the current point to another point */
 PHP_FUNCTION(pdf_lineto)
 {
     PDF *pdf;
@@ -8691,7 +8694,7 @@ PHP_FUNCTION(pdf_lineto)
     
 /* {{{ proto int PDF_load_3ddata(
 resource p, string filename, string optlist)
- * Load a 3D model from a disk-based or virtual file (requires PDF 1.6). */
+ * Load a 3D model from a disk-based or virtual file (requires PDF 1.6) */
 PHP_FUNCTION(pdf_load_3ddata)
 {
     PDF *pdf;
@@ -8769,7 +8772,7 @@ PHP_FUNCTION(pdf_load_3ddata)
     
 /* {{{ proto int PDF_load_asset(
 resource p, string type, string filename, string optlist)
- * Load a rich media asset or file attachment from a disk-based or virtual file. */
+ * Load a rich media asset or file attachment from a disk-based or virtual file */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_load_asset)
 {
@@ -8857,7 +8860,7 @@ PHP_FUNCTION(pdf_load_asset)
     
 /* {{{ proto int PDF_load_font(
 resource p, string fontname, string encoding, string optlist)
- * Search for a font and prepare it for later use. */
+ * Search for a font and prepare it for later use */
 PHP_FUNCTION(pdf_load_font)
 {
     PDF *pdf;
@@ -8943,7 +8946,7 @@ PHP_FUNCTION(pdf_load_font)
     
 /* {{{ proto int PDF_load_graphics(
 resource p, string type, string filename, string optlist)
- * Open a disk-based or virtual vector graphics file subject to various options. */
+ * Open a disk-based or virtual vector graphics file subject to various options */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_load_graphics)
 {
@@ -9031,7 +9034,7 @@ PHP_FUNCTION(pdf_load_graphics)
     
 /* {{{ proto int PDF_load_iccprofile(
 resource p, string profilename, string optlist)
- * Search for an ICC profile, and prepare it for later use. */
+ * Search for an ICC profile, and prepare it for later use */
 PHP_FUNCTION(pdf_load_iccprofile)
 {
     PDF *pdf;
@@ -9109,7 +9112,7 @@ PHP_FUNCTION(pdf_load_iccprofile)
     
 /* {{{ proto int PDF_load_image(
 resource p, string imagetype, string filename, string optlist)
- * Open a disk-based or virtual image file subject to various options. */
+ * Open a disk-based or virtual image file subject to various options */
 PHP_FUNCTION(pdf_load_image)
 {
     PDF *pdf;
@@ -9195,7 +9198,7 @@ PHP_FUNCTION(pdf_load_image)
     
 /* {{{ proto int PDF_makespotcolor(
 resource p, string spotname)
- * Find a built-in spot color name, or make a named spot color from the current fill color. */
+ * Find a built-in spot color name, or make a named spot color from the current fill color */
 PHP_FUNCTION(pdf_makespotcolor)
 {
     PDF *pdf;
@@ -9265,7 +9268,7 @@ PHP_FUNCTION(pdf_makespotcolor)
     
 /* {{{ proto bool PDF_mc_point(
 resource p, string tagname, string optlist)
- * Add a marked content point with optional properties. */
+ * Add a marked content point with optional properties */
 PHP_FUNCTION(pdf_mc_point)
 {
     PDF *pdf;
@@ -9342,7 +9345,7 @@ PHP_FUNCTION(pdf_mc_point)
     
 /* {{{ proto bool PDF_moveto(
 resource p, double x, double y)
- * Set the current point for graphics output. */
+ * Set the current point for graphics output */
 PHP_FUNCTION(pdf_moveto)
 {
     PDF *pdf;
@@ -9405,7 +9408,7 @@ PHP_FUNCTION(pdf_moveto)
     
 /* {{{ proto int PDF_open_ccitt(
 resource p, string filename, int width, int height, int BitReverse, int K, int BlackIs1)
- * Deprecated, use PDF_load_image(). */
+ * Deprecated, use PDF_load_image() */
 PHP_FUNCTION(pdf_open_ccitt)
 {
     PDF *pdf;
@@ -9492,7 +9495,7 @@ PHP_FUNCTION(pdf_open_ccitt)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image()");
 
     pdf_try {
 	_result = PDF_open_CCITT(pdf, filename, (int)width, (int)height, (int)BitReverse, (int)K, (int)BlackIs1);
@@ -9506,7 +9509,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image()
     
 /* {{{ proto int PDF_open_file(
 resource p, string filename)
- * Deprecated, use PDF_begin_document(). */
+ * Deprecated, use PDF_begin_document() */
 PHP_FUNCTION(pdf_open_file)
 {
     PDF *pdf;
@@ -9563,7 +9566,7 @@ PHP_FUNCTION(pdf_open_file)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_document().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_document()");
 
 	if (filename && *filename) {
 	    if (php_check_open_basedir(filename TSRMLS_CC)) {
@@ -9583,7 +9586,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_begin_docume
     
 /* {{{ proto int PDF_open_image_file(
 resource p, string imagetype, string filename, string stringparam, int intparam)
- * Deprecated, use PDF_load_image(). */
+ * Deprecated, use PDF_load_image() */
 PHP_FUNCTION(pdf_open_image_file)
 {
     PDF *pdf;
@@ -9662,7 +9665,7 @@ PHP_FUNCTION(pdf_open_image_file)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image()");
 
     pdf_try {
 	_result = PDF_open_image_file(pdf, imagetype, filename, stringparam, (int)intparam);
@@ -9676,7 +9679,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_load_image()
     
 /* {{{ proto int PDF_open_pdi_document(
 resource p, string filename, string optlist)
- * Open a disk-based or virtual PDF document and prepare it for later use. */
+ * Open a disk-based or virtual PDF document and prepare it for later use */
 PHP_FUNCTION(pdf_open_pdi_document)
 {
     PDF *pdf;
@@ -9754,7 +9757,7 @@ PHP_FUNCTION(pdf_open_pdi_document)
     
 /* {{{ proto int PDF_open_pdi_page(
 resource p, int doc, int pagenumber, string optlist)
- * Prepare a page for later use with PDF_fit_pdi_page(). */
+ * Prepare a page for later use with PDF_fit_pdi_page() */
 PHP_FUNCTION(pdf_open_pdi_page)
 {
     PDF *pdf;
@@ -9836,7 +9839,7 @@ PHP_FUNCTION(pdf_open_pdi_page)
     
 /* {{{ proto double PDF_pcos_get_number(
 resource p, int doc, string path)
- * Get the value of a pCOS path with type number or boolean. */
+ * Get the value of a pCOS path with type number or boolean */
 PHP_FUNCTION(pdf_pcos_get_number)
 {
     PDF *pdf;
@@ -9912,7 +9915,7 @@ PHP_FUNCTION(pdf_pcos_get_number)
     
 /* {{{ proto string PDF_pcos_get_string(
 resource p, int doc, string path)
- * Get the value of a pCOS path with type name, number, string, or boolean. */
+ * Get the value of a pCOS path with type name, number, string, or boolean */
 PHP_FUNCTION(pdf_pcos_get_string)
 {
     PDF *pdf;
@@ -10000,7 +10003,7 @@ PHP_FUNCTION(pdf_pcos_get_string)
     
 /* {{{ proto string PDF_pcos_get_stream(
 resource p, int doc, string optlist, string path)
- * Get the contents of a pCOS path with type stream, fstream, or string. */
+ * Get the contents of a pCOS path with type stream, fstream, or string */
 PHP_FUNCTION(pdf_pcos_get_stream)
 {
     PDF *pdf;
@@ -10098,7 +10101,7 @@ PHP_FUNCTION(pdf_pcos_get_stream)
     
 /* {{{ proto bool PDF_place_image(
 resource p, int image, double x, double y, double scale)
- * Deprecated, use PDF_fit_image(). */
+ * Deprecated, use PDF_fit_image() */
 PHP_FUNCTION(pdf_place_image)
 {
     PDF *pdf;
@@ -10155,7 +10158,7 @@ PHP_FUNCTION(pdf_place_image)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_image().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_image()");
 
     pdf_try {
 	PDF_place_image(pdf, (int)image, x, y, scale);
@@ -10169,7 +10172,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_image().
     
 /* {{{ proto bool PDF_place_pdi_page(
 resource p, int page, double x, double y, double sx, double sy)
- * Deprecated, use PDF_fit_pdi_page(). */
+ * Deprecated, use PDF_fit_pdi_page() */
 PHP_FUNCTION(pdf_place_pdi_page)
 {
     PDF *pdf;
@@ -10227,7 +10230,7 @@ PHP_FUNCTION(pdf_place_pdi_page)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_pdi_page().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_pdi_page()");
 
     pdf_try {
 	PDF_place_pdi_page(pdf, (int)page, x, y, sx, sy);
@@ -10241,7 +10244,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_fit_pdi_page
     
 /* {{{ proto bool PDF_poca_delete(
 resource p, int container, string optlist)
- * Delete a PDF container object. */
+ * Delete a PDF container object */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_poca_delete)
 {
@@ -10318,7 +10321,7 @@ PHP_FUNCTION(pdf_poca_delete)
     
 /* {{{ proto bool PDF_poca_insert(
 resource p, int container, string optlist)
- * Insert a simple or container object in a PDF container object. */
+ * Insert a simple or container object in a PDF container object */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_poca_insert)
 {
@@ -10395,7 +10398,7 @@ PHP_FUNCTION(pdf_poca_insert)
     
 /* {{{ proto int PDF_poca_new(
 resource p, string optlist)
- * Create a new PDF container object of type dictionary, array, or stream and insert objects. */
+ * Create a new PDF container object of type dictionary, array, or stream and insert objects */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_poca_new)
 {
@@ -10467,7 +10470,7 @@ PHP_FUNCTION(pdf_poca_new)
     
 /* {{{ proto bool PDF_poca_remove(
 resource p, int container, string optlist)
- * Remove a simple or container object from a PDF container object. */
+ * Remove a simple or container object from a PDF container object */
 #if (PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1) || PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_poca_remove)
 {
@@ -10544,7 +10547,7 @@ PHP_FUNCTION(pdf_poca_remove)
     
 /* {{{ proto int PDF_process_pdi(
 resource p, int doc, int page, string optlist)
- * Process certain elements of an imported PDF document. */
+ * Process certain elements of an imported PDF document */
 PHP_FUNCTION(pdf_process_pdi)
 {
     PDF *pdf;
@@ -10626,7 +10629,7 @@ PHP_FUNCTION(pdf_process_pdi)
     
 /* {{{ proto bool PDF_rect(
 resource p, double x, double y, double width, double height)
- * Draw a rectangle. */
+ * Draw a rectangle */
 PHP_FUNCTION(pdf_rect)
 {
     PDF *pdf;
@@ -10691,7 +10694,7 @@ PHP_FUNCTION(pdf_rect)
     
 /* {{{ proto bool PDF_restore(
 resource p)
- * Restore the most recently saved graphics state from the stack. */
+ * Restore the most recently saved graphics state from the stack */
 PHP_FUNCTION(pdf_restore)
 {
     PDF *pdf;
@@ -10752,7 +10755,7 @@ PHP_FUNCTION(pdf_restore)
     
 /* {{{ proto bool PDF_resume_page(
 resource p, string optlist)
- * Resume a page to add more content to it. */
+ * Resume a page to add more content to it */
 PHP_FUNCTION(pdf_resume_page)
 {
     PDF *pdf;
@@ -10821,7 +10824,7 @@ PHP_FUNCTION(pdf_resume_page)
     
 /* {{{ proto bool PDF_rotate(
 resource p, double phi)
- * Rotate the coordinate system. */
+ * Rotate the coordinate system */
 PHP_FUNCTION(pdf_rotate)
 {
     PDF *pdf;
@@ -10883,7 +10886,7 @@ PHP_FUNCTION(pdf_rotate)
     
 /* {{{ proto bool PDF_save(
 resource p)
- * Save the current graphics state to a stack. */
+ * Save the current graphics state to a stack */
 PHP_FUNCTION(pdf_save)
 {
     PDF *pdf;
@@ -10944,7 +10947,7 @@ PHP_FUNCTION(pdf_save)
     
 /* {{{ proto bool PDF_scale(
 resource p, double sx, double sy)
- * Scale the coordinate system. */
+ * Scale the coordinate system */
 PHP_FUNCTION(pdf_scale)
 {
     PDF *pdf;
@@ -11007,7 +11010,7 @@ PHP_FUNCTION(pdf_scale)
     
 /* {{{ proto bool PDF_set_border_color(
 resource p, double red, double green, double blue)
- * Deprecated, use PDF_create_annotation(). */
+ * Deprecated, use PDF_create_annotation() */
 PHP_FUNCTION(pdf_set_border_color)
 {
     PDF *pdf;
@@ -11058,7 +11061,7 @@ PHP_FUNCTION(pdf_set_border_color)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation()");
 
     pdf_try {
 	PDF_set_border_color(pdf, red, green, blue);
@@ -11072,7 +11075,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annot
     
 /* {{{ proto bool PDF_set_border_dash(
 resource p, double b, double w)
- * Deprecated, use PDF_create_annotation(). */
+ * Deprecated, use PDF_create_annotation() */
 PHP_FUNCTION(pdf_set_border_dash)
 {
     PDF *pdf;
@@ -11122,7 +11125,7 @@ PHP_FUNCTION(pdf_set_border_dash)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation()");
 
     pdf_try {
 	PDF_set_border_dash(pdf, b, w);
@@ -11136,7 +11139,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annot
     
 /* {{{ proto bool PDF_set_border_style(
 resource p, string style, double width)
- * Deprecated, use PDF_create_annotation(). */
+ * Deprecated, use PDF_create_annotation() */
 PHP_FUNCTION(pdf_set_border_style)
 {
     PDF *pdf;
@@ -11193,7 +11196,7 @@ PHP_FUNCTION(pdf_set_border_style)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annotation()");
 
     pdf_try {
 	PDF_set_border_style(pdf, style, width);
@@ -11207,7 +11210,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_create_annot
     
 /* {{{ proto bool PDF_set_graphics_option(
 resource p, string optlist)
- * Set one or more graphics appearance options. */
+ * Set one or more graphics appearance options */
 #if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_set_graphics_option)
 {
@@ -11278,7 +11281,7 @@ PHP_FUNCTION(pdf_set_graphics_option)
     
 /* {{{ proto bool PDF_set_gstate(
 resource p, int gstate)
- * Activate a graphics state object. */
+ * Activate a graphics state object */
 PHP_FUNCTION(pdf_set_gstate)
 {
     PDF *pdf;
@@ -11345,7 +11348,7 @@ PHP_FUNCTION(pdf_set_gstate)
     
 /* {{{ proto bool PDF_set_info(
 resource p, string key, string value)
- * Like PDF_set_info(), but with explicit string length. */
+ * Like PDF_set_info(), but with explicit string length */
 PHP_FUNCTION(pdf_set_info)
 {
     PDF *pdf;
@@ -11424,7 +11427,7 @@ PHP_FUNCTION(pdf_set_info)
     
 /* {{{ proto bool PDF_set_layer_dependency(
 resource p, string type, string optlist)
- * Define layer relationships (requires PDF 1.5). */
+ * Define layer relationships (requires PDF 1.5) */
 PHP_FUNCTION(pdf_set_layer_dependency)
 {
     PDF *pdf;
@@ -11501,7 +11504,7 @@ PHP_FUNCTION(pdf_set_layer_dependency)
     
 /* {{{ proto bool PDF_set_option(
 resource p, string optlist)
- * Set one or more global options. */
+ * Set one or more global options */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_set_option)
 {
@@ -11572,7 +11575,7 @@ PHP_FUNCTION(pdf_set_option)
     
 /* {{{ proto bool PDF_set_parameter(
 resource p, string key, string value)
- * Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_set_parameter)
 {
     PDF *pdf;
@@ -11637,7 +11640,7 @@ PHP_FUNCTION(pdf_set_parameter)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -11652,7 +11655,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option()
     
 /* {{{ proto bool PDF_set_text_option(
 resource p, string optlist)
- * Set one or more text filter or text appearance options for simple text output functions. */
+ * Set one or more text filter or text appearance options for simple text output functions */
 #if PDFLIB_MAJORVERSION >= 9
 PHP_FUNCTION(pdf_set_text_option)
 {
@@ -11723,7 +11726,7 @@ PHP_FUNCTION(pdf_set_text_option)
     
 /* {{{ proto bool PDF_set_text_pos(
 resource p, double x, double y)
- * Set the position for simple text output on the page. */
+ * Set the position for simple text output on the page */
 PHP_FUNCTION(pdf_set_text_pos)
 {
     PDF *pdf;
@@ -11786,7 +11789,7 @@ PHP_FUNCTION(pdf_set_text_pos)
     
 /* {{{ proto bool PDF_set_value(
 resource p, string key, double value)
- * Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option().. */
+ * Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option(). */
 PHP_FUNCTION(pdf_set_value)
 {
     PDF *pdf;
@@ -11844,7 +11847,7 @@ PHP_FUNCTION(pdf_set_value)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option()..");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option(), PDF_set_text_option() and PDF_set_graphics_option().");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -11859,7 +11862,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_option()
     
 /* {{{ proto bool PDF_setcolor(
 resource p, string fstype, string colorspace, double c1, double c2, double c3, double c4)
- * Set the color space and color for the graphics and text state.. */
+ * Set the color space and color for the graphics and text state. */
 PHP_FUNCTION(pdf_setcolor)
 {
     PDF *pdf;
@@ -11940,7 +11943,7 @@ PHP_FUNCTION(pdf_setcolor)
     
 /* {{{ proto bool PDF_setdash(
 resource p, double b, double w)
- * Deprecated, use PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_setdash)
 {
     PDF *pdf;
@@ -11991,7 +11994,7 @@ PHP_FUNCTION(pdf_setdash)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -12006,7 +12009,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics
     
 /* {{{ proto bool PDF_setdashpattern(
 resource p, string optlist)
- * Deprecated, use PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_setdashpattern)
 {
     PDF *pdf;
@@ -12063,7 +12066,7 @@ PHP_FUNCTION(pdf_setdashpattern)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -12078,7 +12081,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics
     
 /* {{{ proto bool PDF_setflat(
 resource p, double flatness)
- * Deprecated, use PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_setflat)
 {
     PDF *pdf;
@@ -12128,7 +12131,7 @@ PHP_FUNCTION(pdf_setflat)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -12143,7 +12146,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics
     
 /* {{{ proto bool PDF_setfont(
 resource p, int font, double fontsize)
- * Set the current font in the specified size. */
+ * Set the current font in the specified size */
 PHP_FUNCTION(pdf_setfont)
 {
     PDF *pdf;
@@ -12211,7 +12214,7 @@ PHP_FUNCTION(pdf_setfont)
     
 /* {{{ proto bool PDF_setgray(
 resource p, double gray)
- * Deprecated, use PDF_setcolor(). */
+ * Deprecated, use PDF_setcolor() */
 PHP_FUNCTION(pdf_setgray)
 {
     PDF *pdf;
@@ -12260,7 +12263,7 @@ PHP_FUNCTION(pdf_setgray)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()");
 
     pdf_try {
 	PDF_setgray(pdf, gray);
@@ -12274,7 +12277,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
     
 /* {{{ proto bool PDF_setgray_fill(
 resource p, double gray)
- * Deprecated, use PDF_setcolor(). */
+ * Deprecated, use PDF_setcolor() */
 PHP_FUNCTION(pdf_setgray_fill)
 {
     PDF *pdf;
@@ -12323,7 +12326,7 @@ PHP_FUNCTION(pdf_setgray_fill)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()");
 
     pdf_try {
 	PDF_setgray_fill(pdf, gray);
@@ -12337,7 +12340,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
     
 /* {{{ proto bool PDF_setgray_stroke(
 resource p, double gray)
- * Deprecated, use PDF_setcolor(). */
+ * Deprecated, use PDF_setcolor() */
 PHP_FUNCTION(pdf_setgray_stroke)
 {
     PDF *pdf;
@@ -12386,7 +12389,7 @@ PHP_FUNCTION(pdf_setgray_stroke)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()");
 
     pdf_try {
 	PDF_setgray_stroke(pdf, gray);
@@ -12400,7 +12403,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
     
 /* {{{ proto bool PDF_setlinecap(
 resource p, int linecap)
- * Deprecated, use PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_setlinecap)
 {
     PDF *pdf;
@@ -12455,7 +12458,7 @@ PHP_FUNCTION(pdf_setlinecap)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -12470,7 +12473,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics
     
 /* {{{ proto bool PDF_setlinejoin(
 resource p, int linejoin)
- * Deprecated, use PDF_set_graphics_option(). */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_setlinejoin)
 {
     PDF *pdf;
@@ -12525,7 +12528,7 @@ PHP_FUNCTION(pdf_setlinejoin)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 9
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
     #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
@@ -12540,7 +12543,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics
     
 /* {{{ proto bool PDF_setlinewidth(
 resource p, double width)
- * Set the current linewidth. */
+ * Set the current linewidth */
 PHP_FUNCTION(pdf_setlinewidth)
 {
     PDF *pdf;
@@ -12602,7 +12605,7 @@ PHP_FUNCTION(pdf_setlinewidth)
     
 /* {{{ proto bool PDF_setmatrix(
 resource p, double a, double b, double c, double d, double e, double f)
- * Explicitly set the current transformation matrix. */
+ * Explicitly set the current transformation matrix */
 PHP_FUNCTION(pdf_setmatrix)
 {
     PDF *pdf;
@@ -12669,7 +12672,7 @@ PHP_FUNCTION(pdf_setmatrix)
     
 /* {{{ proto bool PDF_setmiterlimit(
 resource p, double miter)
- * Set the miter limit. */
+ * Deprecated, use PDF_set_graphics_option() */
 PHP_FUNCTION(pdf_setmiterlimit)
 {
     PDF *pdf;
@@ -12718,6 +12721,9 @@ PHP_FUNCTION(pdf_setmiterlimit)
         }
     }
     RESTORE_ERROR_HANDLING();
+    #if PDFLIB_MAJORVERSION >= 9
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_set_graphics_option()");
+    #endif /* PDFLIB_MAJORVERSION >= 9 */
 
     pdf_try {
 	PDF_setmiterlimit(pdf, miter);
@@ -12731,7 +12737,7 @@ PHP_FUNCTION(pdf_setmiterlimit)
     
 /* {{{ proto bool PDF_setrgbcolor(
 resource p, double red, double green, double blue)
- * Deprecated, use PDF_setcolor(). */
+ * Deprecated, use PDF_setcolor() */
 PHP_FUNCTION(pdf_setrgbcolor)
 {
     PDF *pdf;
@@ -12782,7 +12788,7 @@ PHP_FUNCTION(pdf_setrgbcolor)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()");
 
     pdf_try {
 	PDF_setrgbcolor(pdf, red, green, blue);
@@ -12796,7 +12802,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
     
 /* {{{ proto bool PDF_setrgbcolor_fill(
 resource p, double red, double green, double blue)
- * Deprecated, use PDF_setcolor(). */
+ * Deprecated, use PDF_setcolor() */
 PHP_FUNCTION(pdf_setrgbcolor_fill)
 {
     PDF *pdf;
@@ -12847,7 +12853,7 @@ PHP_FUNCTION(pdf_setrgbcolor_fill)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()");
 
     pdf_try {
 	PDF_setrgbcolor_fill(pdf, red, green, blue);
@@ -12861,7 +12867,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
     
 /* {{{ proto bool PDF_setrgbcolor_stroke(
 resource p, double red, double green, double blue)
- * Deprecated, use PDF_setcolor(). */
+ * Deprecated, use PDF_setcolor() */
 PHP_FUNCTION(pdf_setrgbcolor_stroke)
 {
     PDF *pdf;
@@ -12912,7 +12918,7 @@ PHP_FUNCTION(pdf_setrgbcolor_stroke)
         }
     }
     RESTORE_ERROR_HANDLING();
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()");
 
     pdf_try {
 	PDF_setrgbcolor_stroke(pdf, red, green, blue);
@@ -12926,7 +12932,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_setcolor()."
     
 /* {{{ proto int PDF_shading(
 resource p, string type, double x0, double y0, double x1, double y1, double c1, double c2, double c3, double c4, string optlist)
- * Define a shading (color gradient) between two or more colors. */
+ * Define a shading (color gradient) between two or more colors */
 PHP_FUNCTION(pdf_shading)
 {
     PDF *pdf;
@@ -13012,7 +13018,7 @@ PHP_FUNCTION(pdf_shading)
     
 /* {{{ proto int PDF_shading_pattern(
 resource p, int shading, string optlist)
- * Define a shading pattern using a shading object. */
+ * Define a shading pattern using a shading object */
 PHP_FUNCTION(pdf_shading_pattern)
 {
     PDF *pdf;
@@ -13088,7 +13094,7 @@ PHP_FUNCTION(pdf_shading_pattern)
     
 /* {{{ proto bool PDF_shfill(
 resource p, int shading)
- * Fill an area with a shading, based on a shading object. */
+ * Fill an area with a shading, based on a shading object */
 PHP_FUNCTION(pdf_shfill)
 {
     PDF *pdf;
@@ -13155,7 +13161,7 @@ PHP_FUNCTION(pdf_shfill)
     
 /* {{{ proto bool PDF_show(
 resource p, string text)
- * Same as PDF_show() but with explicit string length. */
+ * Same as PDF_show() but with explicit string length */
 PHP_FUNCTION(pdf_show)
 {
     PDF *pdf;
@@ -13226,7 +13232,7 @@ PHP_FUNCTION(pdf_show)
     
 /* {{{ proto bool PDF_show_xy(
 resource p, string text, double x, double y)
- * Same as PDF_show_xy() but with explicit string length. */
+ * Same as PDF_show_xy() but with explicit string length */
 PHP_FUNCTION(pdf_show_xy)
 {
     PDF *pdf;
@@ -13299,7 +13305,7 @@ PHP_FUNCTION(pdf_show_xy)
     
 /* {{{ proto bool PDF_skew(
 resource p, double alpha, double beta)
- * Skew the coordinate system. */
+ * Skew the coordinate system */
 PHP_FUNCTION(pdf_skew)
 {
     PDF *pdf;
@@ -13362,7 +13368,7 @@ PHP_FUNCTION(pdf_skew)
     
 /* {{{ proto double PDF_stringwidth(
 resource p, string text, int font, double fontsize)
- * Same as PDF_stringwidth(), but with explicit string length. */
+ * Same as PDF_stringwidth(), but with explicit string length */
 PHP_FUNCTION(pdf_stringwidth)
 {
     PDF *pdf;
@@ -13441,7 +13447,7 @@ PHP_FUNCTION(pdf_stringwidth)
     
 /* {{{ proto bool PDF_stroke(
 resource p)
- * Stroke the path with the current color and line width, and clear it. */
+ * Stroke the path with the current color and line width, and clear it */
 PHP_FUNCTION(pdf_stroke)
 {
     PDF *pdf;
@@ -13502,7 +13508,7 @@ PHP_FUNCTION(pdf_stroke)
     
 /* {{{ proto bool PDF_suspend_page(
 resource p, string optlist)
- * Suspend the current page so that it can later be resumed. */
+ * Suspend the current page so that it can later be resumed */
 PHP_FUNCTION(pdf_suspend_page)
 {
     PDF *pdf;
@@ -13571,7 +13577,7 @@ PHP_FUNCTION(pdf_suspend_page)
     
 /* {{{ proto bool PDF_translate(
 resource p, double tx, double ty)
- * Translate the origin of the coordinate system. */
+ * Translate the origin of the coordinate system */
 PHP_FUNCTION(pdf_translate)
 {
     PDF *pdf;
@@ -13634,7 +13640,7 @@ PHP_FUNCTION(pdf_translate)
     
 /* {{{ proto string PDF_utf16_to_utf8(
 resource p, string utf16string)
- * Deprecated, use PDF_convert_to_unicode(). */
+ * Deprecated, use PDF_convert_to_unicode() */
 PHP_FUNCTION(pdf_utf16_to_utf8)
 {
     PDF *pdf;
@@ -13695,7 +13701,7 @@ PHP_FUNCTION(pdf_utf16_to_utf8)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode()");
     #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
@@ -13721,9 +13727,106 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
 /* }}} */
 
     
+/* {{{ proto string PDF_utf8_to_utf16(
+resource p, string utf8string, string ordering)
+ * Deprecated, use PDF_convert_to_unicode() */
+#if PDFLIB_MAJORVERSION >= 8
+PHP_FUNCTION(pdf_utf8_to_utf16)
+{
+    PDF *pdf;
+
+#if PHP_MAJOR_VERSION >= 7
+    zend_string * z_utf8string;
+#endif /* PHP_MAJOR_VERSION >= 7 */
+    const char * utf8string;
+    size_t utf8string_len;
+
+#if PHP_MAJOR_VERSION >= 7
+    zend_string * z_ordering;
+#endif /* PHP_MAJOR_VERSION >= 7 */
+    const char * ordering;
+    size_t ordering_len;
+    int outputlen;
+    const char *_result = NULL;
+
+
+    zval *object = getThis();
+    DEFINE_ERROR_HANDLER
+
+    if (object) {
+        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
+#if PHP_MAJOR_VERSION >= 7
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"SS", &z_utf8string, &z_ordering)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+        utf8string = ZSTR_VAL(z_utf8string);
+        ordering = ZSTR_VAL(z_ordering);
+#else /* PHP_MAJOR_VERSION >= 7 */
+        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"ss", &utf8string, &utf8string_len, &ordering, &ordering_len)) {
+            RESTORE_ERROR_HANDLING();
+            return;
+        }
+#endif /* PHP_MAJOR_VERSION >= 7 */
+        P_FROM_OBJECT(pdf, object);
+    } else {
+        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
+        {
+            zval *p;
+#if PHP_MAJOR_VERSION >= 7
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"zSS", &p, &z_utf8string, &z_ordering)) {
+		RESTORE_ERROR_HANDLING();
+                return;
+            }
+        utf8string = ZSTR_VAL(z_utf8string);
+        ordering = ZSTR_VAL(z_ordering);
+
+            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
+#else /* PHP_MAJOR_VERSION >= 7 */
+            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+"rss", &p, &utf8string, &utf8string_len, &ordering, &ordering_len)) {
+		RESTORE_ERROR_HANDLING();
+                return;
+            }
+            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
+#endif /* PHP_MAJOR_VERSION >= 7 */
+        }
+    }
+    RESTORE_ERROR_HANDLING();
+    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode()");
+    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
+
+    pdf_try {
+	_result =  (const char *)PDF_utf8_to_utf16(pdf, utf8string, ordering, &outputlen);
+    } pdf_catch;
+
+    
+#if PHP_MAJOR_VERSION >= 7
+    {
+        zend_string *z_result;
+        if (_result) {
+            z_result = zend_string_alloc(outputlen, 0);
+            memcpy(z_result->val, _result, outputlen);
+        } else {
+            z_result = zend_string_init("", 1, 0);
+        }
+        RETURN_STR(z_result);
+    }
+#else /* PHP_MAJOR_VERSION >= 7 */
+    RETURN_STRINGL(_result ? (char *)_result : "", outputlen, 1);
+#endif /* PHP_MAJOR_VERSION >= 7 */
+}
+#endif /* PDFLIB_MAJORVERSION >= 8 */
+/* }}} */
+
+    
 /* {{{ proto string PDF_utf32_to_utf8(
 resource p, string utf32string)
- * Deprecated, use PDF_convert_to_unicode(). */
+ * Deprecated, use PDF_convert_to_unicode() */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_utf32_to_utf8)
 {
@@ -13785,7 +13888,7 @@ PHP_FUNCTION(pdf_utf32_to_utf8)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode()");
     #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
@@ -13814,7 +13917,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     
 /* {{{ proto string PDF_utf8_to_utf32(
 resource p, string utf8string, string ordering)
- * Deprecated, use PDF_convert_to_unicode(). */
+ * Deprecated, use PDF_convert_to_unicode() */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_utf8_to_utf32)
 {
@@ -13882,7 +13985,7 @@ PHP_FUNCTION(pdf_utf8_to_utf32)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode()");
     #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
@@ -13911,7 +14014,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     
 /* {{{ proto string PDF_utf16_to_utf32(
 resource p, string utf16string, string ordering)
- * Deprecated, use PDF_convert_to_unicode(). */
+ * Deprecated, use PDF_convert_to_unicode() */
 #if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_utf16_to_utf32)
 {
@@ -13981,7 +14084,7 @@ PHP_FUNCTION(pdf_utf16_to_utf32)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode()");
     #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
@@ -14010,7 +14113,7 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     
 /* {{{ proto string PDF_utf32_to_utf16(
 resource p, string utf32string, string ordering)
- * Deprecated, use PDF_convert_to_unicode(). */
+ * Deprecated, use PDF_convert_to_unicode() */
 PHP_FUNCTION(pdf_utf32_to_utf16)
 {
     PDF *pdf;
@@ -14079,7 +14182,7 @@ PHP_FUNCTION(pdf_utf32_to_utf16)
     }
     RESTORE_ERROR_HANDLING();
     #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
+php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode()");
     #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
 
     pdf_try {
@@ -14102,103 +14205,6 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     RETURN_STRINGL(_result ? (char *)_result : "", outputlen, 1);
 #endif /* PHP_MAJOR_VERSION >= 7 */
 }
-/* }}} */
-
-    
-/* {{{ proto string PDF_utf8_to_utf16(
-resource p, string utf8string, string ordering)
- * Deprecated, use PDF_convert_to_unicode(). */
-#if PDFLIB_MAJORVERSION >= 8
-PHP_FUNCTION(pdf_utf8_to_utf16)
-{
-    PDF *pdf;
-
-#if PHP_MAJOR_VERSION >= 7
-    zend_string * z_utf8string;
-#endif /* PHP_MAJOR_VERSION >= 7 */
-    const char * utf8string;
-    size_t utf8string_len;
-
-#if PHP_MAJOR_VERSION >= 7
-    zend_string * z_ordering;
-#endif /* PHP_MAJOR_VERSION >= 7 */
-    const char * ordering;
-    size_t ordering_len;
-    int outputlen;
-    const char *_result = NULL;
-
-
-    zval *object = getThis();
-    DEFINE_ERROR_HANDLER
-
-    if (object) {
-        SET_ERROR_HANDLING(EH_THROW, pdflib_exception_class);
-#if PHP_MAJOR_VERSION >= 7
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"SS", &z_utf8string, &z_ordering)) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-        utf8string = ZSTR_VAL(z_utf8string);
-        ordering = ZSTR_VAL(z_ordering);
-#else /* PHP_MAJOR_VERSION >= 7 */
-        if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"ss", &utf8string, &utf8string_len, &ordering, &ordering_len)) {
-            RESTORE_ERROR_HANDLING();
-            return;
-        }
-#endif /* PHP_MAJOR_VERSION >= 7 */
-        P_FROM_OBJECT(pdf, object);
-    } else {
-        SET_ERROR_HANDLING(EH_NORMAL, pdflib_exception_class);
-        {
-            zval *p;
-#if PHP_MAJOR_VERSION >= 7
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"zSS", &p, &z_utf8string, &z_ordering)) {
-		RESTORE_ERROR_HANDLING();
-                return;
-            }
-        utf8string = ZSTR_VAL(z_utf8string);
-        ordering = ZSTR_VAL(z_ordering);
-
-            ZEND_FETCH_RESOURCE(pdf, PDF *, p, -1, "pdf object", le_pdf);
-#else /* PHP_MAJOR_VERSION >= 7 */
-            if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-"rss", &p, &utf8string, &utf8string_len, &ordering, &ordering_len)) {
-		RESTORE_ERROR_HANDLING();
-                return;
-            }
-            ZEND_FETCH_RESOURCE(pdf, PDF *, &p, -1, "pdf object", le_pdf);
-#endif /* PHP_MAJOR_VERSION >= 7 */
-        }
-    }
-    RESTORE_ERROR_HANDLING();
-    #if PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1
-php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_unicode().");
-    #endif /* PDFLIB_MAJORVERSION >= 8 && PDFLIB_MINORVERSION >= 1 */
-
-    pdf_try {
-	_result =  (const char *)PDF_utf8_to_utf16(pdf, utf8string, ordering, &outputlen);
-    } pdf_catch;
-
-    
-#if PHP_MAJOR_VERSION >= 7
-    {
-        zend_string *z_result;
-        if (_result) {
-            z_result = zend_string_alloc(outputlen, 0);
-            memcpy(z_result->val, _result, outputlen);
-        } else {
-            z_result = zend_string_init("", 1, 0);
-        }
-        RETURN_STR(z_result);
-    }
-#else /* PHP_MAJOR_VERSION >= 7 */
-    RETURN_STRINGL(_result ? (char *)_result : "", outputlen, 1);
-#endif /* PHP_MAJOR_VERSION >= 7 */
-}
-#endif /* PDFLIB_MAJORVERSION >= 8 */
 /* }}} */
 #endif /* defined(_WRAP_CODE) */
 #if defined(_WRAP_FUNCTION_ENTRY)
@@ -14459,6 +14465,9 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PHP_FE(pdf_translate, NULL)
     PHP_FE(pdf_utf16_to_utf8, NULL)
 #if PDFLIB_MAJORVERSION >= 8
+    PHP_FE(pdf_utf8_to_utf16, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 8 */
+#if PDFLIB_MAJORVERSION >= 8
     PHP_FE(pdf_utf32_to_utf8, NULL)
 #endif /* PDFLIB_MAJORVERSION >= 8 */
 #if PDFLIB_MAJORVERSION >= 8
@@ -14468,9 +14477,6 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PHP_FE(pdf_utf16_to_utf32, NULL)
 #endif /* PDFLIB_MAJORVERSION >= 8 */
     PHP_FE(pdf_utf32_to_utf16, NULL)
-#if PDFLIB_MAJORVERSION >= 8
-    PHP_FE(pdf_utf8_to_utf16, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 8 */
 #endif /* defined(_WRAP_FUNCTION_ENTRY)*/
 #if defined(_WRAP_FUNCTION_ENTRY2)
     PDF_ME_MAPPING(activate_item, pdf_activate_item, NULL)
@@ -14705,6 +14711,9 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PDF_ME_MAPPING(translate, pdf_translate, NULL)
     PDF_ME_MAPPING(utf16_to_utf8, pdf_utf16_to_utf8, NULL)
 #if PDFLIB_MAJORVERSION >= 8
+    PDF_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
+#endif /* PDFLIB_MAJORVERSION >= 8 */
+#if PDFLIB_MAJORVERSION >= 8
     PDF_ME_MAPPING(utf32_to_utf8, pdf_utf32_to_utf8, NULL)
 #endif /* PDFLIB_MAJORVERSION >= 8 */
 #if PDFLIB_MAJORVERSION >= 8
@@ -14714,9 +14723,6 @@ php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated, use PDF_convert_to_u
     PDF_ME_MAPPING(utf16_to_utf32, pdf_utf16_to_utf32, NULL)
 #endif /* PDFLIB_MAJORVERSION >= 8 */
     PDF_ME_MAPPING(utf32_to_utf16, pdf_utf32_to_utf16, NULL)
-#if PDFLIB_MAJORVERSION >= 8
-    PDF_ME_MAPPING(utf8_to_utf16, pdf_utf8_to_utf16, NULL)
-#endif /* PDFLIB_MAJORVERSION >= 8 */
 #endif /* defined(_WRAP_FUNCTION_ENTRY2)*/
 #if defined(_WRAP_FUNCTION_ENTRY3)
 PHP_FUNCTION(pdf_activate_item);
@@ -14976,6 +14982,9 @@ PHP_FUNCTION(pdf_suspend_page);
 PHP_FUNCTION(pdf_translate);
 PHP_FUNCTION(pdf_utf16_to_utf8);
 #if PDFLIB_MAJORVERSION >= 8
+PHP_FUNCTION(pdf_utf8_to_utf16);
+#endif /* PDFLIB_MAJORVERSION >= 8 */
+#if PDFLIB_MAJORVERSION >= 8
 PHP_FUNCTION(pdf_utf32_to_utf8);
 #endif /* PDFLIB_MAJORVERSION >= 8 */
 #if PDFLIB_MAJORVERSION >= 8
@@ -14985,7 +14994,4 @@ PHP_FUNCTION(pdf_utf8_to_utf32);
 PHP_FUNCTION(pdf_utf16_to_utf32);
 #endif /* PDFLIB_MAJORVERSION >= 8 */
 PHP_FUNCTION(pdf_utf32_to_utf16);
-#if PDFLIB_MAJORVERSION >= 8
-PHP_FUNCTION(pdf_utf8_to_utf16);
-#endif /* PDFLIB_MAJORVERSION >= 8 */
 #endif /* defined(_WRAP_FUNCTION_ENTRY3)*/

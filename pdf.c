@@ -17,16 +17,22 @@
    +----------------------------------------------------------------------+
 */
 
-/* $Id$ */
-
 /* Copyright (C) 1997-1999 Thomas Merz. 2000-2013 PDFlib GmbH */
 /* Note that there is no code from the pdflib package in this file */
 
 /* Bootstrap of PDFlib Feature setup */
 
 #if _MSC_VER >= 1310    /* VS .NET 2003 and later */
-#pragma warning(disable: 4995)  /* ignore deprecated warnings */
+#pragma warning(disable: 4996)  /* ignore deprecated warnings */
 #pragma warning(disable: 4101)  /* ignore unused variables */
+#endif
+
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 /* Extension version */
@@ -275,14 +281,18 @@ static void free_pdf_obj(zend_object *object)
     if (!pobj) {
         return;
     }
-    PDF_delete(pobj->p);
+    if (pobj->p) {
+        PDF_delete(pobj->p);
+    }
     zend_object_std_dtor(&pobj->zobj);
 }
 
 static void free_pdf_resource(zend_resource *rsrc TSRMLS_DC)
 {
     PDF *pdf = (PDF *)rsrc->ptr;
-    PDF_delete(pdf);
+    if (pdf) {
+        PDF_delete(pdf);
+    }
 }
 #else /* PHP_MAJOR_VERSION >= 7 */
 static void free_pdf_resource(zend_rsrc_list_entry *rsrc TSRMLS_DC)
@@ -343,9 +353,10 @@ pdflib_object_new(zend_class_entry *class_type TSRMLS_DC)
 
     object = (pdflib_object*)ecalloc(1, sizeof(pdflib_object) +
                                         zend_object_properties_size(class_type));
-    object_properties_init(&(object->zobj), class_type);
 
     zend_object_std_init(&object->zobj, class_type TSRMLS_CC);
+
+    object_properties_init(&(object->zobj), class_type);
     object->zobj.handlers = &pdflib_handlers;
 
     return &object->zobj;
