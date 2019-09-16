@@ -1,5 +1,4 @@
 
-/* $Id$ */
 /* Derived from:
     Id: php_pdf.h,v 1.22 2001/11/30 04:46:35 sniper Exp */
 

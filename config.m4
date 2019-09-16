@@ -1,5 +1,5 @@
 dnl
-dnl $Id$
+dnl 
 dnl
 
 PHP_ARG_WITH(pdflib,for PDFlib support,

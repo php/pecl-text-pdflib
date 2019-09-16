@@ -1,24 +1,4 @@
-/*
-   +----------------------------------------------------------------------+
-   | PHP Version 5                                                        |
-   +----------------------------------------------------------------------+
-   | Copyright (c) 1997-2004 The PHP Group                                |
-   +----------------------------------------------------------------------+
-   | This source file is subject to version 3.0 of the PHP license,       |
-   | that is bundled with this package in the file LICENSE, and is        |
-   | available through the world-wide-web at the following url:           |
-   | http://www.php.net/license/3_0.txt.                                  |
-   | If you did not receive a copy of the PHP license and are unable to   |
-   | obtain it through the world-wide-web, please send a note to          |
-   | license@php.net so we can mail you a copy immediately.               |
-   +----------------------------------------------------------------------+
-   | Authors: Uwe Steinmann <Uwe.Steinmann@fernuni-hagen.de>              |
-   |          Rainer Schaaf <rjs@pdflib.com>                              |
-   +----------------------------------------------------------------------+
-*/
-
-/* Copyright (C) 1997-1999 Thomas Merz. 2000-2013 PDFlib GmbH */
-/* Note that there is no code from the pdflib package in this file */
+/* Copyright (c) 1997-2019 PDFlib GmbH */
 
 /* Bootstrap of PDFlib Feature setup */
 
@@ -402,9 +382,8 @@ PHP_MINFO_FUNCTION(PDFlib)
 {
     php_info_print_table_start();
     php_info_print_table_header(2, "PDFlib Support", "enabled" );
-    php_info_print_table_row(2, "PDFlib GmbH Version",  PDFLIB_VSTRING);
+    php_info_print_table_row(2, "PHP extension built with PECL",  PDFLIB_VSTRING);
     php_info_print_table_row(2, "PECL Version", PHP_PDFLIB_VERSION);
-    php_info_print_table_row(2, "Revision", "$Revision$" );
     php_info_print_table_end();
 }
 /* }}} */
@@ -734,7 +713,9 @@ PHP_FUNCTION(pdf_new)
 #endif /* PHP_MAJOR_VERSION >= 7 */
         } pdf_catch;
     } else {
-        _pdf_exception(99, "PDF_new", "PDF_new: internal error" TSRMLS_CC);
+        _pdf_exception(999, "PDF_new",
+            "Couldn't create PDFlib object (out of memory)" TSRMLS_CC);
+        RETURN_FALSE;
     }
 
     if (object) {
@@ -743,7 +724,7 @@ PHP_FUNCTION(pdf_new)
         } pdf_catch;
 #if PHP_MAJOR_VERSION >= 7
         zend_object *zobj = Z_OBJ_P(getThis());
-        pobj = (pdflib_object *) ((char *)zobj - offsetof(pdflib_object, zobj));
+        pobj = (pdflib_object *) ((char *)zobj - XtOffsetOf(pdflib_object, zobj));
 #else /* PHP_MAJOR_VERSION >= 7 */
         pobj =(pdflib_object *)zend_object_store_get_object(object TSRMLS_CC);
 #endif /* PHP_MAJOR_VERSION >= 7 */

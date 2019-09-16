@@ -3417,7 +3417,7 @@ PHP_FUNCTION(pdf_concat)
     
 /* {{{ proto bool PDF_continue_text(
 resource p, string text)
- * Same as PDF_continue_text(), but with explicit string length */
+ * Print text at the next line */
 PHP_FUNCTION(pdf_continue_text)
 {
     PDF *pdf;
@@ -11348,7 +11348,7 @@ PHP_FUNCTION(pdf_set_gstate)
     
 /* {{{ proto bool PDF_set_info(
 resource p, string key, string value)
- * Like PDF_set_info(), but with explicit string length */
+ * Fill document information field key with value */
 PHP_FUNCTION(pdf_set_info)
 {
     PDF *pdf;
@@ -13161,7 +13161,7 @@ PHP_FUNCTION(pdf_shfill)
     
 /* {{{ proto bool PDF_show(
 resource p, string text)
- * Same as PDF_show() but with explicit string length */
+ * Print text in the current font and size at the current position */
 PHP_FUNCTION(pdf_show)
 {
     PDF *pdf;
@@ -13232,7 +13232,7 @@ PHP_FUNCTION(pdf_show)
     
 /* {{{ proto bool PDF_show_xy(
 resource p, string text, double x, double y)
- * Same as PDF_show_xy() but with explicit string length */
+ * Print text in the current font at the specified position */
 PHP_FUNCTION(pdf_show_xy)
 {
     PDF *pdf;
@@ -13368,7 +13368,7 @@ PHP_FUNCTION(pdf_skew)
     
 /* {{{ proto double PDF_stringwidth(
 resource p, string text, int font, double fontsize)
- * Same as PDF_stringwidth(), but with explicit string length */
+ * Calculate the width of text in an arbitrary font */
 PHP_FUNCTION(pdf_stringwidth)
 {
     PDF *pdf;
