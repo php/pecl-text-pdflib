@@ -1,2 +1,2 @@
 
-#define PHP_PDFLIB_VERSION "4.1.4"
+#define PHP_PDFLIB_VERSION "4.1.5"

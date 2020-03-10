@@ -687,6 +687,7 @@ PHP_FUNCTION(pdf_open_pdi)
  * Delete a PDFlib object and free all internal resources. */
 PHP_FUNCTION(pdf_delete)
 {
+    php_error_docref(NULL TSRMLS_CC, E_DEPRECATED, "Deprecated");
     RETURN_TRUE; /* This is done in the destructor */
 }
 /* }}} */
@@ -705,11 +706,11 @@ PHP_FUNCTION(pdf_new)
     if (pdf != NULL) {
         pdf_try {
             /* Trigger special handling of PDFlib-handles for PHP */
-            PDF_set_parameter(pdf, "hastobepos", "true");
+            PDF_set_option(pdf, "hastobepos=true");
 #if PHP_MAJOR_VERSION >= 7
-            PDF_set_parameter(pdf, "binding", "PHP7");
+            PDF_set_option(pdf, "binding=PHP7");
 #else /* PHP_MAJOR_VERSION >= 7 */
-            PDF_set_parameter(pdf, "binding", "PHP5");
+            PDF_set_option(pdf, "binding=PHP5");
 #endif /* PHP_MAJOR_VERSION >= 7 */
         } pdf_catch;
     } else {
@@ -720,7 +721,7 @@ PHP_FUNCTION(pdf_new)
 
     if (object) {
         pdf_try {
-            PDF_set_parameter(pdf, "objorient", "true");
+            PDF_set_option(pdf, "objorient=true");
         } pdf_catch;
 #if PHP_MAJOR_VERSION >= 7
         zend_object *zobj = Z_OBJ_P(getThis());
